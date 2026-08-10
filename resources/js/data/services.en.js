@@ -1,0 +1,82 @@
+const commonProcess = [
+    { title: 'Discovery', text: 'We clarify your business, audience and measurable goals.' },
+    { title: 'Solution plan', text: 'You receive a clear scope, stages, price and timeline.' },
+    { title: 'Build and review', text: 'You see progress regularly and provide feedback throughout delivery.' },
+    { title: 'Launch and growth', text: 'We launch, verify the result and plan the next improvements.' },
+]
+
+const offer = (title, price, description, points, featured = false, tag = null) => ({ title, price, description, points, featured, tag })
+const benefit = (number, title, description) => ({ number, title, description })
+
+export const englishServices = {
+    'Interneto svetainių kūrimas': {
+        title: 'Website development', seoDescription: 'Fast, modern and conversion-ready websites for ambitious businesses.', eyebrow: 'Business websites',
+        headline: 'A website that looks exceptional and', highlight: 'grows your business.', description: 'I build fast, clear and conversion-focused websites that present your business professionally and turn visitors into enquiries.',
+        visualLabel: 'Digital experience', visualTitle: 'From first impression to enquiry', proofs: ['Custom design', 'Mobile-first', 'Technical SEO'], metrics: [{ value: '< 2 s', label: 'target load time' }, { value: '100%', label: 'mobile-ready' }],
+        benefitsTitle: 'Built for outcomes, not just appearance', benefitsLead: 'Every decision supports trust, usability and more qualified enquiries.',
+        benefits: [benefit('01', 'Clear message', 'Visitors quickly understand your value and why they should choose you.'), benefit('02', 'Speed and SEO', 'A clean technical foundation helps users and search engines.'), benefit('03', 'Conversion logic', 'Content and actions guide visitors naturally towards contact.')],
+        featureTitle: 'Everything needed for a confident launch', featureLead: 'Strategy, design, development and launch managed through one clear process.',
+        features: ['Content and page structure', 'Custom UI/UX design', 'Development and CMS', 'Contact and enquiry forms', 'Analytics integration', 'Training and launch support'],
+        offers: [offer('Starter website', '€449', 'A polished foundation for a focused online presence.', ['Up to 3 core pages', 'Contact form', 'SEO foundation']), offer('Business website', '€749', 'A complete website for active customer acquisition.', ['Custom structure', 'Analytics and integrations', 'Conversion optimisation'], true, 'Most popular'), offer('Custom website', '€1,490', 'For advanced functionality, integrations or a distinctive digital experience.', ['Custom features', 'External integrations', 'Room to scale'])], process: commonProcess, service: 'Website',
+    },
+    'El. parduotuvių kūrimas': {
+        title: 'E-commerce development', seoDescription: 'Fast, user-friendly online stores with the integrations your business needs.', eyebrow: 'Online stores',
+        headline: 'An online store that is easy to', highlight: 'buy from and scale.', description: 'I build mobile-friendly stores that simplify purchasing, order management and future growth.',
+        visualLabel: 'Commerce system', visualTitle: 'A smooth buyer journey', proofs: ['WooCommerce', 'Payments', 'Delivery integrations'], metrics: [{ value: '24/7', label: 'sales channel' }, { value: '1 place', label: 'for order management' }],
+        benefitsTitle: 'Less friction for buyers, more control for you', benefitsLead: 'The store is designed around the complete purchase journey.',
+        benefits: [benefit('01', 'Easy purchasing', 'Clear products, filters, basket and checkout on every device.'), benefit('02', 'Automated management', 'Payments, invoices, stock and delivery work as one system.'), benefit('03', 'Ready to grow', 'Promotions, analytics and marketing tools are built into the foundation.')],
+        featureTitle: 'Commerce features that work together', featureLead: 'Only the functions and integrations your sales model actually needs.',
+        features: ['Product catalogue and filters', 'Bank and card payments', 'Courier and parcel terminal integrations', 'Discounts and loyalty', 'Invoice generation', 'Sales analytics'],
+        offers: [offer('Store Start', '€1,090', 'A reliable store for a smaller product range.', ['Core commerce features', 'Payment integration', 'Delivery options']), offer('Store Growth', '€1,790', 'A custom store for active sales and marketing.', ['Custom design', 'Automations', 'Advanced analytics'], true, 'For growing brands'), offer('Store Custom', '€2,990', 'For complex catalogues and custom integrations.', ['ERP / CRM integrations', 'Custom logic', 'Long-term development'])], process: commonProcess, service: 'Online store',
+    },
+    'CRM sistemų kūrimas': {
+        title: 'Custom CRM development', seoDescription: 'Custom CRM systems for managing customers, sales and team workflows.', eyebrow: 'CRM systems',
+        headline: 'Customers, sales and team activity', highlight: 'in one place.', description: 'I create CRM systems shaped around your real workflow, helping teams move faster and lose fewer opportunities.',
+        visualLabel: 'Business management', visualTitle: 'A clear sales system', proofs: ['Customers', 'Sales pipeline', 'Team tasks'], metrics: [{ value: '1 CRM', label: 'for the whole team' }, { value: '0', label: 'lost enquiries' }],
+        benefitsTitle: 'The system adapts to your business', benefitsLead: 'Functionality follows your real process, making adoption easier.',
+        benefits: [benefit('01', 'One clear view', 'Contacts, history, proposals and tasks stay together.'), benefit('02', 'Controlled sales', 'Track every stage, owner and next action.'), benefit('03', 'Less manual work', 'Reminders, documents and data flows are automated.')],
+        featureTitle: 'Modules built around your workflow', featureLead: 'Start with the essentials and expand as your business grows.',
+        features: ['Customer and contact database', 'Sales pipeline', 'Tasks and reminders', 'Proposals and documents', 'Roles and permissions', 'Reports and integrations'],
+        offers: [offer('CRM Core', '€1,990', 'Core tools for customers and sales.', ['Contact database', 'Sales stages', 'Tasks']), offer('CRM Business', '€3,490', 'A tailored system with automation.', ['Custom modules', 'Team permissions', 'Reports'], true, 'Most flexible'), offer('CRM Ecosystem', '€5,990', 'A central solution for multiple processes or teams.', ['Complex integrations', 'Data migration', 'Ongoing development'])], process: commonProcess, service: 'CRM system',
+    },
+    'Verslo procesų automatizacija': {
+        title: 'Business process automation', seoDescription: 'Workflow automation, API integrations and less manual work for your team.', eyebrow: 'Automation',
+        headline: 'Less repetition.', highlight: 'More meaningful work.', description: 'I connect systems and automate repetitive processes so your team saves time and avoids preventable errors.',
+        visualLabel: 'Automated workflow', visualTitle: 'Systems working together', proofs: ['API integrations', 'Data flows', 'Notifications'], metrics: [{ value: '24/7', label: 'automated execution' }, { value: '-60%', label: 'manual work potential' }],
+        benefitsTitle: 'Automation that produces real value', benefitsLead: 'We begin with the processes that consume the most time.',
+        benefits: [benefit('01', 'Time saved', 'Repeated actions happen automatically.'), benefit('02', 'Fewer errors', 'Data moves consistently between systems.'), benefit('03', 'Clear processes', 'Every step has rules, status and ownership.')],
+        featureTitle: 'Connect the tools you already use', featureLead: 'APIs, forms, CRM, email and documents can operate as one workflow.',
+        features: ['Process analysis', 'API integrations', 'Automatic notifications', 'Document generation', 'Data synchronisation', 'Monitoring and error handling'],
+        offers: [offer('One automation', '€390', 'A fast solution for one repetitive task.', ['Process analysis', 'One automated workflow', 'Testing']), offer('Workflow system', '€990', 'Several connected processes and tools.', ['Multiple integrations', 'Error handling', 'Monitoring'], true, 'Best return'), offer('Custom platform', '€2,490', 'Automation with its own interface and business logic.', ['Custom dashboard', 'API architecture', 'Phased growth'])], process: commonProcess, service: 'Automation',
+    },
+    'Svetainių priežiūra': {
+        title: 'Website maintenance', seoDescription: 'Updates, security, backups and responsive technical support.', eyebrow: 'Maintenance',
+        headline: 'A website that stays', highlight: 'fast and reliable.', description: 'Regular updates, backups, monitoring and practical support keep your website healthy after launch.',
+        visualLabel: 'System health', visualTitle: 'Continuous protection', proofs: ['Updates', 'Backups', 'Support'], metrics: [{ value: '24/7', label: 'monitoring' }, { value: '99.9%', label: 'uptime target' }],
+        benefitsTitle: 'Fewer surprises, more stability', benefitsLead: 'Technical care protects your investment and customer experience.',
+        benefits: [benefit('01', 'Stable operation', 'Critical health indicators are monitored.'), benefit('02', 'Better security', 'Updates and backups are handled regularly.'), benefit('03', 'Fast support', 'You have a reliable contact for technical questions.')],
+        featureTitle: 'Practical ongoing care', featureLead: 'A plan matched to the importance and complexity of your website.',
+        features: ['Core and plugin updates', 'Automated backups', 'Security checks', 'Performance monitoring', 'Small content changes', 'Monthly status summary'],
+        offers: [offer('Maintenance Basic', '€39/mo', 'Essential recurring care for a smaller site.', ['Updates', 'Backups', 'Health check']), offer('Maintenance Business', '€89/mo', 'For an active business website.', ['Continuous monitoring', 'Small improvements', 'Priority support'], true, 'Recommended'), offer('Maintenance Custom', '€179/mo', 'For stores and complex systems.', ['Custom SLA', 'Integration care', 'Development hours'])], process: commonProcess, service: 'Website maintenance',
+    },
+    'Aplikacijų kūrimas': {
+        title: 'Application development', seoDescription: 'Custom web and mobile applications from MVP to a complete business platform.', eyebrow: 'Web and mobile apps',
+        headline: 'Turn your idea into a', highlight: 'real digital product.', description: 'I design and build applications for customers, teams and new business models — from focused MVP to scalable platform.',
+        visualLabel: 'Digital product', visualTitle: 'From concept to active users', proofs: ['Product strategy', 'UX/UI design', 'Scalable code'], metrics: [{ value: 'MVP', label: 'focused first release' }, { value: '100%', label: 'built to scale' }],
+        benefitsTitle: 'A product with a clear direction', benefitsLead: 'We validate the user, value and priority functionality before building.',
+        benefits: [benefit('01', 'Clear product scope', 'The first release focuses on the most valuable problem.'), benefit('02', 'Intuitive experience', 'Every screen supports a simple user journey.'), benefit('03', 'Ready to scale', 'Modular architecture supports new features and integrations.')],
+        featureTitle: 'From prototype to production', featureLead: 'Product thinking, design and engineering stay connected.',
+        features: ['Product and user analysis', 'Interactive UX prototype', 'Custom UI design', 'Frontend and backend development', 'API integrations', 'Launch and analytics'],
+        offers: [offer('MVP application', '€2,490', 'The first product version for real user validation.', ['Core features', 'UX/UI design', 'Launch preparation']), offer('Business application', '€4,490', 'A custom tool for clients, teams or a business process.', ['User roles', 'Integrations', 'Admin area'], true, 'Most popular'), offer('Digital platform', '€7,990', 'A larger modular product with a long-term roadmap.', ['Modular architecture', 'Complex business logic', 'Phased delivery'])], process: commonProcess, service: 'Application development',
+    },
+    'Premium svetainių šablonai': {
+        title: 'Premium website templates', seoDescription: 'Professional website templates for a faster business launch.', eyebrow: 'Template library · coming soon',
+        headline: 'A faster launch without a', highlight: 'generic result.', description: 'A curated library of fast, adaptable templates for businesses that value quality and speed.',
+        visualLabel: 'Template library', visualTitle: 'Quality ready for your content', proofs: ['Modern design', 'Fully adaptable', 'Fast launch'], metrics: [{ value: 'Fast', label: 'from choice to launch' }, { value: '100%', label: 'mobile-ready' }],
+        benefitsTitle: 'A strong foundation for a faster start', benefitsLead: 'Each template is designed as a real business website.',
+        benefits: [benefit('01', 'Curated design', 'Professional directions for different industries.'), benefit('02', 'Your identity', 'Colours, typography and content adapt to your brand.'), benefit('03', 'Faster launch', 'A proven structure saves design and planning time.')],
+        featureTitle: 'More than a design file', featureLead: 'Templates are prepared for real business use and professional adaptation.',
+        features: ['Core business pages', 'Mobile version', 'Conversion sections', 'Contact forms', 'SEO-ready structure', 'Professional adaptation'],
+        offers: [offer('Template licence', '€249', 'Choose a polished design foundation.', ['Full template', 'Responsive layouts', 'Documentation']), offer('Adapted template', '€449', 'A template customised to your brand.', ['Colours and typography', 'Your content', 'Required sections'], true, 'Recommended'), offer('Ready-to-launch site', '€690', 'A complete setup and launch service.', ['Full adaptation', 'Technical setup', 'Launch support'])], process: commonProcess, service: 'Other',
+    },
+}

@@ -1,7 +1,20 @@
 <script setup>
-import { useReveal } from '@/composables/useReveal'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import { Link } from '@inertiajs/vue3'
+import { useLocale } from '@/composables/useLocale'
 
-useReveal('.project-card')
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+defineProps({
+    projects: {
+        type: Array,
+        default: () => []
+    }
+})
+const { isEnglish, localize } = useLocale()
+
 </script>
 
 <template>
@@ -11,138 +24,238 @@ useReveal('.project-card')
     >
         <div class="max-w-7xl mx-auto px-6">
 
-            <div class="mb-20 text-center">
+            <div class="mb-14 md:mb-20 text-center">
                 <span
                     class="text-cyan-400 uppercase tracking-[0.3em] font-semibold"
                 >
-                    02
+                    02 · {{ isEnglish ? 'Work' : 'Darbai' }}
                 </span>
 
                 <h2
                     class="text-4xl md:text-6xl font-bold mt-4"
                 >
-                    Naujausi
+                    {{ isEnglish ? 'Latest' : 'Naujausi' }}
                 <span class="text-cyan-400">
-                    projektai
+                    {{ isEnglish ? 'projects' : 'projektai' }}
                 </span>
                     
                 </h2>
             </div>
 
-            <div class="space-y-6 sm:space-y-8">
+        <div v-if="projects.length" class="project-slider">
 
-                <a
-                    href="https://autoritmu.lt"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="project-card"
+    <Swiper
+        :modules="[Navigation, Pagination, Autoplay]"
+        :slides-per-view="1"
+        :space-between="24"
+        :loop="projects.length > 3"
+        :autoplay="{
+            delay: 4500
+        }"
+        :breakpoints="{
+            768: {
+                slidesPerView: 2
+            },
+            1280: {
+                slidesPerView: 3
+            }
+        }"
+        navigation
+        pagination
+    >
+
+        <SwiperSlide
+            v-for="project in projects"
+            :key="project.id"
+        >
+
+            <Link
+                :href="localize(`/projektai/${project.slug}`)"
+                :prefetch="['hover', 'click']"
+                cache-for="30s"
+                view-transition
+                class="project-card"
+            >
+
+            <div class="project-showcase">
+
+                <img
+                    :src="`/storage/${project.thumbnail}`"
+                    class="project-desktop"
+                    :alt="`${project.title} ${isEnglish ? 'project preview' : 'projekto peržiūra'}`"
+                    loading="lazy"
                 >
-                    <div>
-                        <p class="project-type">
-                            Renginių platforma,
-                            Administravimo sistema,
-                            Mokėjimų integracijos
-                        </p>
 
-                        <h3 class="project-title">
-                            Autoritmu.lt
-                        </h3>
-
-                        <p class="project-desc">
-                            Sukurta specializuota renginių platforma, leidžianti organizatoriams talpinti renginius,
-                            o lankytojams greitai atrasti aktualius auto, moto ir dviračių renginius Lietuvoje.
-                        </p>
-                    </div>
-
-                    <span class="project-arrow">
-                        →
-                    </span>
-                </a>
-
-                <a
-                    href="https://e-akademija.lt"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="project-card"
-                >
-                    <div>
-                        <p class="project-type">
-                            Verslo mokymų ir bendruomenės platforma
-                        </p>
-
-                        <h3 class="project-title">
-                            E-akademija.lt
-                        </h3>
-
-                        <p class="project-desc">
-                            Verslo mokymų ir bendruomenės platforma su renginių registracijomis, narių zona ir turinio valdymo sistema.
-                            Sukurtas funkcionalus ir lengvai administruojamas sprendimas verslo augimui.
-                        </p>
-                    </div>
-
-                    <span class="project-arrow">
-                        →
-                    </span>
-                </a>
             </div>
+
+                <div class="project-overlay">
+
+                    <span class="project-client">
+                        {{ project.services }}
+                    </span>
+
+                    <h3>
+                        {{ project.title }}
+                    </h3>
+                    <div class="project-visit">
+                        {{ isEnglish ? 'View project' : 'Peržiūrėti' }} →
+                    </div>
+
+                </div>
+
+            </Link>
+
+        </SwiperSlide>
+
+    </Swiper>
+
+</div>
+
+        <div v-else class="empty-projects">
+            <span>{{ isEnglish ? 'Project gallery is being updated' : 'Projektų galerija pildoma' }}</span>
+            <p>{{ isEnglish ? 'Explore our services or tell us about your idea — the next project shown here could be yours.' : 'Kol kas susipažinkite su paslaugomis arba parašykite apie savo idėją — galbūt kitas čia rodomas projektas bus jūsų.' }}</p>
+            <a href="#contact">{{ isEnglish ? 'Discuss a project' : 'Aptarti projektą' }} →</a>
+        </div>
 
         </div>
     </section>
 </template>
 
 <style scoped>
-.project-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.project-card{
+    display:block;
 
-    padding: 40px;
+    background:rgba(255,255,255,.03);
 
-    border-radius: 28px;
+    border:1px solid rgba(255,255,255,.08);
 
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.08);
+    border-radius:32px;
 
-    transition: .3s;
+    overflow:hidden;
+
+    transition:.35s;
+    height:100%;
 }
 
-.project-card:hover {
-    transform: translateY(-5px);
+.empty-projects {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3rem;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 1.5rem;
+    background: rgba(255,255,255,.025);
+    text-align: center;
+}
 
-    border-color: rgba(34,211,238,.4);
+.empty-projects span { color: #67e8f9; font-size: .75rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.empty-projects p { margin-top: 1rem; color: #8795aa; line-height: 1.7; }
+.empty-projects a { display: inline-flex; margin-top: 1.5rem; color: #67e8f9; font-weight: 800; }
+
+.project-card:hover{
+    transform:translateY(-10px);
+
+    border-color:rgba(34,211,238,.35);
 
     box-shadow:
-        0 0 40px rgba(34,211,238,.12);
+        0 0 50px rgba(34,211,238,.12);
+
+    transform:translateY(-6px);
 }
 
-.project-type {
-    color: #22D3EE;
-    margin-bottom: 10px;
+.project-showcase{
+    position:relative;
+
+    aspect-ratio: 16 / 10;
+
+    overflow:hidden;
+
+    background:#111827;
 }
 
-.project-title {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 12px;
+.project-desktop{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+    transition:.6s;
+
 }
 
-.project-desc {
-    color: #94A3B8;
-    max-width: 700px;
+.project-card:hover .project-desktop{
+    transform:
+        perspective(1200px)
+        rotateY(-3deg);
 }
 
-.project-arrow {
-    font-size: 42px;
-    color: #22D3EE;
+
+.project-overlay{
+    padding:24px;
+
+    position:relative;
+
+    background:transparent;
+}
+
+.project-client{
+    color:#22D3EE;
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+
+
+}
+
+.project-overlay h3{
+    margin-top:8px;
+
+    font-size:26px;
+    font-weight:700;
+    line-height: 1.2;
+}
+
+.project-overlay p{
+    margin-top:12px;
+
+    color:#CBD5E1;
+
+    line-height:1.6;
+}
+
+:deep(.swiper-button-next),
+:deep(.swiper-button-prev){
+    color:#22D3EE;
+}
+
+:deep(.swiper-pagination-bullet){
+    background:#22D3EE;
+}
+
+.project-visit{
+    margin-top:18px;
+
+    color:#22D3EE;
+
+    opacity:0;
+
+    transform:translateY(10px);
+
+    transition:.3s;
+}
+
+.project-card:hover .project-visit{
+    opacity:1;
+    transform:none;
+}
+
+.project-card:hover .project-desktop{
+    transform:scale(1.05);
 }
 @media (max-width: 767px) {
-    .project-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 18px;
-        padding: 28px;
-    }
-
     .project-card:hover {
         transform: none;
         box-shadow: none;
@@ -166,4 +279,36 @@ useReveal('.project-card')
         font-size: 32px;
         align-self: flex-end;
     }
-}</style>
+
+    .empty-projects { padding: 2rem 1.25rem; }
+}
+
+@media (max-width:768px){
+
+    .project-showcase{
+        min-height:auto;
+        padding:0;
+    }
+
+    .project-overlay{
+        padding:
+            35px
+            20px
+            20px;
+    }
+
+    .project-overlay h3{
+        font-size:24px;
+    }
+
+    :deep(.swiper-button-next),
+    :deep(.swiper-button-prev){
+        display:none;
+    }
+
+    :deep(.swiper){
+        padding-bottom:36px;
+    }
+}
+
+</style>

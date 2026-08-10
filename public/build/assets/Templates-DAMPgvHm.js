@@ -1,0 +1,1 @@
+import{A as e,B as t,L as n,S as r,_ as i}from"./app-Btssk-Bi.js";import{t as a}from"./PublicLayout-ewA4K6qJ.js";import{c as o,o as s}from"./services-BbsOKLw0.js";var c={__name:`Templates`,setup(c){return(c,l)=>(e(),i(a,null,{default:n(()=>[r(o,{config:t(s)},null,8,[`config`])]),_:1}))}};export{c as default};

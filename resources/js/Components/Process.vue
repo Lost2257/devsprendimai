@@ -1,9 +1,26 @@
+<script setup>
+import { computed } from 'vue'
+import { useLocale } from '@/composables/useLocale'
+const { isEnglish } = useLocale()
+const steps = computed(() => isEnglish.value ? [
+    ['Conversation', 'We discuss your idea, needs and business goals.'],
+    ['Plan', 'I prepare the scope, timeline and delivery plan.'],
+    ['Delivery', 'I build, test and refine every agreed feature.'],
+    ['Launch', 'The project goes live and remains supported when needed.'],
+] : [
+    ['Pokalbis', 'Aptariame jūsų idėją, poreikius ir tikslus.'],
+    ['Planas', 'Paruošiu pasiūlymą, terminus ir darbų eigą.'],
+    ['Įgyvendinimas', 'Kuriu, testuoju ir derinu visas funkcijas.'],
+    ['Paleidimas', 'Projektas paleidžiamas ir prireikus prižiūrimas.'],
+])
+</script>
+
 <template>
     <section
         id="process"
-        class="py-24 px-6 relative overflow-hidden"
+        class="py-24 relative overflow-hidden"
     >
-        <div class="max-w-7xl mx-auto px-6">
+        <div class="site-container">
 
             <!-- Header -->
             <div class="mb-20 text-center">
@@ -16,17 +33,16 @@
                 <h2
                     class="text-4xl md:text-6xl font-bold mt-4"
                 >
-                    Kaip vyksta
+                    {{ isEnglish ? 'How we' : 'Kaip vyksta' }}
                     <span class="text-cyan-400">
-                        bendradarbiavimas
+                        {{ isEnglish ? 'work together' : 'bendradarbiavimas' }}
                     </span>
                 </h2>
 
                 <p
                     class="mt-6 text-slate-400 max-w-2xl mx-auto"
                 >
-                    Aiškus procesas nuo pirmo pokalbio
-                    iki sėkmingai paleisto projekto.
+                    {{ isEnglish ? 'A clear process from the first conversation to a successful launch.' : 'Aiškus procesas nuo pirmo pokalbio iki sėkmingai paleisto projekto.' }}
                 </p>
             </div>
 
@@ -46,64 +62,10 @@
                     "
                 >
 
-                <div class="step-card">
-                    <span class="step-number">
-                        01
-                    </span>
-
-                    <h3>
-                        Pokalbis
-                    </h3>
-
-                    <p>
-                        Aptariame jūsų idėją,
-                        poreikius ir tikslus.
-                    </p>
-                </div>
-
-                <div class="step-card">
-                    <span class="step-number">
-                        02
-                    </span>
-
-                    <h3>
-                        Planas
-                    </h3>
-
-                    <p>
-                        Paruošiu pasiūlymą,
-                        terminus ir darbų eigą.
-                    </p>
-                </div>
-
-                <div class="step-card">
-                    <span class="step-number">
-                        03
-                    </span>
-
-                    <h3>
-                        Įgyvendinimas
-                    </h3>
-
-                    <p>
-                        Kuriu, testuoju ir
-                        derinu visas funkcijas.
-                    </p>
-                </div>
-
-                <div class="step-card">
-                    <span class="step-number">
-                        04
-                    </span>
-
-                    <h3>
-                        Paleidimas
-                    </h3>
-
-                    <p>
-                        Projektas paleidžiamas
-                        ir prireikus prižiūrimas.
-                    </p>
+                <div v-for="(step, index) in steps" :key="step[0]" class="step-card">
+                    <span class="step-number">{{ String(index + 1).padStart(2, '0') }}</span>
+                    <h3>{{ step[0] }}</h3>
+                    <p>{{ step[1] }}</p>
                 </div>
 
             </div>
@@ -214,5 +176,26 @@
 .step-card p {
     color: #94A3B8;
     line-height: 1.7;
+}
+
+@media (max-width: 1279px) {
+    .process-line,
+    .step-number::before {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    section {
+        padding-block: 4.5rem;
+    }
+
+    .step-card {
+        padding: 28px 24px;
+    }
+
+    .step-card:hover {
+        transform: none;
+    }
 }
 </style>

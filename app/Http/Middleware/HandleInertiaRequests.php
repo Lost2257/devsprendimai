@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Models\Inquiry;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -31,9 +32,22 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+
             'auth' => [
                 'user' => $request->user(),
             ],
+
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
+
+            'appUrl' => $request->getSchemeAndHttpHost(),
+            'locale' => app()->getLocale(),
+
+            'newInquiries' => fn () => $request->user()
+                ? Inquiry::where('is_read', false)->count()
+                : 0,
         ];
     }
 }

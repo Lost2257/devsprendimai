@@ -52,7 +52,7 @@
                 </a>
 
                 <a
-                    href="tel:+37060000000"
+                    href="tel:+37060606227"
                     class="
                     px-8 py-4
                     border
