@@ -6,6 +6,7 @@
         <meta name="color-scheme" content="dark">
 
         @php
+            $globalSettings = cache()->remember('seo.settings', 300, fn () => \App\Models\Setting::query()->first());
             $privateSeoPath = request()->is('dashboard*', 'login', 'register', 'forgot-password', 'reset-password*', 'verify-email', 'confirm-password', 'profile*');
             $isEnglish = app()->isLocale('en');
             $seo = [
@@ -44,10 +45,9 @@
                 [$seo['title'], $seo['description']] = $activeServiceSeo[$languagePath];
             }
             if (!$isEnglish && $languagePath === '/') {
-                $settings = data_get($page, 'props.settings', []);
-                $seo['title'] = data_get($settings, 'site_title') ?: $seo['title'];
-                $seo['description'] = data_get($settings, 'site_description') ?: $seo['description'];
-                if ($ogImage = data_get($settings, 'og_image')) {
+                $seo['title'] = $globalSettings?->site_title ?: $seo['title'];
+                $seo['description'] = $globalSettings?->site_description ?: $seo['description'];
+                if ($ogImage = $globalSettings?->og_image) {
                     $seo['image'] = url('/storage/'.ltrim($ogImage, '/'));
                 }
             }
@@ -69,6 +69,47 @@
             }
             $ltPath = $languagePath === '/' ? '' : '/'.$languagePath;
             $enPath = '/en'.($languagePath === '/' ? '' : '/'.$languagePath);
+            $googleVerification = $globalSettings?->google_site_verification ?: config('seo.google_site_verification');
+            $bingVerification = $globalSettings?->bing_site_verification ?: config('seo.bing_site_verification');
+            $globalStructuredData = [
+                '@context' => 'https://schema.org',
+                '@graph' => [
+                    [
+                        '@type' => ['Organization', 'ProfessionalService'],
+                        '@id' => url('/#organization'),
+                        'name' => 'DevSprendimai',
+                        'legalName' => 'Aivaras Razvodovskis',
+                        'url' => url('/'),
+                        'logo' => [
+                            '@type' => 'ImageObject',
+                            'url' => url('/images/logo.png'),
+                        ],
+                        'image' => $seo['image'],
+                        'email' => 'info@devsprendimai.lt',
+                        'telephone' => '+37060606227',
+                        'priceRange' => '€€',
+                        'address' => [
+                            '@type' => 'PostalAddress',
+                            'streetAddress' => 'Pramonės pr. 28',
+                            'addressLocality' => 'Kaunas',
+                            'addressCountry' => 'LT',
+                        ],
+                        'areaServed' => [
+                            ['@type' => 'Country', 'name' => 'Lithuania'],
+                            ['@type' => 'AdministrativeArea', 'name' => 'Europe'],
+                        ],
+                        'knowsLanguage' => ['lt', 'en'],
+                    ],
+                    [
+                        '@type' => 'WebSite',
+                        '@id' => url('/#website'),
+                        'url' => url('/'),
+                        'name' => 'DevSprendimai',
+                        'publisher' => ['@id' => url('/#organization')],
+                        'inLanguage' => ['lt-LT', 'en'],
+                    ],
+                ],
+            ];
         @endphp
         <link data-seo-canonical rel="canonical" href="{{ url()->current() }}">
         <link data-seo-canonical rel="alternate" hreflang="lt-LT" href="{{ url($ltPath) }}">
@@ -88,6 +129,7 @@
         <meta data-seo-meta="og:description" property="og:description" content="{{ $seo['description'] }}">
         <meta data-seo-meta="og:url" property="og:url" content="{{ url()->current() }}">
         <meta data-seo-meta="og:image" property="og:image" content="{{ $seo['image'] }}">
+        <meta property="og:image:secure_url" content="{{ $seo['image'] }}">
         <meta data-seo-meta="og:image:alt" property="og:image:alt" content="{{ $seo['image_alt'] }}">
         <meta name="twitter:card" content="summary_large_image">
         <meta data-seo-meta="twitter:title" name="twitter:title" content="{{ $seo['title'] }}">
@@ -95,12 +137,14 @@
         <meta data-seo-meta="twitter:image" name="twitter:image" content="{{ $seo['image'] }}">
         <meta data-seo-meta="twitter:image:alt" name="twitter:image:alt" content="{{ $seo['image_alt'] }}">
 
-        @if (config('seo.google_site_verification'))
-            <meta name="google-site-verification" content="{{ config('seo.google_site_verification') }}">
+        @if ($googleVerification)
+            <meta name="google-site-verification" content="{{ $googleVerification }}">
         @endif
-        @if (config('seo.bing_site_verification'))
-            <meta name="msvalidate.01" content="{{ config('seo.bing_site_verification') }}">
+        @if ($bingVerification)
+            <meta name="msvalidate.01" content="{{ $bingVerification }}">
         @endif
+
+        <script type="application/ld+json">{!! json_encode($globalStructuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
 
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">

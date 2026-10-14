@@ -9,7 +9,7 @@ class SeoController extends Controller
 {
     public function sitemap(): Response
     {
-        $baseUrl = request()->getSchemeAndHttpHost();
+        $baseUrl = rtrim((string) config('app.url'), '/');
         $staticPaths = [
             '/',
             '/interneto-svetaines',
@@ -28,10 +28,11 @@ class SeoController extends Controller
         ];
         $projects = Project::query()
             ->orderBy('id')
-            ->get(['slug', 'updated_at']);
+            ->get(['slug', 'title', 'thumbnail', 'updated_at']);
 
         return response()
             ->view('sitemap', compact('baseUrl', 'staticPaths', 'projects'))
-            ->header('Content-Type', 'application/xml; charset=UTF-8');
+            ->header('Content-Type', 'application/xml; charset=UTF-8')
+            ->header('Cache-Control', 'public, max-age=3600');
     }
 }

@@ -11,5 +11,7 @@ class Setting extends Model
         'site_description',
         'og_image',
         'site_keywords',
+        'google_site_verification',
+        'bing_site_verification',
     ];
 }

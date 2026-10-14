@@ -1,1 +1,0 @@
-import{A as e,B as t,L as n,S as r,_ as i}from"./app-Btssk-Bi.js";import{t as a}from"./PublicLayout-ewA4K6qJ.js";import{a as o,c as s}from"./services-BbsOKLw0.js";var c={__name:`Maintenance`,setup(c){return(c,l)=>(e(),i(a,null,{default:n(()=>[r(s,{config:t(o)},null,8,[`config`])]),_:1}))}};export{c as default};

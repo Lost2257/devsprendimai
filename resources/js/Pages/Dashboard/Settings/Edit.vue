@@ -10,6 +10,8 @@ const form = useForm({
     site_title: props.settings?.site_title || '',
     site_description: props.settings?.site_description || '',
     site_keywords: props.settings?.site_keywords || '',
+    google_site_verification: props.settings?.google_site_verification || '',
+    bing_site_verification: props.settings?.bing_site_verification || '',
     og_image: null
 })
 
@@ -31,6 +33,7 @@ const submit = () => {
 
     <div class="max-w-4xl">
 
+        <span class="eyebrow">Paieškos sistemų valdymas</span>
         <h1
             class="
             text-3xl
@@ -40,6 +43,10 @@ const submit = () => {
         >
             SEO nustatymai
         </h1>
+
+        <p class="intro">Pagrindiniai duomenys, kuriuos Google, Bing ir socialiniai tinklai naudoja jūsų svetainei suprasti ir pateikti.</p>
+
+        <div class="search-tools"><a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Atidaryti Google Search Console ↗</a><a href="/sitemap.xml" target="_blank">Patikrinti sitemap.xml ↗</a></div>
 
         <form
             @submit.prevent="submit"
@@ -62,7 +69,9 @@ const submit = () => {
                 <input
                     v-model="form.site_title"
                     class="input"
+                    maxlength="70"
                 >
+                <small>{{ form.site_title.length }}/70 · rekomenduojama 45–65 ženklai</small>
 
             </div>
 
@@ -76,14 +85,16 @@ const submit = () => {
                     v-model="form.site_description"
                     rows="5"
                     class="input"
+                    maxlength="170"
                 ></textarea>
+                <small>{{ form.site_description.length }}/170 · rekomenduojama 120–160 ženklų</small>
 
             </div>
 
             <div>
 
                 <label class="label">
-                    SEO raktažodžiai
+                    Teminės frazės turinio planavimui
                 </label>
 
                 <textarea
@@ -92,7 +103,21 @@ const submit = () => {
                     class="input"
                     placeholder="interneto svetainių kūrimas, laravel programuotojas, vue.js..."
                 ></textarea>
+                <small>Google nenaudoja „meta keywords“. Šis laukas paliekamas tik jūsų vidiniam turinio planui.</small>
 
+            </div>
+
+            <div class="verification-grid">
+                <div>
+                    <label class="label">Google Search Console kodas</label>
+                    <input v-model="form.google_site_verification" class="input" placeholder="Tik content reikšmė iš meta žymos">
+                    <small>Įklijuokite tik kodą, ne visą &lt;meta&gt; žymą.</small>
+                </div>
+                <div>
+                    <label class="label">Bing Webmaster Tools kodas</label>
+                    <input v-model="form.bing_site_verification" class="input" placeholder="Tik patvirtinimo kodas">
+                    <small>Naudojamas msvalidate.01 meta žymoje.</small>
+                </div>
             </div>
 
             <div>
@@ -110,6 +135,9 @@ const submit = () => {
                     class="input"
                 >
 
+                <img v-if="settings?.og_image" :src="`/storage/${settings.og_image}`" alt="Dabartinis socialinis vaizdas" class="og-preview">
+                <small>Rekomenduojamas formatas 1200 × 630 px, iki 5 MB.</small>
+
             </div>
 
             <button
@@ -123,8 +151,10 @@ const submit = () => {
                 font-semibold
                 "
             >
-                Išsaugoti
+                {{ form.processing ? 'Saugoma…' : 'Išsaugoti SEO' }}
             </button>
+
+            <p v-if="form.hasErrors" class="error">Patikrinkite pažymėtus laukus ir bandykite dar kartą.</p>
 
         </form>
 
@@ -154,4 +184,5 @@ const submit = () => {
 
     color:#94A3B8;
 }
+.eyebrow{color:#22d3ee;font-size:.68rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase}.intro{max-width:680px;margin:-1.25rem 0 1rem;color:#718096;line-height:1.7}.search-tools{display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:2rem}.search-tools a{padding:.65rem .8rem;border:1px solid rgba(34,211,238,.16);border-radius:.65rem;color:#67e8f9;background:rgba(34,211,238,.045);font-size:.68rem;font-weight:800}.verification-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.input+small,.verification-grid small,.og-preview+small{display:block;margin-top:.45rem;color:#64748b;font-size:.65rem;line-height:1.5}.og-preview{width:100%;max-width:420px;aspect-ratio:1200/630;margin-top:1rem;border:1px solid rgba(255,255,255,.09);border-radius:1rem;object-fit:cover}.error{color:#fca5a5;font-size:.72rem}@media(max-width:700px){.verification-grid{grid-template-columns:1fr}}
 </style>

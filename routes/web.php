@@ -8,6 +8,8 @@ use App\Models\Project;
 use App\Models\Visit;
 use Carbon\Carbon;
 use App\Models\Inquiry;
+use App\Models\Setting;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController as PublicProjectController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -58,6 +60,54 @@ Route::middleware([
 
     Route::get('/', function () {
 
+        $monthVisits = Visit::query()
+            ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()]);
+
+        $trafficSources = (clone $monthVisits)
+            ->where('is_entry', true)
+            ->select('source', 'medium', DB::raw('COUNT(*) as visits'), DB::raw('COUNT(DISTINCT session_hash) as visitors'))
+            ->groupBy('source', 'medium')
+            ->orderByDesc('visits')
+            ->limit(8)
+            ->get();
+
+        $topPages = (clone $monthVisits)
+            ->select('url', DB::raw('COUNT(*) as visits'), DB::raw('COUNT(DISTINCT session_hash) as visitors'))
+            ->groupBy('url')
+            ->orderByDesc('visits')
+            ->limit(8)
+            ->get();
+
+        $devices = (clone $monthVisits)
+            ->select('device', DB::raw('COUNT(*) as visits'))
+            ->groupBy('device')
+            ->orderByDesc('visits')
+            ->get();
+
+        $campaigns = (clone $monthVisits)
+            ->whereNotNull('campaign')
+            ->select('campaign', 'source', DB::raw('COUNT(*) as visits'))
+            ->groupBy('campaign', 'source')
+            ->orderByDesc('visits')
+            ->limit(6)
+            ->get();
+
+        $settings = Setting::first();
+        $projectCount = Project::count();
+        $completeProjects = Project::query()
+            ->whereNotNull('description')
+            ->whereNotNull('thumbnail')
+            ->count();
+        $seoChecks = [
+            ['label' => 'SEO pavadinimas', 'ok' => filled($settings?->site_title)],
+            ['label' => 'Meta aprašymas', 'ok' => filled($settings?->site_description)],
+            ['label' => 'Socialinis vaizdas', 'ok' => filled($settings?->og_image)],
+            ['label' => 'Google Search Console', 'ok' => filled($settings?->google_site_verification) || filled(config('seo.google_site_verification'))],
+            ['label' => 'Projektų SEO turinys', 'ok' => $projectCount === 0 || $completeProjects === $projectCount],
+            ['label' => 'Sitemap ir robots.txt', 'ok' => true],
+        ];
+        $seoScore = (int) round(collect($seoChecks)->where('ok', true)->count() / count($seoChecks) * 100);
+
         $visitSeries = collect(range(6, 0))->map(function ($daysAgo) {
             $date = Carbon::today()->subDays($daysAgo);
 
@@ -72,7 +122,7 @@ Route::middleware([
 
                 'users' => User::count(),
 
-                'projects' => Project::count(),
+                'projects' => $projectCount,
 
                 'inquiries' => Inquiry::count(),
                 'new_inquiries' => Inquiry::where('is_read', false)->count(),
@@ -91,6 +141,11 @@ Route::middleware([
                     now()->year
                 )
                 ->count(),
+
+                'unique_visitors' => (clone $monthVisits)
+                    ->whereNotNull('session_hash')
+                    ->distinct('session_hash')
+                    ->count('session_hash'),
             ],
             'recentProjects' => Project::latest()->take(4)->get([
                 'id', 'title', 'slug', 'thumbnail', 'services', 'featured', 'updated_at',
@@ -99,6 +154,14 @@ Route::middleware([
                 'id', 'name', 'company', 'service', 'is_read', 'created_at',
             ]),
             'visitSeries' => $visitSeries,
+            'trafficSources' => $trafficSources,
+            'topPages' => $topPages,
+            'devices' => $devices,
+            'campaigns' => $campaigns,
+            'seoHealth' => [
+                'score' => $seoScore,
+                'checks' => $seoChecks,
+            ],
         ]);
 
     })->name('dashboard');
