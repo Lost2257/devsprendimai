@@ -14,6 +14,7 @@ umask(0077);
 
 require __DIR__.'/../vendor/autoload.php';
 require __DIR__.'/mail-environment.php';
+require __DIR__.'/hostinger-smtp-transport.php';
 
 if (($argv[1] ?? '') !== '--password-stdin') {
     fwrite(STDERR, "Paleiskite: bash deployment/setup-hostinger-mail.sh\n");
@@ -47,12 +48,13 @@ try {
     $updated = hostingerMailEnvironment($original, $password);
 
     $phase = 'authenticate';
-    $transport = new Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport('smtp.hostinger.com', 465, true);
+    $transport = new HostingerSmtpTransport('smtp.hostinger.com', 465, true);
     $transport->getStream()->setTimeout(15);
     $transport->setUsername('info@devsprendimai.lt');
     $transport->setPassword($password);
     $transport->start(); // TLS + AUTH only: no test email or enquiry is sent.
-    if (!array_key_exists('AUTH', $transport->getCapabilities())) {
+    $phase = 'verify_authentication';
+    if (!$transport->supportsAuthentication()) {
         throw new RuntimeException('SMTP server did not offer authentication.');
     }
     $transport->stop();
@@ -79,6 +81,7 @@ try {
     }
     writePrivateMailFile($environment, $updated);
     $changed = true;
+    $phase = 'cache';
     $process = proc_open([PHP_BINARY, 'artisan', 'config:cache', '--no-interaction'], [
         0 => ['file', '/dev/null', 'r'],
         1 => ['file', '/dev/null', 'w'],
@@ -87,6 +90,7 @@ try {
     if (!is_resource($process) || proc_close($process) !== 0) {
         throw new RuntimeException('Configuration cache failed.');
     }
+    $phase = 'verify_cache';
     $config = require $cache;
     $mail = $config['mail'] ?? [];
     $expected = Dotenv\Dotenv::parse($updated);
@@ -106,7 +110,7 @@ try {
     echo "PASTAS PRIJUNGTAS. Saugus SMTP prisijungimas patikrintas.\n";
     echo "Naujos uzklausos bus issaugomos dashboard ir siunciamos el. pastu.\n";
     echo "Bandomasis laiskas dar nesiustas; gavima dezuteje reikia patikrinti atskirai.\n";
-} catch (Throwable) {
+} catch (Throwable $exception) {
     $rolledBack = !$changed;
     if ($changed) {
         try {
@@ -122,8 +126,10 @@ try {
         }
     }
     fwrite(STDERR, $phase === 'authenticate'
-        ? "PASTAS NEPRIJUNGTAS. Patikrinkite dezutes slaptazodi arba SMTP prieinamuma.\n"
+        ? "PASTAS NEPRIJUNGTAS. Nepavyko SMTP prisijungimo patikra.\n"
         : "PASTO NUSTATYMAS NEPAVYKO. Reikia patikrinti serverio konfiguracija.\n");
+    // Stage and exception class are safe; messages/SMTP debug may contain secrets.
+    fwrite(STDERR, 'Diagnostikos kodas: '.$phase.' / '.get_class($exception)."\n");
     fwrite(STDERR, $rolledBack
         ? "Ankstesne svetaines konfiguracija nepakeista arba atkurta.\n"
         : "SVARBU: konfiguracijos atkurti nepavyko; reikia atkurti privacia atsargine kopija.\n");
