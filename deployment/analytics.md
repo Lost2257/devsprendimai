@@ -9,6 +9,12 @@
 - Google Analytics and the existing server-side dashboard statistics are separate data sources. Visitors refusing consent, administrators and ad blockers are not included in GA4.
 - Google Analytics event retention and reporting settings belong to the Google account; the application does not change them. Browser GA cookies are limited to 180 days without renewal on each hit.
 
+## Required Google account setting
+
+In **Admin → Data streams → this web stream → Enhanced measurement (gear) → Page views → Show advanced settings**, turn off **Page changes based on browser history events** and save. Keep the main Page views option enabled. The application records initial and subsequent public page views itself, using the updated Inertia page title.
+
+`send_page_view: false` alone does not disable Enhanced Measurement's separate history listener. If left enabled, Back navigation can produce an extra view with the previous page's title/URL. See [Google's manual page-view documentation](https://developers.google.com/analytics/devguides/collection/ga4/views). This account-level setting cannot be changed by a website deployment.
+
 ## Verification
 
 Run `node --test tests/js/analytics.test.js` and `php artisan test --filter=AnalyticsConfigurationTest`, then `npm run build`.
@@ -20,3 +26,5 @@ On this shared host, copy the built `public/build/assets` to the root `build/ass
 Use `umask 022` for deployment. If a private backup is created with `umask 077`, restore `022` before Git checkout and asset copying. Public build directories need mode `755` and files `644` so the host's static file server can read them.
 
 The optional `tests/browser/analytics.smoke.cjs` runs against `GA_SMOKE_URL` with Playwright. It sends a few real test views and verifies consent gating, page counts, revocation, LT/EN mobile layout and login exclusion.
+
+The smoke test completes independent privacy/layout checks before reporting a failing page-count assertion if the account's automatic history tracking is still enabled. Network checks confirm events were sent, not that Google has processed them into reports; confirm ingestion separately in the account's Realtime report after accepting analytics in a signed-out browser.

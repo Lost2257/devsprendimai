@@ -58,8 +58,16 @@ async function main() {
         assert.equal(serviceView.title, await page.title(), 'SPA view uses updated page title')
         await page.goBack()
         await page.waitForTimeout(4000)
-        assert.equal(hits.filter((hit) => hit.event === 'page_view').length, before + 2, 'Back navigation counted once')
-        console.log('PASS consent, correct stream, cookie lifetime and single SPA/back page views')
+        const manualViews = await page.evaluate(() => window.dataLayer
+            .filter((entry) => entry[0] === 'event' && entry[1] === 'page_view')
+            .map((entry) => entry[2]))
+        assert.equal(manualViews.length, before + 2, 'Application sends one view per navigation, including Back')
+        const backCount = hits.filter((hit) => hit.event === 'page_view').length
+        if (backCount !== before + 2) {
+            console.warn('GA STREAM SETTING REQUIRED: disable Page changes based on browser history events')
+            console.warn('BACK_HITS', JSON.stringify(hits))
+        }
+        console.log('PASS consent, correct stream, cookie lifetime and application SPA/back page views')
 
         await page.getByRole('button', { name: 'Slapukų nustatymai', exact: true }).click()
         await Promise.all([
@@ -99,6 +107,9 @@ async function main() {
         console.log('PASS login excluded; PAGE_ERRORS', JSON.stringify(errors))
         assert.equal(errors.length, 0)
         console.log('SCREENSHOTS', output)
+        // Finish the independent privacy/layout checks even when GA's remote
+        // Enhanced Measurement setting still duplicates browser-history views.
+        assert.equal(backCount, before + 2, 'GA stream must not add an automatic Back view')
     } finally {
         await browser.close()
     }
