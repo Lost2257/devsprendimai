@@ -17,7 +17,7 @@ function hostingerMailEnvironment(string $original, #[SensitiveParameter] string
     $values = [
         'MAIL_MAILER' => 'smtp',
         'MAIL_SCHEME' => 'smtps',
-        'MAIL_URL' => '',
+        'MAIL_URL' => 'null',
         'MAIL_HOST' => 'smtp.hostinger.com',
         'MAIL_PORT' => '465',
         'MAIL_USERNAME' => 'info@devsprendimai.lt',

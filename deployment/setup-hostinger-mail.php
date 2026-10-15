@@ -100,12 +100,19 @@ try {
         || (int) ($mail['mailers']['smtp']['port'] ?? 0) !== 465
         || ($mail['mailers']['smtp']['username'] ?? '') !== 'info@devsprendimai.lt'
         || ($mail['mailers']['smtp']['password'] ?? '') !== substr($expected['MAIL_PASSWORD'], 1, -1)
-        || !empty($mail['mailers']['smtp']['url'])
+        || ($mail['mailers']['smtp']['url'] ?? null) !== null
         || ($mail['from']['address'] ?? '') !== 'info@devsprendimai.lt') {
         throw new RuntimeException('Active mail configuration could not be verified.');
     }
     if (!chmod($cache, 0600)) {
         throw new RuntimeException('Could not protect configuration cache.');
+    }
+    $phase = 'verify_runtime_transport';
+    $application = require $root.'/bootstrap/app.php';
+    $application->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+    $mailer = $application->make('mail.manager')->mailer();
+    if (!$mailer->getSymfonyTransport() instanceof Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport) {
+        throw new RuntimeException('Application SMTP transport could not be constructed.');
     }
     echo "PASTAS PRIJUNGTAS. Saugus SMTP prisijungimas patikrintas.\n";
     echo "Naujos uzklausos bus issaugomos dashboard ir siunciamos el. pastu.\n";

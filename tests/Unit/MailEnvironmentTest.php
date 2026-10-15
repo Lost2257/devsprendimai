@@ -25,7 +25,7 @@ class MailEnvironmentTest extends TestCase
             $this->assertSame('original', $parsed['APP_KEY']);
             $this->assertSame('smtp', $parsed['MAIL_MAILER']);
             $this->assertSame('smtps', $parsed['MAIL_SCHEME']);
-            $this->assertSame('', $parsed['MAIL_URL']);
+            $this->assertSame('null', $parsed['MAIL_URL']);
             $this->assertSame('465', $parsed['MAIL_PORT']);
             $this->assertSame('info@devsprendimai.lt', $parsed['MAIL_USERNAME']);
             $this->assertStringContainsString("# Keep this comment\r\n", $result);
