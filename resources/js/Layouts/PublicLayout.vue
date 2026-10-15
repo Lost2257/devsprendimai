@@ -3,6 +3,7 @@ import Header from '@/Components/Header.vue'
 import Footer from '@/Components/Footer.vue'
 import MotionLayer from '@/Components/MotionLayer.vue'
 import MobileActionBar from '@/Components/MobileActionBar.vue'
+import CookieConsent from '@/Components/CookieConsent.vue'
 import { useLocale } from '@/composables/useLocale'
 
 defineProps({ immersive: { type: Boolean, default: false } })
@@ -21,6 +22,7 @@ const { isEnglish } = useLocale()
             <slot />
         </main>
         <Footer v-if="!immersive" />
+        <CookieConsent :immersive="immersive" />
     </div>
 </template>
 

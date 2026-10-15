@@ -24,7 +24,7 @@
                 'aplikaciju-kurimas' => ['Aplikacijų kūrimas | DevSprendimai', 'Individualių web ir mobiliųjų aplikacijų kūrimas nuo MVP iki pilnai veikiančios verslo platformos.'],
                 'svetainiu-prieziura' => ['Svetainių priežiūra | DevSprendimai', 'Svetainių atnaujinimai, saugumas, atsarginės kopijos ir greita techninė pagalba.'],
                 'privatumo-politika' => ['Privatumo politika | DevSprendimai', 'Informacija apie tai, kaip DevSprendimai renka, naudoja ir saugo asmens duomenis.'],
-                'slapuku-politika' => ['Slapukų politika | DevSprendimai', 'Informacija apie devsprendimai.lt naudojamus būtinuosius slapukus.'],
+                'slapuku-politika' => ['Slapukų politika | DevSprendimai', 'Būtinieji slapukai, pasirenkama Google Analytics analitika ir jūsų sutikimo valdymas.'],
                 'paslaugu-teikimo-salygos' => ['Paslaugų teikimo sąlygos | DevSprendimai', 'Bendros DevSprendimai skaitmeninių paslaugų teikimo sąlygos.'],
             ];
             $currentPath = request()->path();
@@ -37,7 +37,7 @@
                 'aplikaciju-kurimas' => ['Application development | DevSprendimai', 'Custom web and mobile applications from MVP to a complete business platform.'],
                 'svetainiu-prieziura' => ['Website maintenance | DevSprendimai', 'Updates, security, backups and responsive technical support.'],
                 'privatumo-politika' => ['Privacy Policy | DevSprendimai', 'How DevSprendimai collects, uses and protects personal data.'],
-                'slapuku-politika' => ['Cookie Policy | DevSprendimai', 'Information about essential cookies used by devsprendimai.lt.'],
+                'slapuku-politika' => ['Cookie Policy | DevSprendimai', 'Essential cookies, optional Google Analytics and your consent choices.'],
                 'paslaugu-teikimo-salygos' => ['Terms of Service | DevSprendimai', 'General terms for DevSprendimai digital services.'],
             ];
             $activeServiceSeo = $isEnglish ? $serviceSeoEn : $serviceSeo;

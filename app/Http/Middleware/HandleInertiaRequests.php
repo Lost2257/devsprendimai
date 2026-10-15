@@ -45,6 +45,15 @@ class HandleInertiaRequests extends Middleware
             'appUrl' => $request->getSchemeAndHttpHost(),
             'locale' => app()->getLocale(),
 
+            // Never enable third-party analytics for signed-in users or private pages.
+            'analytics' => [
+                'measurementId' => config('app.env') === 'production'
+                    && !$request->user()
+                    && !$request->is('dashboard*', 'login', 'register', 'forgot-password', 'reset-password*', 'verify-email*', 'confirm-password', 'profile*')
+                        ? config('services.google_analytics.measurement_id')
+                        : null,
+            ],
+
             'newInquiries' => fn () => $request->user()
                 ? Inquiry::where('is_read', false)->count()
                 : 0,

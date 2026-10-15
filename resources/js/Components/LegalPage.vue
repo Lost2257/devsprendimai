@@ -1,8 +1,9 @@
 <script setup>
 import { computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 import SeoHead from '@/Components/SeoHead.vue'
 import { useLocale } from '@/composables/useLocale'
+import { openConsentSettings } from '@/lib/analytics'
 
 const props = defineProps({
     type: {
@@ -13,7 +14,8 @@ const props = defineProps({
 })
 
 const { isEnglish, localize } = useLocale()
-const updated = '2026-08-10'
+const page = usePage()
+const updated = computed(() => props.type === 'terms' ? '2026-08-10' : '2026-10-15')
 
 const documents = {
     lt: {
@@ -30,25 +32,28 @@ const documents = {
                 { title: '4. Duomenų gavėjai', paragraphs: ['Duomenis gali tvarkyti tik paslaugoms būtini partneriai: Hostinger (svetainės ir el. pašto infrastruktūra), techninės priežiūros ar apskaitos paslaugų teikėjai. Jie duomenis tvarko pagal mano nurodymus ir taikomas apsaugos priemones. Duomenys neparduodami.', 'Duomenys gali būti pateikti valstybės institucijoms, kai tai privaloma pagal teisės aktus. Perdavimas už Europos ekonominės erdvės ribų galimas tik taikant BDAR numatytą teisėtą perdavimo pagrindą ir apsaugos priemones.'] },
                 { title: '5. Jūsų teisės', paragraphs: ['Turite teisę prašyti susipažinti su savo duomenimis, juos ištaisyti, ištrinti ar apriboti jų tvarkymą, nesutikti su tvarkymu, pagrįstu teisėtu interesu, ir, kai taikoma, gauti duomenis perkeliamu formatu. Prašymą pateikite el. paštu info@devsprendimai.lt. Prieš įvykdant prašymą gali būti paprašyta patvirtinti tapatybę.'] },
                 { title: '6. Skundai ir saugumas', paragraphs: ['Jeigu manote, kad duomenys tvarkomi netinkamai, pirmiausia kviečiu susisiekti tiesiogiai. Taip pat turite teisę pateikti skundą Valstybinei duomenų apsaugos inspekcijai.', 'Taikomos prieigos kontrolės, saugaus ryšio, atsarginių kopijų ir kitos pagrįstos techninės bei organizacinės priemonės. Vis dėlto nė vienas perdavimo ar saugojimo būdas negali užtikrinti absoliutaus saugumo.'], links: [{ label: 'Valstybinė duomenų apsaugos inspekcija', href: 'https://vdai.lrv.lt/' }] },
-                { title: '7. Politikos pakeitimai', paragraphs: ['Politika gali būti atnaujinama pasikeitus svetainei, paslaugoms ar teisės aktams. Aktualios redakcijos data visada skelbiama šio puslapio viršuje.'] },
+                { title: '7. „Google Analytics“', paragraphs: ['Tik jums sutikus naudojama „Google Analytics 4“ lankomumo analitika. Ji apdoroja puslapių peržiūras, apsilankymų šaltinius, naršyklės ir įrenginio informaciją bei slapukų identifikatorius. Paslaugos teikėjas – Google Ireland Limited; tvarkant duomenis gali dalyvauti Google LLC JAV ir kiti Google paslaugų teikėjai. Apie Google duomenų tvarkymą ir tarptautinio perdavimo priemones skaitykite žemiau pateiktose nuorodose.', 'Teisinis pagrindas – jūsų sutikimas (BDAR 6 str. 1 d. a p.). Google žyma iki sutikimo nekraunama. Reklamos personalizavimas ir Google Signals svetainės integracijoje išjungti. Užklausų formų tekstų, el. pašto adresų ar telefono numerių į analitikos įvykius nepridedame.', 'Sutikimą bet kada galite atšaukti skiltyje „Slapukų nustatymai“. Atšaukus sustabdomas tolesnis rinkimas ir ištrinami šios svetainės Google Analytics slapukai; tai nepanaikina ankstesnio teisėto tvarkymo. Sutikimo pasirinkimas ir analitikos slapukai galioja iki 180 dienų. Google paskyroje surinktų įvykių saugojimui taikomi tos paskyros saugojimo nustatymai; dėl jų ar duomenų ištrynimo kreipkitės info@devsprendimai.lt.'], links: [{ label: 'Kaip Google naudoja partnerių svetainių duomenis', href: 'https://policies.google.com/technologies/partner-sites' }, { label: 'Google duomenų perdavimo priemonės', href: 'https://policies.google.com/privacy/frameworks' }] },
+                { title: '8. Politikos pakeitimai', paragraphs: ['Politika gali būti atnaujinama pasikeitus svetainei, paslaugoms ar teisės aktams. Aktualios redakcijos data visada skelbiama šio puslapio viršuje.'] },
             ],
         },
         cookies: {
             eyebrow: 'Teisinė informacija · 02',
             title: 'Slapukų politika',
-            description: 'Informacija apie devsprendimai.lt naudojamus būtinuosius slapukus.',
-            intro: 'Svetainė nenaudoja reklamos, „Google Analytics“, „Meta Pixel“ ar kitų trečiųjų šalių sekimo slapukų. Bendra lankomumo statistika renkama serveryje, nenaudojant papildomo analitinio slapuko; naršyklėje naudojami tik saugiam svetainės ir formų veikimui būtini slapukai.',
-            highlights: ['Tik būtinieji', 'Jokios reklaminės profiliacijos', 'Išankstinis sutikimas nebūtinas'],
+            description: 'Būtinieji slapukai, pasirenkama Google Analytics analitika ir jūsų sutikimo valdymas.',
+            intro: 'Svetainėje naudojami būtini sesijos ir saugumo slapukai. Tik jums sutikus įjungiama „Google Analytics 4“ lankomumo analitika. Galite rinktis tik būtinuosius slapukus arba leisti analitiką ir bet kada pakeisti sprendimą.',
+            highlights: ['Analitika tik sutikus', 'Lygiavertis atsisakymas', 'Keičiamas pasirinkimas'],
             sections: [
                 { title: '1. Kas yra slapukai', paragraphs: ['Slapukai – tai nedideli tekstiniai failai, kuriuos svetainė išsaugo jūsų įrenginyje. Jie padeda užtikrinti saugią sesiją, apsaugoti formas ir palaikyti pagrindines svetainės funkcijas.'] },
                 { title: '2. Naudojami slapukai', table: [
                     ['Slapukas', 'Paskirtis', 'Trukmė'],
                     ['laravel_session', 'Būtinas sesijos veikimui ir saugumui.', 'Iki 120 min. neveiklos'],
                     ['XSRF-TOKEN', 'Apsaugo formas nuo neteisėtų užklausų (CSRF).', 'Sesijos metu'],
+                    ['_ga, _ga_LYW20LSJG9', 'Google Analytics lankytojo ir sesijos identifikatoriai. Tik sutikus.', 'Iki 180 dienų'],
+                    ['devsprendimai.cookie-consent.v1 (localStorage)', 'Prisimena jūsų slapukų pasirinkimą šioje naršyklėje.', '180 dienų'],
                 ] },
-                { title: '3. Teisinis pagrindas', paragraphs: ['Būtinieji slapukai reikalingi jūsų aiškiai prašomai paslaugai suteikti ir svetainės saugumui užtikrinti, todėl išankstinis sutikimas jiems nereikalingas. Apie jų naudojimą vis tiek pateikiama ši informacija.'] },
+                { title: '3. Sutikimas ir jo atšaukimas', paragraphs: ['Būtinieji slapukai užtikrina svetainės veikimą ir saugumą. Analitiniai slapukai yra pasirenkami: kol nepaspaudžiate „Leisti analitiką“, Google žyma nekraunama ir Google analitikos užklausos nesiunčiamos. „Tik būtinieji“ išsaugo atsisakymą.', 'Savo sprendimą galite pakeisti paspaudę „Slapukų nustatymai“ puslapio apačioje arba „Slapukai“ pilno ekrano projekto peržiūroje. Atšaukus sutikimą ištrinami Google Analytics slapukai ir puslapis perkraunamas, kad analitika būtų sustabdyta. Pasibaigus 180 dienų pasirinkimo galiojimui paprašoma pasirinkti iš naujo.'] },
                 { title: '4. Naršyklės nustatymai', paragraphs: ['Slapukus galite ištrinti arba blokuoti naršyklės nustatymuose. Užblokavus būtinuosius slapukus kontaktinė forma, prisijungimas ar kitos apsaugotos funkcijos gali neveikti tinkamai.'] },
-                { title: '5. Vidinė statistika ir būsimos integracijos', paragraphs: ['Puslapių peržiūros ir srauto šaltiniai agreguojami serveryje be „Google Analytics“ ar kito papildomo analitinio slapuko. Jei ateityje būtų įdiegti nebūtinieji analitiniai ar rinkodaros slapukai, politika būtų atnaujinta ir prieš jų aktyvavimą būtų parodytas lygiavertis sutikimo bei atsisakymo pasirinkimas.'], links: [{ label: 'VDAI informacija apie slapukus', href: 'https://vdai.lrv.lt/lt/naujienos/slapuku-naudojimo-interneto-svetainese-apibendrinimas/' }] },
+                { title: '5. Analitika ir vidinė statistika', paragraphs: ['Google Analytics padeda suprasti, kurie puslapiai lankomi ir iš kur atvyksta lankytojai. Reklaminiai slapukai, Google Signals ir reklamos personalizavimas šioje integracijoje neįjungiami. Paslaugą teikia Google Ireland Limited; daugiau apie duomenų tvarkymą pateikta Privatumo politikoje.', 'Atskirai serveryje kaupiama bendra puslapių ir srauto šaltinių statistika be papildomų naršyklės slapukų. Šie vidaus statistikos įrašai saugomi iki 90 dienų. Google Analytics atsisakymas nekeičia šio serverio žurnalo veikimo.'], links: [{ label: 'Google duomenų naudojimas', href: 'https://policies.google.com/technologies/partner-sites' }] },
                 { title: '6. Kontaktai', paragraphs: ['Klausimus apie slapukus siųskite adresu info@devsprendimai.lt. Duomenų valdytojo rekvizitai pateikti Privatumo politikoje.'] },
             ],
         },
@@ -84,18 +89,19 @@ const documents = {
                 { title: '4. Recipients and transfers', paragraphs: ['Data may be processed by providers necessary for the service, including Hostinger (website and email infrastructure), technical maintenance and accounting providers. They process data under appropriate obligations. Personal data are not sold.', 'Data may be disclosed to public authorities where legally required. Transfers outside the EEA take place only with a lawful GDPR transfer mechanism and appropriate safeguards.'] },
                 { title: '5. Your rights', paragraphs: ['You may request access, correction, deletion or restriction, object to processing based on legitimate interests and, where applicable, request data portability. Contact info@devsprendimai.lt. Identity verification may be required before fulfilling a request.'] },
                 { title: '6. Complaints and security', paragraphs: ['If you believe your data are processed improperly, please contact me first. You may also lodge a complaint with the Lithuanian State Data Protection Inspectorate.', 'Reasonable access controls, secure connections, backups and organisational safeguards are used, although no transmission or storage method can guarantee absolute security.'], links: [{ label: 'Lithuanian State Data Protection Inspectorate', href: 'https://vdai.lrv.lt/en/' }] },
-                { title: '7. Changes', paragraphs: ['This policy may be updated when the website, services or law changes. The current revision date is always shown at the top of this page.'] },
+                { title: '7. Google Analytics', paragraphs: ['Google Analytics 4 is enabled only with your consent. It processes page views, traffic sources, browser and device information, and cookie identifiers. The provider is Google Ireland Limited; processing may involve Google LLC in the US and other Google providers. Details of Google data processing and transfer safeguards are linked below.', 'The legal basis is your consent (Article 6(1)(a) GDPR). The Google tag is not loaded before consent. Advertising personalisation and Google Signals are disabled in this integration. We do not add enquiry text, email addresses or phone numbers to analytics events.', 'You can withdraw consent through Cookie settings at any time. Withdrawal stops further collection and deletes this site’s Google Analytics cookies, without affecting earlier lawful processing. Your choice and analytics cookies last up to 180 days. Collected event retention is governed by the Analytics account settings; contact info@devsprendimai.lt for details or deletion requests.'], links: [{ label: 'How Google uses data from partner sites', href: 'https://policies.google.com/technologies/partner-sites' }, { label: 'Google data transfer safeguards', href: 'https://policies.google.com/privacy/frameworks' }] },
+                { title: '8. Changes', paragraphs: ['This policy may be updated when the website, services or law changes. The current revision date is always shown at the top of this page.'] },
             ],
         },
         cookies: {
-            eyebrow: 'Legal information · 02', title: 'Cookie Policy', description: 'Information about essential cookies used by devsprendimai.lt.',
-            intro: 'The website does not use advertising, Google Analytics, Meta Pixel or other third-party tracking cookies. Aggregate traffic statistics are collected server-side without an additional analytics cookie; only cookies required for secure site and form operation are used.', highlights: ['Essential only', 'No advertising profiles', 'No prior consent required'],
+            eyebrow: 'Legal information · 02', title: 'Cookie Policy', description: 'Essential cookies, optional Google Analytics and your consent choices.',
+            intro: 'The site uses essential session and security cookies. Google Analytics 4 is enabled only with your permission. You can choose essential cookies only or allow analytics, and change your decision at any time.', highlights: ['Analytics by consent', 'Equally easy refusal', 'Change at any time'],
             sections: [
                 { title: '1. What cookies are', paragraphs: ['Cookies are small text files saved on your device. They support a secure session, protect forms and enable core website functionality.'] },
-                { title: '2. Cookies used', table: [['Cookie', 'Purpose', 'Duration'], ['laravel_session', 'Required for session operation and security.', 'Up to 120 min. of inactivity'], ['XSRF-TOKEN', 'Protects forms against unauthorised requests (CSRF).', 'During the session']] },
-                { title: '3. Legal basis', paragraphs: ['Essential cookies are necessary to provide a service explicitly requested by you and to secure the website. Prior consent is therefore not required, but this information is provided for transparency.'] },
+                { title: '2. Cookies used', table: [['Cookie', 'Purpose', 'Duration'], ['laravel_session', 'Required for session operation and security.', 'Up to 120 min. of inactivity'], ['XSRF-TOKEN', 'Protects forms against unauthorised requests (CSRF).', 'During the session'], ['_ga, _ga_LYW20LSJG9', 'Google Analytics visitor and session identifiers. Only with consent.', 'Up to 180 days'], ['devsprendimai.cookie-consent.v1 (localStorage)', 'Remembers your cookie choice in this browser.', '180 days']] },
+                { title: '3. Consent and withdrawal', paragraphs: ['Essential cookies keep the site secure and functional. Analytics is optional: no Google tag is loaded or analytics requests sent until you choose Allow analytics. Essential only saves your refusal.', 'Change your decision through Cookie settings in the footer or Cookies in the full-screen project viewer. Withdrawing consent deletes Google Analytics cookies and reloads the page to stop analytics. After 180 days, you are asked to choose again.'] },
                 { title: '4. Browser settings', paragraphs: ['You can delete or block cookies in your browser. Blocking essential cookies may prevent contact forms, sign-in or other protected functions from working correctly.'] },
-                { title: '5. Internal statistics and future integrations', paragraphs: ['Page views and traffic sources are aggregated on the server without Google Analytics or an additional analytics cookie. If non-essential analytics or marketing cookies are introduced in the future, this policy will be updated and an equally accessible accept or refuse choice will be shown before activation.'], links: [{ label: 'Lithuanian DPA guidance on cookies', href: 'https://vdai.lrv.lt/lt/naujienos/slapuku-naudojimo-interneto-svetainese-apibendrinimas/' }] },
+                { title: '5. Analytics and internal statistics', paragraphs: ['Google Analytics helps us understand which pages are visited and where visitors come from. Advertising cookies, Google Signals and advertising personalisation are not enabled by this integration. Google Ireland Limited provides the service; see the Privacy Policy for data-processing details.', 'Separately, aggregate page views and traffic sources are logged on the server without extra browser cookies. These internal records are retained for up to 90 days. Refusing Google Analytics does not disable this server-side log.'], links: [{ label: 'Google data usage', href: 'https://policies.google.com/technologies/partner-sites' }] },
                 { title: '6. Contact', paragraphs: ['Questions about cookies may be sent to info@devsprendimai.lt. Full controller details are available in the Privacy Policy.'] },
             ],
         },
@@ -141,6 +147,7 @@ const navItems = computed(() => [
                 <span>{{ document.eyebrow }}</span>
                 <h1>{{ document.title }}</h1>
                 <p>{{ document.intro }}</p>
+                <button v-if="type === 'cookies' && page.props.analytics?.measurementId" type="button" class="legal-consent-button" @click="openConsentSettings">{{ isEnglish ? 'Change cookie settings' : 'Keisti slapukų nustatymus' }}</button>
                 <div class="legal-meta">
                     <span>{{ isEnglish ? 'Effective' : 'Galioja nuo' }} · {{ updated }}</span>
                     <i></i>
@@ -182,6 +189,8 @@ const navItems = computed(() => [
 </template>
 
 <style scoped>
+.legal-consent-button { margin-top:1.2rem; min-height:44px; padding:.75rem 1rem; border:1px solid #285361; border-radius:.75rem; color:#8beaf7; background:#0b1421; }
+.legal-consent-button:focus-visible { outline:2px solid #67e8f9; outline-offset:4px; }
 .legal-page { position:relative; min-height:100vh; overflow:hidden; padding:8rem 0 7rem; }
 .legal-horizon { position:absolute; inset:0 0 auto; height:44rem; opacity:.45; background:radial-gradient(circle at 75% 18%,rgba(34,211,238,.15),transparent 30%),linear-gradient(rgba(34,211,238,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.055) 1px,transparent 1px); background-size:auto,52px 52px,52px 52px; mask-image:linear-gradient(to bottom,black,transparent); pointer-events:none; }
 .legal-nav { position:relative; z-index:2; display:flex; width:max-content; max-width:100%; padding:.35rem; overflow-x:auto; border:1px solid rgba(255,255,255,.09); border-radius:999px; background:rgba(8,14,24,.7); backdrop-filter:blur(16px); }

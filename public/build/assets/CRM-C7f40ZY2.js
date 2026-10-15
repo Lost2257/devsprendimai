@@ -1,1 +1,0 @@
-import{A as e,B as t,L as n,S as r,_ as i}from"./app-mlNOc3Yo.js";import{t as a}from"./PublicLayout-C2iFwg-s.js";import{c as o,r as s}from"./services-Br44KYOI.js";var c={__name:`CRM`,setup(c){return(c,l)=>(e(),i(a,null,{default:n(()=>[r(o,{config:t(s)},null,8,[`config`])]),_:1}))}};export{c as default};

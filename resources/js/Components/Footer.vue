@@ -1,9 +1,11 @@
 <script setup>
 import { computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
+import { openConsentSettings } from '@/lib/analytics'
 import { useLocale } from '@/composables/useLocale'
 
 const year = new Date().getFullYear()
+const page = usePage()
 
 const { isEnglish, localize } = useLocale()
 const services = computed(() => (isEnglish.value ? [
@@ -53,6 +55,7 @@ const contactHref = computed(() => `${localize('/')}#contact`)
                 <div class="footer-column">
                     <span>{{ isEnglish ? 'Legal' : 'Teisinė informacija' }}</span>
                     <Link v-for="item in legalLinks" :key="item[1]" :href="item[1]" :prefetch="['hover', 'click']" cache-for="30s" view-transition>{{ item[0] }}</Link>
+                    <button v-if="page.props.analytics?.measurementId" type="button" class="cookie-settings" @click="openConsentSettings">{{ isEnglish ? 'Cookie settings' : 'Slapukų nustatymai' }}</button>
                 </div>
             </div>
 
@@ -76,6 +79,9 @@ const contactHref = computed(() => `${localize('/')}#contact`)
 .footer-column > span { margin-bottom: .45rem; color: #55647a; font-size: .7rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
 .footer-column a { color: #aeb9c9; transition: color .2s ease, transform .2s ease; }
 .footer-column a:hover { color: #67e8f9; transform: translateX(3px); }
+.cookie-settings { padding:.5rem 0; min-height:44px; color:#aeb9c9; text-align:left; }
+.cookie-settings:hover { color:#67e8f9; }
+.cookie-settings:focus-visible { outline:2px solid #67e8f9; outline-offset:4px; }
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.07); color: #56657a; font-size: .75rem; }
 .footer-bottom > div { display:grid; gap:.35rem; }
 .footer-bottom small { color:#46556b; font-size:.66rem; line-height:1.55; }
