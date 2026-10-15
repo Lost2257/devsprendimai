@@ -18,6 +18,7 @@ export function createAnalytics(win, doc) {
     let loadedId = null
     let active = false
     let lastPage = null
+    let pageTitle = ''
     let choice = readChoice()
 
     function readChoice() {
@@ -108,7 +109,7 @@ export function createAnalytics(win, doc) {
         if (!location || location === lastPage) return
         const fields = {
             page_location: location,
-            page_title: doc.title,
+            page_title: pageTitle || doc.title,
             page_referrer: lastPage || (doc.referrer ? safeUrl(doc.referrer) : ''),
         }
         win.gtag('set', fields)
@@ -116,8 +117,9 @@ export function createAnalytics(win, doc) {
         lastPage = location
     }
 
-    function configure(id) {
+    function configure(id, title = '') {
         measurementId = /^G-[A-Z0-9]+$/.test(id || '') ? id : null
+        pageTitle = title
         if (getConsent() !== true) clearAnalyticsCookies()
         activate()
         trackPage()

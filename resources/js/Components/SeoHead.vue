@@ -1,6 +1,7 @@
 <script setup>
-import { computed, onBeforeUnmount, watchEffect } from 'vue'
+import { computed, onBeforeUnmount, onMounted, watch, watchEffect } from 'vue'
 import { Head, usePage } from '@inertiajs/vue3'
+import { analytics } from '@/lib/analytics'
 
 const props = defineProps({
     title: { type: String, required: true },
@@ -27,6 +28,15 @@ const jsonLd = computed(() => props.structuredData.length
     ? JSON.stringify({ '@context': 'https://schema.org', '@graph': props.structuredData }).replace(/</g, '\\u003c')
     : '')
 const structuredDataId = 'devsprendimai-structured-data'
+let mounted = false
+function recordPageView() {
+    if (mounted) analytics?.configure(page.props.analytics?.measurementId, props.title)
+}
+onMounted(() => {
+    mounted = true
+    recordPageView()
+})
+watch(() => [page.url, props.title, page.props.analytics?.measurementId], recordPageView, { flush: 'post' })
 
 watchEffect(() => {
     if (typeof document === 'undefined') return
@@ -74,6 +84,7 @@ watchEffect(() => {
 })
 
 onBeforeUnmount(() => {
+    mounted = false
     if (typeof document !== 'undefined') document.getElementById(structuredDataId)?.remove()
 })
 </script>

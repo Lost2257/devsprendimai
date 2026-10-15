@@ -123,8 +123,8 @@ test('page views use the new title, preserve attribution and redact unrelated qu
     b.doc.referrer = 'https://google.com/search?q=private'
     b.analytics.configure(id)
     b.win.location.href = 'https://devsprendimai.lt/interneto-svetaines'
-    b.doc.title = 'Interneto svetainės'
-    b.analytics.configure(id)
+    b.doc.title = 'Old title pending Inertia Head update'
+    b.analytics.configure(id, 'Interneto svetainės')
     b.analytics.configure(id)
     const views = b.commands().filter(([type, name]) => type === 'event' && name === 'page_view')
     assert.equal(views.length, 2)
