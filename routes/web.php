@@ -96,17 +96,31 @@ Route::middleware([
         $projectCount = Project::count();
         $completeProjects = Project::query()
             ->whereNotNull('description')
+            ->whereRaw('TRIM(description) <> ?', [''])
             ->whereNotNull('thumbnail')
+            ->where('thumbnail', '!=', '')
             ->count();
+        $homeMetadata = app(\App\Support\PageSeo::class)->forPage(
+            \Illuminate\Http\Request::create(rtrim(config('app.url'), '/').'/'),
+            ['props' => []],
+        )['seo'];
+        $socialImageExists = filled($settings?->og_image)
+            ? \Illuminate\Support\Facades\Storage::disk('public')->exists($settings->og_image)
+            : is_file(public_path('og.png'));
+        $robotsFile = public_path('robots.txt');
+        $hasVerificationTag = filled($settings?->google_site_verification) || filled(config('seo.google_site_verification'));
         $seoChecks = [
-            ['label' => 'SEO pavadinimas', 'ok' => filled($settings?->site_title)],
-            ['label' => 'Meta aprašymas', 'ok' => filled($settings?->site_description)],
-            ['label' => 'Socialinis vaizdas', 'ok' => filled($settings?->og_image)],
-            ['label' => 'Google Search Console', 'ok' => filled($settings?->google_site_verification) || filled(config('seo.google_site_verification'))],
-            ['label' => 'Projektų SEO turinys', 'ok' => $projectCount === 0 || $completeProjects === $projectCount],
-            ['label' => 'Sitemap ir robots.txt', 'ok' => true],
+            ['label' => 'Pradžios SEO pavadinimas', 'ok' => filled($homeMetadata['title']), 'detail' => filled($settings?->site_title) ? 'Naudojamas jūsų nustatytas tekstas.' : 'Naudojamas paruoštas paslaugų pavadinimas.'],
+            ['label' => 'Pradžios meta aprašymas', 'ok' => filled($homeMetadata['description']), 'detail' => filled($settings?->site_description) ? 'Naudojamas jūsų nustatytas aprašymas.' : 'Paruoštas aprašymas galioja ir neužpildžius nustatymų.'],
+            ['label' => 'Socialinio vaizdo failas', 'ok' => $socialImageExists],
+            ['label' => 'Indeksavimas leidžiamas', 'ok' => (bool) config('seo.indexable'), 'detail' => 'Svetainės konfigūracija, ne Google indeksavimo patvirtinimas.'],
+            ['label' => 'Pradinis HTML turinys', 'ok' => is_file(resource_path('data/seo-content.json')) && view()->exists('seo-content'), 'detail' => 'Paslaugų, projektų ir politikų turinys pateikiamas dar prieš JavaScript.'],
+            ['label' => 'Projektų aprašymai ir vaizdų nuorodos', 'ok' => $projectCount > 0 && $completeProjects === $projectCount, 'detail' => $completeProjects.' iš '.$projectCount.' projektų užpildyta.'],
+            ['label' => 'Sitemap ir robots konfigūracija', 'ok' => Route::has('sitemap') && is_file($robotsFile) && str_contains(file_get_contents($robotsFile), 'Sitemap: '.rtrim(config('app.url'), '/').'/sitemap.xml')],
+            ['label' => 'Search Console HTML žyma', 'ok' => $hasVerificationTag, 'informational' => true, 'detail' => $hasVerificationTag ? 'Žyma pridėta. Patvirtinimo būseną tikrinkite Google paskyroje.' : 'Nepridėta. Jei domenas patvirtintas per DNS, jos nereikia; paskyros būsena čia netikrinama.'],
         ];
-        $seoScore = (int) round(collect($seoChecks)->where('ok', true)->count() / count($seoChecks) * 100);
+        $readinessChecks = collect($seoChecks)->reject(fn ($check) => $check['informational'] ?? false);
+        $seoScore = (int) round($readinessChecks->where('ok', true)->count() / max($readinessChecks->count(), 1) * 100);
 
         $visitSeries = collect(range(6, 0))->map(function ($daysAgo) {
             $date = Carbon::today()->subDays($daysAgo);
@@ -191,7 +205,7 @@ Route::middleware([
     Route::get('/users/create', [UserController::class, 'create']);
     Route::post('/users', [UserController::class, 'store']);
 
-    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::get('/users/{user}', [UserController::class, 'show'])->middleware('password.confirm');
     Route::get('/users/{user}/edit', [UserController::class, 'edit']);
 
     Route::put('/users/{user}', [UserController::class, 'update']);

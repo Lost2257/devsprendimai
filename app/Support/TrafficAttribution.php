@@ -10,10 +10,13 @@ class TrafficAttribution
     public static function from(Request $request): array
     {
         $referrer = trim((string) $request->headers->get('referer'));
-        $referrerHost = strtolower((string) parse_url($referrer, PHP_URL_HOST));
+        $scheme = strtolower((string) parse_url($referrer, PHP_URL_SCHEME));
+        $referrerHost = in_array($scheme, ['http', 'https'], true)
+            ? strtolower((string) parse_url($referrer, PHP_URL_HOST)) : '';
+        $referrerHost = Str::limit($referrerHost, 255, '');
         $siteHost = strtolower($request->getHost());
-        $utmSource = trim((string) $request->query('utm_source'));
-        $utmMedium = trim((string) $request->query('utm_medium'));
+        $utmSource = self::queryValue($request, 'utm_source') ?? '';
+        $utmMedium = self::queryValue($request, 'utm_medium') ?? '';
 
         if ($utmSource !== '') {
             $source = Str::limit($utmSource, 100, '');
@@ -26,14 +29,14 @@ class TrafficAttribution
         }
 
         $referrerOrigin = $referrerHost !== ''
-            ? ((string) parse_url($referrer, PHP_URL_SCHEME) ?: 'https').'://'.$referrerHost
+            ? $scheme.'://'.$referrerHost
             : null;
 
         return [
             'referrer' => $referrerOrigin,
             'referrer_host' => $referrerHost !== '' ? Str::limit($referrerHost, 255, '') : null,
-            'source' => $source,
-            'medium' => $medium,
+            'source' => Str::limit($source, 100, ''),
+            'medium' => Str::limit($medium, 100, ''),
             'campaign' => self::queryValue($request, 'utm_campaign'),
             'term' => self::queryValue($request, 'utm_term'),
             'content' => self::queryValue($request, 'utm_content'),
@@ -67,7 +70,8 @@ class TrafficAttribution
     private static function sourceFromHost(string $host): array
     {
         return match (true) {
-            self::hostMatches($host, ['google.', 'googleusercontent.com']) => ['Google', 'organic'],
+            preg_match('/(^|\.)google\.(com|lt|lv|ee|de|fr|es|it|pl|nl|be|ie|se|no|dk|fi|co\.uk|co\.jp|com\.au|ca|co\.in)$/', $host) === 1
+                || self::hostMatches($host, ['googleusercontent.com']) => ['Google', 'organic'],
             self::hostMatches($host, ['bing.com']) => ['Bing', 'organic'],
             self::hostMatches($host, ['yahoo.com']) => ['Yahoo', 'organic'],
             self::hostMatches($host, ['duckduckgo.com']) => ['DuckDuckGo', 'organic'],
@@ -84,7 +88,7 @@ class TrafficAttribution
     private static function hostMatches(string $host, array $needles): bool
     {
         foreach ($needles as $needle) {
-            if (str_contains($host, $needle)) return true;
+            if ($host === $needle || str_ends_with($host, '.'.$needle)) return true;
         }
 
         return false;
@@ -92,7 +96,9 @@ class TrafficAttribution
 
     private static function queryValue(Request $request, string $key): ?string
     {
-        $value = trim((string) $request->query($key));
+        $raw = $request->query($key);
+        if (!is_scalar($raw)) return null;
+        $value = trim(preg_replace('/[\x00-\x1F\x7F]/u', '', (string) $raw) ?? '');
 
         return $value !== '' ? Str::limit($value, 255, '') : null;
     }

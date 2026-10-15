@@ -1,1 +1,0 @@
-import{D as e,F as t,G as n,H as r,S as i}from"./app-DbwBs74m.js";import{t as a}from"./PublicLayout-CoNHtlP7.js";import{c as o,i as s}from"./services-CJBgt_-P.js";var c={__name:`Ecommerce`,setup(c){return(c,l)=>(t(),i(a,null,{default:r(()=>[e(o,{config:n(s)},null,8,[`config`])]),_:1}))}};export{c as default};

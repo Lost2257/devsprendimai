@@ -6,6 +6,7 @@ import PublicLayout from '@/Layouts/PublicLayout.vue'
 import Hero from '@/Components/Hero.vue'
 import Services from '@/Components/Services.vue'
 import Pricing from '@/Components/Pricing.vue'
+import ProjectPlanner from '@/Components/ProjectPlanner.vue'
 import Projects from '@/Components/Projects.vue'
 import About from '@/Components/About.vue'
 import Process from '@/Components/Process.vue'
@@ -22,8 +23,8 @@ const props = defineProps({
 const page = usePage()
 const { isEnglish } = useLocale()
 const baseUrl = computed(() => (page.props.appUrl || '').replace(/\/$/, ''))
-const seoTitle = computed(() => isEnglish.value ? 'DevSprendimai — digital products for business growth' : (props.settings?.site_title || 'DevSprendimai — skaitmeniniai sprendimai verslui'))
-const seoDescription = computed(() => isEnglish.value ? 'Websites, applications, e-commerce, CRM systems and business process automation.' : (props.settings?.site_description || 'Interneto svetainės, aplikacijos, el. parduotuvės, CRM sistemos ir verslo procesų automatizacija.'))
+const seoTitle = computed(() => isEnglish.value ? 'Website & e-commerce development | DevSprendimai' : (props.settings?.site_title || 'Svetainių ir el. parduotuvių kūrimas | DevSprendimai'))
+const seoDescription = computed(() => isEnglish.value ? 'Custom websites, online stores, CRM systems and applications. Based in Kaunas, Lithuania, working with businesses remotely. Discuss your project.' : (props.settings?.site_description || 'Individualios interneto svetainės, el. parduotuvės, CRM ir aplikacijos. Kūrėjas Kaune, dirbantis su verslais visoje Lietuvoje. Aptarkime jūsų projektą.'))
 const homeUrl = computed(() => `${baseUrl.value}${isEnglish.value ? '/en' : '/'}`)
 const socialImage = computed(() => props.settings?.og_image
     ? `${page.props.appUrl || ''}/storage/${props.settings.og_image}`
@@ -98,6 +99,7 @@ const homeStructuredData = computed(() => [
         <Hero />
         <Services />
         <Pricing />
+        <ProjectPlanner />
         <Projects :projects="projects" />
         <About />
         <Process />

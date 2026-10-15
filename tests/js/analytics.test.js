@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { createAnalytics, CONSENT_KEY, isPublicPath } from '../../resources/js/lib/analytics.js'
+import { createAnalytics, CONSENT_KEY, CONSENT_COOKIE, isPublicPath } from '../../resources/js/lib/analytics.js'
 
 const id = 'G-LYW20LSJG9'
 function browser(saved = null, blockedStorage = false) {
@@ -8,10 +8,11 @@ function browser(saved = null, blockedStorage = false) {
     if (saved) storage.set(CONSENT_KEY, JSON.stringify(saved))
     let reloads = 0
     const win = {
-        location: { hostname: 'devsprendimai.lt', pathname: '/', href: 'https://devsprendimai.lt/', reload: () => reloads++ },
+        location: { protocol: 'https:', hostname: 'devsprendimai.lt', pathname: '/', href: 'https://devsprendimai.lt/', reload: () => reloads++ },
         localStorage: {
             getItem: (key) => { if (blockedStorage) throw new Error('Blocked'); return storage.get(key) || null },
             setItem: (key, value) => { if (blockedStorage) throw new Error('Blocked'); storage.set(key, value) },
+            removeItem: (key) => { if (blockedStorage) throw new Error('Blocked'); storage.delete(key) },
         },
         CustomEvent: class { constructor(type) { this.type = type } },
         addEventListener: (name, handler) => events[name] = handler,
@@ -27,7 +28,7 @@ function browser(saved = null, blockedStorage = false) {
     return { analytics, win, scripts, cookies, storage, events, reloads: () => reloads,
         doc, commands: () => (win.dataLayer || []).map((item) => [...item]) }
 }
-const stored = (analytics, expiresAt = Date.now() + 100000) => ({ version: 1, analytics, expiresAt })
+const stored = (analytics, expiresAt = Date.now() + 100000) => ({ version: 2, analytics, expiresAt })
 
 test('no Google requests before choice, after refusal, or on repeat refused visits', () => {
     const b = browser()
@@ -91,7 +92,7 @@ test('private pages and missing configuration never initialise analytics', () =>
 })
 
 test('expired or malformed stored choices do not activate analytics', () => {
-    for (const saved of [stored(true, Date.now() - 1), { version: 99, analytics: true }, { version: 1, analytics: 'yes', expiresAt: Date.now() + 10000 }]) {
+    for (const saved of [stored(true, Date.now() - 1), { version: 99, analytics: true }, { version: 1, analytics: true, expiresAt: Date.now() + 10000 }, { version: 2, analytics: 'yes', expiresAt: Date.now() + 10000 }]) {
         const b = browser(saved)
         b.analytics.configure(id)
         assert.equal(b.analytics.getConsent(), null)
@@ -106,6 +107,23 @@ test('storage restrictions preserve a working in-memory choice', () => {
     b.analytics.setConsent(true)
     assert.equal(b.scripts.length, 1)
     assert.equal(b.analytics.getConsent(), true)
+    assert(b.cookies.filter((cookie) => cookie.startsWith(CONSENT_COOKIE)).every((cookie) => cookie.includes('Max-Age=0')))
+})
+
+test('server-side analytics preference follows explicit consent and expiration', () => {
+    const b = browser()
+    b.analytics.configure(id)
+    assert(b.cookies.at(-1).includes('Max-Age=0'))
+    b.analytics.setConsent(true)
+    const granted = b.cookies.findLast((cookie) => cookie.startsWith(CONSENT_COOKIE))
+    assert(granted.startsWith(`${CONSENT_COOKIE}=granted;`))
+    assert(granted.includes('SameSite=Lax; Secure'))
+    assert(Number(granted.match(/Max-Age=(\d+)/)[1]) <= 180 * 24 * 60 * 60)
+    b.analytics.setConsent(false)
+    assert(b.cookies.findLast((cookie) => cookie.startsWith(CONSENT_COOKIE)).startsWith(`${CONSENT_COOKIE}=denied;`))
+    const expired = browser(stored(true, Date.now() - 1))
+    expired.analytics.configure(id)
+    assert(expired.cookies.find((cookie) => cookie.startsWith(CONSENT_COOKIE)).includes('Max-Age=0'))
 })
 
 test('withdrawal in another tab disables this tab too', () => {

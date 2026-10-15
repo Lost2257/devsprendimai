@@ -1,0 +1,1 @@
+import{C as e,I as t,K as n,O as r,U as i}from"./app-gsRbyhv2.js";import{t as a}from"./PublicLayout-q7bcC5QJ.js";import{a as o,c as s}from"./services-YC9JBEZg.js";var c={__name:`Maintenance`,setup(c){return(c,l)=>(t(),e(a,null,{default:i(()=>[r(s,{config:n(o)},null,8,[`config`])]),_:1}))}};export{c as default};

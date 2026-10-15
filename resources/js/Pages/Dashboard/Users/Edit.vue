@@ -121,8 +121,12 @@ const submit = () => {
 
                     <input
                         v-model="form.website_password"
+                        type="password"
+                        autocomplete="new-password"
+                        placeholder="Palikite tuščią, jei nekeičiate"
                         class="input"
                     >
+                    <p class="mt-2 text-sm text-slate-400">Esamas slaptažodis saugomas užšifruotas. Tuščias laukas jo nepakeičia.</p>
                 </div>
 
                 <div>

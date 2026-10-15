@@ -45,7 +45,7 @@ onUnmounted(() => {
             <div class="cookie-copy">
                 <span class="cookie-kicker">{{ isEnglish ? 'YOUR PRIVACY' : 'JŪSŲ PRIVATUMAS' }}</span>
                 <h2 id="cookie-title">{{ isEnglish ? 'Cookies. Your choice.' : 'Slapukai. Jūsų pasirinkimas.' }}</h2>
-                <p id="cookie-description">{{ isEnglish ? 'Essential cookies keep the site working. With your permission, Google Analytics helps us understand visits and improve the site. You can change your choice at any time.' : 'Būtinieji slapukai užtikrina svetainės veikimą. Jums sutikus, „Google Analytics“ padeda suprasti lankomumą ir tobulinti svetainę. Pasirinkimą galite bet kada pakeisti.' }}</p>
+                <p id="cookie-description">{{ isEnglish ? 'Essential cookies keep the site working. With your permission, Google Analytics and our internal visitor statistics help us understand traffic and improve the site. You can change your choice at any time.' : 'Būtinieji slapukai užtikrina svetainės veikimą. Jums sutikus, „Google Analytics“ ir vidinė lankomumo statistika padeda suprasti srautą bei tobulinti svetainę. Pasirinkimą galite bet kada pakeisti.' }}</p>
                 <Link :href="localize('/slapuku-politika')">{{ isEnglish ? 'Cookie policy' : 'Slapukų politika' }} ↗</Link>
                 <span v-if="choice !== null" class="cookie-status">{{ isEnglish ? `Analytics: ${choice ? 'enabled' : 'disabled'}` : `Analitika: ${choice ? 'įjungta' : 'išjungta'}` }}</span>
             </div>

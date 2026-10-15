@@ -16,9 +16,9 @@ const props = defineProps({
 const page = usePage()
 const baseUrl = computed(() => (page.props.appUrl || '').replace(/\/$/, ''))
 const cleanPath = computed(() => (page.url || '/').split('?')[0].split('#')[0] || '/')
-const canonicalUrl = computed(() => `${baseUrl.value}${cleanPath.value === '/' ? '' : cleanPath.value}`)
+const canonicalUrl = computed(() => `${baseUrl.value}${cleanPath.value}`)
 const languagePath = computed(() => cleanPath.value.replace(/^\/en(?=\/|$)/, '') || '/')
-const lithuanianUrl = computed(() => `${baseUrl.value}${languagePath.value === '/' ? '' : languagePath.value}`)
+const lithuanianUrl = computed(() => `${baseUrl.value}${languagePath.value}`)
 const englishUrl = computed(() => `${baseUrl.value}/en${languagePath.value === '/' ? '' : languagePath.value}`)
 const isEnglishPage = computed(() => cleanPath.value === '/en' || cleanPath.value.startsWith('/en/'))
 const imageUrl = computed(() => /^https?:\/\//i.test(props.image)
@@ -58,6 +58,7 @@ watchEffect(() => {
         'og:description': props.description,
         'og:url': canonicalUrl.value,
         'og:image': imageUrl.value,
+        'og:image:secure_url': imageUrl.value,
         'og:image:alt': props.imageAlt,
         'twitter:title': props.title,
         'twitter:description': props.description,

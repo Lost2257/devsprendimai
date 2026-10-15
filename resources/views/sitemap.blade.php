@@ -15,32 +15,16 @@
         <xhtml:link rel="alternate" hreflang="x-default" href="{{ $ltUrl }}" />
     </url>
 @endforeach
-@foreach ($projects as $project)
+@foreach ($projectUrls as $project)
     <url>
-        <loc>{{ $baseUrl }}/projektai/{{ $project->slug }}</loc>
-        <lastmod>{{ $project->updated_at->toAtomString() }}</lastmod>
-        <xhtml:link rel="alternate" hreflang="lt-LT" href="{{ $baseUrl }}/projektai/{{ $project->slug }}" />
-        <xhtml:link rel="alternate" hreflang="en" href="{{ $baseUrl }}/en/projektai/{{ $project->slug }}" />
-        <xhtml:link rel="alternate" hreflang="x-default" href="{{ $baseUrl }}/projektai/{{ $project->slug }}" />
-        @if ($project->thumbnail)
-            <image:image>
-                <image:loc>{{ $baseUrl }}/storage/{{ ltrim($project->thumbnail, '/') }}</image:loc>
-                <image:title>{{ $project->title }} projekto vizualizacija</image:title>
-            </image:image>
-        @endif
-    </url>
-    <url>
-        <loc>{{ $baseUrl }}/en/projektai/{{ $project->slug }}</loc>
-        <lastmod>{{ $project->updated_at->toAtomString() }}</lastmod>
-        <xhtml:link rel="alternate" hreflang="lt-LT" href="{{ $baseUrl }}/projektai/{{ $project->slug }}" />
-        <xhtml:link rel="alternate" hreflang="en" href="{{ $baseUrl }}/en/projektai/{{ $project->slug }}" />
-        <xhtml:link rel="alternate" hreflang="x-default" href="{{ $baseUrl }}/projektai/{{ $project->slug }}" />
-        @if ($project->thumbnail)
-            <image:image>
-                <image:loc>{{ $baseUrl }}/storage/{{ ltrim($project->thumbnail, '/') }}</image:loc>
-                <image:title>{{ $project->title }} project preview</image:title>
-            </image:image>
-        @endif
+        <loc>{{ $project['url'] }}</loc>
+        @if ($project['lastmod'])<lastmod>{{ $project['lastmod'] }}</lastmod>@endif
+        <xhtml:link rel="alternate" hreflang="lt-LT" href="{{ $project['ltUrl'] }}" />
+        <xhtml:link rel="alternate" hreflang="en" href="{{ $project['enUrl'] }}" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="{{ $project['ltUrl'] }}" />
+        @foreach ($project['images'] as $image)
+            <image:image><image:loc>{{ $image }}</image:loc></image:image>
+        @endforeach
     </url>
 @endforeach
 </urlset>

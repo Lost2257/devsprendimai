@@ -1,6 +1,7 @@
-export const CONSENT_KEY = 'devsprendimai.cookie-consent.v1'
+export const CONSENT_KEY = 'devsprendimai.cookie-consent.v2'
 export const CONSENT_EVENT = 'devsprendimai:consent-changed'
 export const OPEN_CONSENT_EVENT = 'devsprendimai:open-consent'
+export const CONSENT_COOKIE = 'devsprendimai_analytics_consent'
 const consentLifetime = 180 * 24 * 60 * 60 * 1000
 const denied = {
     analytics_storage: 'denied', ad_storage: 'denied',
@@ -19,20 +20,31 @@ export function createAnalytics(win, doc) {
     let active = false
     let lastPage = null
     let pageTitle = ''
+    let canPersistChoice = true
     let choice = readChoice()
+    try { win.localStorage.removeItem('devsprendimai.cookie-consent.v1') } catch { /* Older preferences are never reused. */ }
 
     function readChoice() {
         try {
             const saved = JSON.parse(win.localStorage.getItem(CONSENT_KEY))
-            return saved?.version === 1 && typeof saved.analytics === 'boolean'
-                && saved.expiresAt > Date.now() ? saved : null
+            if (saved?.version === 2 && typeof saved.analytics === 'boolean' && saved.expiresAt > Date.now()) return saved
+            win.localStorage.removeItem(CONSENT_KEY)
+            return null
         } catch {
+            canPersistChoice = false
             return null
         }
     }
 
     function getConsent() {
         return choice?.expiresAt > Date.now() ? choice.analytics : null
+    }
+
+    function syncConsentCookie() {
+        const consent = getConsent()
+        const maxAge = consent === null || !canPersistChoice ? 0 : Math.max(0, Math.floor((choice.expiresAt - Date.now()) / 1000))
+        // No identity or form data. The server reads only the visitor's preference.
+        doc.cookie = `${CONSENT_COOKIE}=${consent === true ? 'granted' : 'denied'}; Max-Age=${maxAge}; Path=/; SameSite=Lax${win.location.protocol === 'https:' ? '; Secure' : ''}`
     }
 
     function clearAnalyticsCookies() {
@@ -120,14 +132,19 @@ export function createAnalytics(win, doc) {
     function configure(id, title = '') {
         measurementId = /^G-[A-Z0-9]+$/.test(id || '') ? id : null
         pageTitle = title
+        syncConsentCookie()
         if (getConsent() !== true) clearAnalyticsCookies()
         activate()
         trackPage()
     }
 
     function setConsent(analytics) {
-        choice = { version: 1, analytics: analytics === true, updatedAt: Date.now(), expiresAt: Date.now() + consentLifetime }
-        try { win.localStorage.setItem(CONSENT_KEY, JSON.stringify(choice)) } catch { /* In-memory choice still works. */ }
+        choice = { version: 2, analytics: analytics === true, updatedAt: Date.now(), expiresAt: Date.now() + consentLifetime }
+        try {
+            win.localStorage.setItem(CONSENT_KEY, JSON.stringify(choice))
+            canPersistChoice = true
+        } catch { canPersistChoice = false }
+        syncConsentCookie()
         if (!choice.analytics) {
             pause()
             if (loadedId) win.gtag('consent', 'update', denied)
@@ -144,6 +161,7 @@ export function createAnalytics(win, doc) {
     win.addEventListener('storage', (event) => {
         if (event.key !== CONSENT_KEY && event.key !== null) return
         choice = readChoice()
+        syncConsentCookie()
         if (getConsent() !== true) {
             pause()
             clearAnalyticsCookies()

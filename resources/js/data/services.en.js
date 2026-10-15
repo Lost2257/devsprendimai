@@ -12,7 +12,7 @@ export const englishServices = {
     'Interneto svetainių kūrimas': {
         title: 'Website development', seoDescription: 'Fast, modern and conversion-ready websites for ambitious businesses.', eyebrow: 'Business websites',
         headline: 'A website that looks exceptional and', highlight: 'grows your business.', description: 'I build fast, clear and conversion-focused websites that present your business professionally and turn visitors into enquiries.',
-        visualLabel: 'Digital experience', visualTitle: 'From first impression to enquiry', proofs: ['Custom design', 'Mobile-first', 'Technical SEO'], metrics: [{ value: '< 2 s', label: 'target load time' }, { value: '100%', label: 'mobile-ready' }],
+        visualLabel: 'Digital experience', visualTitle: 'From first impression to enquiry', proofs: ['Custom design', 'Mobile-first', 'Technical SEO'], metrics: [{ value: 'Speed', label: 'performance optimisation' }, { value: 'Mobile', label: 'responsive design' }],
         benefitsTitle: 'Built for outcomes, not just appearance', benefitsLead: 'Every decision supports trust, usability and more qualified enquiries.',
         benefits: [benefit('01', 'Clear message', 'Visitors quickly understand your value and why they should choose you.'), benefit('02', 'Speed and SEO', 'A clean technical foundation helps users and search engines.'), benefit('03', 'Conversion logic', 'Content and actions guide visitors naturally towards contact.')],
         featureTitle: 'Everything needed for a confident launch', featureLead: 'Strategy, design, development and launch managed through one clear process.',
@@ -32,7 +32,7 @@ export const englishServices = {
     'CRM sistemų kūrimas': {
         title: 'Custom CRM development', seoDescription: 'Custom CRM systems for managing customers, sales and team workflows.', eyebrow: 'CRM systems',
         headline: 'Customers, sales and team activity', highlight: 'in one place.', description: 'I create CRM systems shaped around your real workflow, helping teams move faster and lose fewer opportunities.',
-        visualLabel: 'Business management', visualTitle: 'A clear sales system', proofs: ['Customers', 'Sales pipeline', 'Team tasks'], metrics: [{ value: '1 CRM', label: 'for the whole team' }, { value: '0', label: 'lost enquiries' }],
+        visualLabel: 'Business management', visualTitle: 'A clear sales system', proofs: ['Customers', 'Sales pipeline', 'Team tasks'], metrics: [{ value: '1 CRM', label: 'for the whole team' }, { value: 'Clear', label: 'enquiry progress' }],
         benefitsTitle: 'The system adapts to your business', benefitsLead: 'Functionality follows your real process, making adoption easier.',
         benefits: [benefit('01', 'One clear view', 'Contacts, history, proposals and tasks stay together.'), benefit('02', 'Controlled sales', 'Track every stage, owner and next action.'), benefit('03', 'Less manual work', 'Reminders, documents and data flows are automated.')],
         featureTitle: 'Modules built around your workflow', featureLead: 'Start with the essentials and expand as your business grows.',
@@ -42,7 +42,7 @@ export const englishServices = {
     'Verslo procesų automatizacija': {
         title: 'Business process automation', seoDescription: 'Workflow automation, API integrations and less manual work for your team.', eyebrow: 'Automation',
         headline: 'Less repetition.', highlight: 'More meaningful work.', description: 'I connect systems and automate repetitive processes so your team saves time and avoids preventable errors.',
-        visualLabel: 'Automated workflow', visualTitle: 'Systems working together', proofs: ['API integrations', 'Data flows', 'Notifications'], metrics: [{ value: '24/7', label: 'automated execution' }, { value: '-60%', label: 'manual work potential' }],
+        visualLabel: 'Automated workflow', visualTitle: 'Systems working together', proofs: ['API integrations', 'Data flows', 'Notifications'], metrics: [{ value: 'API', label: 'system integrations' }, { value: 'Less', label: 'manual work' }],
         benefitsTitle: 'Automation that produces real value', benefitsLead: 'We begin with the processes that consume the most time.',
         benefits: [benefit('01', 'Time saved', 'Repeated actions happen automatically.'), benefit('02', 'Fewer errors', 'Data moves consistently between systems.'), benefit('03', 'Clear processes', 'Every step has rules, status and ownership.')],
         featureTitle: 'Connect the tools you already use', featureLead: 'APIs, forms, CRM, email and documents can operate as one workflow.',
@@ -52,7 +52,7 @@ export const englishServices = {
     'Svetainių priežiūra': {
         title: 'Website maintenance', seoDescription: 'Updates, security, backups and responsive technical support.', eyebrow: 'Maintenance',
         headline: 'A website that stays', highlight: 'fast and reliable.', description: 'Regular updates, backups, monitoring and practical support keep your website healthy after launch.',
-        visualLabel: 'System health', visualTitle: 'Continuous protection', proofs: ['Updates', 'Backups', 'Support'], metrics: [{ value: '24/7', label: 'monitoring' }, { value: '99.9%', label: 'uptime target' }],
+        visualLabel: 'System health', visualTitle: 'Continuous protection', proofs: ['Updates', 'Backups', 'Support'], metrics: [{ value: 'Planned', label: 'health checks' }, { value: 'Regular', label: 'backups' }],
         benefitsTitle: 'Fewer surprises, more stability', benefitsLead: 'Technical care protects your investment and customer experience.',
         benefits: [benefit('01', 'Stable operation', 'Critical health indicators are monitored.'), benefit('02', 'Better security', 'Updates and backups are handled regularly.'), benefit('03', 'Fast support', 'You have a reliable contact for technical questions.')],
         featureTitle: 'Practical ongoing care', featureLead: 'A plan matched to the importance and complexity of your website.',
@@ -62,7 +62,7 @@ export const englishServices = {
     'Aplikacijų kūrimas': {
         title: 'Application development', seoDescription: 'Custom web and mobile applications from MVP to a complete business platform.', eyebrow: 'Web and mobile apps',
         headline: 'Turn your idea into a', highlight: 'real digital product.', description: 'I design and build applications for customers, teams and new business models — from focused MVP to scalable platform.',
-        visualLabel: 'Digital product', visualTitle: 'From concept to active users', proofs: ['Product strategy', 'UX/UI design', 'Scalable code'], metrics: [{ value: 'MVP', label: 'focused first release' }, { value: '100%', label: 'built to scale' }],
+        visualLabel: 'Digital product', visualTitle: 'From concept to active users', proofs: ['Product strategy', 'UX/UI design', 'Scalable code'], metrics: [{ value: 'MVP', label: 'focused first release' }, { value: 'Modular', label: 'ready for expansion' }],
         benefitsTitle: 'A product with a clear direction', benefitsLead: 'We validate the user, value and priority functionality before building.',
         benefits: [benefit('01', 'Clear product scope', 'The first release focuses on the most valuable problem.'), benefit('02', 'Intuitive experience', 'Every screen supports a simple user journey.'), benefit('03', 'Ready to scale', 'Modular architecture supports new features and integrations.')],
         featureTitle: 'From prototype to production', featureLead: 'Product thinking, design and engineering stay connected.',
@@ -72,7 +72,7 @@ export const englishServices = {
     'Premium svetainių šablonai': {
         title: 'Premium website templates', seoDescription: 'Professional website templates for a faster business launch.', eyebrow: 'Template library · coming soon',
         headline: 'A faster launch without a', highlight: 'generic result.', description: 'A curated library of fast, adaptable templates for businesses that value quality and speed.',
-        visualLabel: 'Template library', visualTitle: 'Quality ready for your content', proofs: ['Modern design', 'Fully adaptable', 'Fast launch'], metrics: [{ value: 'Fast', label: 'from choice to launch' }, { value: '100%', label: 'mobile-ready' }],
+        visualLabel: 'Template library', visualTitle: 'Quality ready for your content', proofs: ['Modern design', 'Fully adaptable', 'Fast launch'], metrics: [{ value: 'Fast', label: 'from choice to launch' }, { value: 'Mobile', label: 'responsive design' }],
         benefitsTitle: 'A strong foundation for a faster start', benefitsLead: 'Each template is designed as a real business website.',
         benefits: [benefit('01', 'Curated design', 'Professional directions for different industries.'), benefit('02', 'Your identity', 'Colours, typography and content adapt to your brand.'), benefit('03', 'Faster launch', 'A proven structure saves design and planning time.')],
         featureTitle: 'More than a design file', featureLead: 'Templates are prepared for real business use and professional adaptation.',

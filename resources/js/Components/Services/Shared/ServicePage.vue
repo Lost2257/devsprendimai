@@ -6,6 +6,7 @@ import WebsiteCTA from '@/Components/Services/Shared/WebsiteCTA.vue'
 import HeroScene from '@/Components/HeroScene.vue'
 import { useLocale } from '@/composables/useLocale'
 import { englishServices } from '@/data/services.en'
+import { sendProjectBrief } from '@/lib/projectPlanner'
 
 const page = usePage()
 const props = defineProps({
@@ -67,6 +68,12 @@ const serviceStructuredData = computed(() => [
     },
 ])
 const serviceVisual = ref(null)
+const discussOffer = (offer) => sendProjectBrief({
+    service: config.value.service,
+    message: isEnglish.value
+        ? `I am interested in “${offer.title}”. Please help me confirm a suitable scope and final price.`
+        : `Domina „${offer.title}“. Norėčiau suderinti tinkamą apimtį ir galutinę kainą.`,
+})
 
 const moveVisual = (event) => {
     const visual = serviceVisual.value
@@ -234,7 +241,7 @@ onUnmounted(() => {
                     <ul>
                         <li v-for="point in offer.points" :key="point"><span>✓</span>{{ point }}</li>
                     </ul>
-                    <a href="#contact">{{ isEnglish ? 'Discuss this option' : 'Aptarti šį variantą' }} <span>→</span></a>
+                    <a href="#contact" @click.prevent="discussOffer(offer)">{{ isEnglish ? 'Discuss this option' : 'Aptarti šį variantą' }} <span>→</span></a>
                 </article>
             </div>
         </div>

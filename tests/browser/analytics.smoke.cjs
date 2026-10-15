@@ -98,7 +98,7 @@ async function main() {
         console.log('PASS Lithuanian / English mobile consent layout at 390px and 320px')
 
         const privateContext = await browser.newContext()
-        await privateContext.addInitScript(() => localStorage.setItem('devsprendimai.cookie-consent.v1', JSON.stringify({ version: 1, analytics: true, expiresAt: Date.now() + 86400000 })))
+        await privateContext.addInitScript(() => localStorage.setItem('devsprendimai.cookie-consent.v2', JSON.stringify({ version: 2, analytics: true, expiresAt: Date.now() + 86400000 })))
         const privatePage = await privateContext.newPage()
         const privateRequests = []
         privatePage.on('request', (req) => { if (/google-analytics\.com|googletagmanager\.com/.test(req.url())) privateRequests.push(req.url()) })

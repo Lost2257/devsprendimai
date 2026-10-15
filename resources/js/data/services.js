@@ -16,8 +16,8 @@ export const websites = {
     visualTitle: 'Nuo pirmo įspūdžio iki užklausos',
     proofs: ['Individualus dizainas', 'Mobilioji versija', 'Techninis SEO'],
     metrics: [
-        { value: '< 2 s', label: 'siekiamas užkrovimas' },
-        { value: '100%', label: 'pritaikyta mobiliesiems' },
+        { value: 'Greitis', label: 'optimizuojamas veikimas' },
+        { value: 'Telefonui', label: 'pritaikytas dizainas' },
     ],
     benefitsTitle: 'Sukurta rezultatui, ne tik vaizdui',
     benefitsLead: 'Kiekvienas sprendimas turi aiškų tikslą: pasitikėjimą, lengvą naudojimą ir daugiau kokybiškų užklausų.',
@@ -83,7 +83,7 @@ export const crm = {
     proofs: ['Klientai', 'Pardavimų eiga', 'Komandos užduotys'],
     metrics: [
         { value: '1 CRM', label: 'visai komandai' },
-        { value: '0', label: 'pamestų užklausų' },
+        { value: 'Aiškiai', label: 'matoma užklausų eiga' },
     ],
     benefitsTitle: 'Sistema prisitaiko prie verslo, ne atvirkščiai',
     benefitsLead: 'Funkcionalumas kuriamas pagal realią jūsų darbo eigą, todėl komanda greičiau priima sistemą ir ja iš tikrųjų naudojasi.',
@@ -115,8 +115,8 @@ export const automation = {
     visualTitle: 'Duomenys juda automatiškai',
     proofs: ['API integracijos', 'Pranešimai', 'Dokumentų srautai'],
     metrics: [
-        { value: '24/7', label: 'veikiantys procesai' },
-        { value: '↓ klaidų', label: 'rankiniuose veiksmuose' },
+        { value: 'API', label: 'sistemų integracijos' },
+        { value: 'Mažiau', label: 'rankinio darbo' },
     ],
     benefitsTitle: 'Automatizuojame tai, kas stabdo komandą',
     benefitsLead: 'Pirmiausia randame daugiausiai laiko kainuojančias vietas, tada sukuriame patikimą ir pamatuojamą sprendimą.',
@@ -148,8 +148,8 @@ export const maintenance = {
     visualTitle: 'Stebima. Atnaujinama. Apsaugota.',
     proofs: ['Atnaujinimai', 'Atsarginės kopijos', 'Techninė pagalba'],
     metrics: [
-        { value: '24/7', label: 'būklės stebėjimas' },
-        { value: 'Reguliariai', label: 'daromos kopijos' },
+        { value: 'Pagal planą', label: 'būklės patikros' },
+        { value: 'Reguliariai', label: 'atsarginės kopijos' },
     ],
     benefitsTitle: 'Techniniai rūpesčiai lieka mums',
     benefitsLead: 'Prevencinė priežiūra kainuoja mažiau nei avarinis gedimų taisymas ir padeda išlaikyti klientų pasitikėjimą.',
@@ -187,7 +187,7 @@ export const applications = {
     proofs: ['Web aplikacijos', 'PWA ir mobiliosios', 'API bei integracijos'],
     metrics: [
         { value: 'MVP', label: 'greitam idėjos patikrinimui' },
-        { value: '∞', label: 'plėtros galimybė' },
+        { value: 'Moduliai', label: 'tolimesnei plėtrai' },
     ],
     benefitsTitle: 'Produktas, kurį patogu naudoti ir lengva auginti',
     benefitsLead: 'Aplikacija projektuojama aplink realius vartotojų poreikius, verslo tikslą ir tvirtą techninį pagrindą.',
@@ -225,7 +225,7 @@ export const templates = {
     proofs: ['Modernus dizainas', 'Pilnai pritaikoma', 'Greitas paleidimas'],
     metrics: [
         { value: 'Greitai', label: 'nuo pasirinkimo iki starto' },
-        { value: '100%', label: 'pritaikyta mobiliesiems' },
+        { value: 'Telefonui', label: 'pritaikytas dizainas' },
     ],
     benefitsTitle: 'Tvirtas pagrindas greitesniam startui',
     benefitsLead: 'Kiekvienas šablonas kuriamas kaip pilnavertė verslo svetainė — su aiškia struktūra, kokybišku dizainu ir konversijų logika.',

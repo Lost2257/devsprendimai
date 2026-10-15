@@ -3,10 +3,10 @@
 - Set `GOOGLE_ANALYTICS_ID=G-LYW20LSJG9` in the production `.env` and run `php artisan config:cache`.
 - The public Inertia props expose the ID only in production, for signed-out visitors on public routes.
 - `resources/js/lib/analytics.js` loads gtag.js only after affirmative analytics consent (basic consent mode). Ads storage, ads user data, ads personalisation and Google Signals stay disabled.
-- LT/EN consent choices expire after 180 days and are stored in localStorage. Cookie settings in the footer (or in the full-screen project viewer) allow withdrawal. Withdrawal removes GA cookies and reloads to unload the Google library. Changes propagate across tabs.
+- LT/EN consent choices (version 2) expire after 180 days and are stored in localStorage, with an explicit analytics-preference cookie for internal statistics. Both optional analytics systems require consent. Cookie settings in the footer (or in the full-screen project viewer) allow withdrawal. Withdrawal removes GA cookies and reloads to unload the Google library. Changes propagate across tabs.
 - Inertia navigation sends one explicit `page_view` after updating the page title. Keep GA4 Enhanced Measurement's **Page changes based on browser history events** disabled for this web stream. Do not install a second tag for this stream.
 - The initial `config` call uses `send_page_view: false`; initial consent and completed public navigation each record one view. Consecutive identical URLs are deduplicated, unrelated query parameters and fragments are excluded, and private navigation pauses collection.
-- Google Analytics and the existing server-side dashboard statistics are separate data sources. Visitors refusing consent, administrators and ad blockers are not included in GA4.
+- Google Analytics and server-side dashboard statistics are separate data sources. Both exclude visitors refusing consent and administrators; ad blockers may additionally block GA4. Initial opt-in is measured by GA, while internal counts begin on the next request carrying the granted preference.
 - Google Analytics event retention and reporting settings belong to the Google account; the application does not change them. Browser GA cookies are limited to 180 days without renewal on each hit.
 
 ## Required Google account setting

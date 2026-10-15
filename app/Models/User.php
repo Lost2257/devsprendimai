@@ -18,7 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
     'website_login',
     'website_password',
     'services',])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'website_password'])]
 class User extends Authenticatable
 {
     use HasFactory;
@@ -30,6 +30,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'website_password' => 'encrypted',
         ];
     }
 }

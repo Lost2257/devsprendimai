@@ -146,7 +146,8 @@ const submit = () => {
 
                     <input
                         v-model="form.website_password"
-                        type="text"
+                        type="password"
+                        autocomplete="new-password"
                         class="input"
                     >
                 </div>

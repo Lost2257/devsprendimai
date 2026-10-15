@@ -30,8 +30,7 @@ class ProjectController extends Controller
         $data = $request->validate($this->rules());
         $data['featured'] = $request->boolean('featured');
 
-        $this->storeMedia($request, $data);
-        Project::create($data);
+        $this->persistProject($request, $data);
 
         return redirect('/dashboard/projects')
             ->with('success', 'Projektas sukurtas.');
@@ -50,8 +49,7 @@ class ProjectController extends Controller
         $data = $request->validate($this->rules($project));
         $data['featured'] = $request->boolean('featured');
 
-        $this->storeMedia($request, $data, $project);
-        $project->update($data);
+        $this->persistProject($request, $data, $project);
 
         return redirect('/dashboard/projects')
             ->with('success', 'Projektas atnaujintas.');
@@ -59,8 +57,8 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
-        $this->deleteMedia($project);
         $project->delete();
+        $this->deleteMedia($project);
 
         return redirect('/dashboard/projects')
             ->with('success', 'Projektas ištrintas.');
@@ -80,7 +78,7 @@ class ProjectController extends Controller
             'year' => ['nullable', 'string', 'max:20'],
             'duration' => ['nullable', 'string', 'max:100'],
             'duration_en' => ['nullable', 'string', 'max:100'],
-            'url' => ['nullable', 'url', 'max:500'],
+            'url' => ['nullable', 'url:http,https', 'max:500'],
             'description' => ['nullable', 'string'],
             'description_en' => ['nullable', 'string'],
             'thumbnail' => ['nullable', 'image', 'max:5120'],
@@ -127,58 +125,94 @@ class ProjectController extends Controller
         ]);
     }
 
-    private function storeMedia(Request $request, array &$data, ?Project $project = null): void
+    private function persistProject(Request $request, array $data, ?Project $project = null): void
     {
-        foreach (['thumbnail' => 'projects', 'mobile_thumbnail' => 'projects/mobile'] as $field => $directory) {
-            $removeField = "remove_{$field}";
-            $shouldRemove = $request->boolean($removeField);
-            unset($data[$removeField]);
-
-            if ($request->hasFile($field)) {
-                if ($project?->{$field}) {
-                    Storage::disk('public')->delete($project->{$field});
-                }
-
-                $data[$field] = $request->file($field)->store($directory, 'public');
-                continue;
+        $media = $this->storeMedia($request, $data, $project);
+        try {
+            $target = $project ?? new Project;
+            $target->fill($data);
+            if (!$target->save()) {
+                throw new \RuntimeException('Nepavyko išsaugoti projekto.');
             }
-
-            if ($shouldRemove && $project?->{$field}) {
-                Storage::disk('public')->delete($project->{$field});
-                $data[$field] = null;
-                continue;
-            }
-
-            unset($data[$field]);
+        } catch (\Throwable $exception) {
+            $this->deleteFiles($media['stored']);
+            throw $exception;
         }
 
+        // Old media remains available until every upload and the DB save succeed.
+        $this->deleteFiles($media['remove']);
+    }
+
+    private function storeMedia(Request $request, array &$data, ?Project $project = null): array
+    {
         $existingGallery = $project?->gallery ?? [];
-        $removedGallery = $request->input('remove_gallery', []);
+        $removedGallery = $request->input('remove_gallery') ?? [];
         $remainingGallery = array_values(array_diff($existingGallery, $removedGallery));
-        $newGalleryFiles = $request->file('gallery', []);
+        $newGalleryFiles = $request->file('gallery') ?? [];
         unset($data['remove_gallery']);
 
+        // Validate the final collection before touching any cover or gallery files.
         if (count($remainingGallery) + count($newGalleryFiles) > 6) {
             throw \Illuminate\Validation\ValidationException::withMessages([
                 'gallery' => 'Galerijoje gali būti daugiausia 6 vaizdai.',
             ]);
         }
 
-        if (!$request->hasFile('gallery') && !$removedGallery) {
-            unset($data['gallery']);
-            return;
+        $stored = [];
+        $remove = $removedGallery;
+        $store = function ($file, string $directory) use (&$stored): string {
+            $path = $file->store($directory, 'public');
+            if (!is_string($path) || $path === '') {
+                throw new \RuntimeException('Nepavyko įkelti projekto vaizdo. Pabandykite dar kartą.');
+            }
+            $stored[] = $path;
+            return $path;
+        };
+
+        try {
+            foreach (['thumbnail' => 'projects', 'mobile_thumbnail' => 'projects/mobile'] as $field => $directory) {
+                $removeField = "remove_{$field}";
+                $shouldRemove = $request->boolean($removeField);
+                unset($data[$removeField]);
+
+                if ($request->hasFile($field)) {
+                    $data[$field] = $store($request->file($field), $directory);
+                    if ($project?->{$field}) $remove[] = $project->{$field};
+                } elseif ($shouldRemove && $project?->{$field}) {
+                    $remove[] = $project->{$field};
+                    $data[$field] = null;
+                } else {
+                    unset($data[$field]);
+                }
+            }
+
+            if ($newGalleryFiles || $removedGallery) {
+                $newGallery = [];
+                foreach ($newGalleryFiles as $file) {
+                    $newGallery[] = $store($file, 'projects/gallery');
+                }
+                $data['gallery'] = [...$remainingGallery, ...$newGallery];
+            } else {
+                unset($data['gallery']);
+            }
+        } catch (\Throwable $exception) {
+            $this->deleteFiles($stored);
+            throw $exception;
         }
 
-        if ($removedGallery) {
-            Storage::disk('public')->delete($removedGallery);
+        return ['stored' => $stored, 'remove' => $remove];
+    }
+
+    private function deleteFiles(array $files): void
+    {
+        if (!$files) return;
+        try {
+            if (!Storage::disk('public')->delete(array_values(array_unique($files)))) {
+                report(new \RuntimeException('Nepavyko pašalinti nebenaudojamų projekto vaizdų.'));
+            }
+        } catch (\Throwable $exception) {
+            report($exception);
         }
-
-        $newGallery = collect($newGalleryFiles)
-            ->map(fn ($file) => $file->store('projects/gallery', 'public'))
-            ->values()
-            ->all();
-
-        $data['gallery'] = [...$remainingGallery, ...$newGallery];
     }
 
     private function deleteMedia(Project $project): void
@@ -189,6 +223,6 @@ class ProjectController extends Controller
             ...($project->gallery ?? []),
         ]);
 
-        Storage::disk('public')->delete($files);
+        $this->deleteFiles($files);
     }
 }

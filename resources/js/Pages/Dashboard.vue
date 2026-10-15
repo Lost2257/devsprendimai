@@ -18,6 +18,8 @@ const props = defineProps({
 const maxVisits = computed(() => Math.max(...props.visitSeries.map((day) => day.count), 1))
 const maxSourceVisits = computed(() => Math.max(...props.trafficSources.map((source) => Number(source.visits)), 1))
 const deviceTotal = computed(() => Math.max(props.devices.reduce((total, device) => total + Number(device.visits), 0), 1))
+const readinessChecks = computed(() => props.seoHealth.checks.filter((check) => !check.informational))
+const completedChecks = computed(() => readinessChecks.value.filter((check) => check.ok).length)
 const today = new Intl.DateTimeFormat('lt-LT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(new Date())
 
 const statCards = computed(() => [
@@ -87,10 +89,12 @@ const statCards = computed(() => [
             </article>
 
             <article class="panel seo-panel">
-                <div class="seo-score"><span>SEO parengtis</span><strong>{{ seoHealth.score }}<small>/100</small></strong><i :style="{ '--score': `${seoHealth.score}%` }"></i></div>
+                <div class="seo-score"><span>Techninė SEO parengtis</span><strong>{{ completedChecks }}<small>/ {{ readinessChecks.length }} punktų</small></strong><i :style="{ '--score': `${seoHealth.score}%` }"></i></div>
+                <p class="seo-note">Tai techninių punktų sąrašas, ne „Google“ reitingas ar lankytojų prognozė.</p>
                 <div class="seo-checks">
-                    <div v-for="check in seoHealth.checks" :key="check.label" :class="{ ready: check.ok }"><i>{{ check.ok ? '✓' : '!' }}</i><span>{{ check.label }}</span></div>
+                    <div v-for="check in seoHealth.checks" :key="check.label" :class="{ ready: check.ok, informational: check.informational }"><i>{{ check.informational ? 'i' : check.ok ? '✓' : '!' }}</i><span>{{ check.label }}<small v-if="check.detail">{{ check.detail }}</small></span></div>
                 </div>
+                <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Indeksavimas ir pozicijos: Search Console ↗</a>
                 <Link href="/dashboard/settings">Tvarkyti SEO nustatymus →</Link>
             </article>
         </section>
@@ -140,6 +144,7 @@ const statCards = computed(() => [
 </template>
 
 <style scoped>
+.seo-note{margin-top:.85rem;color:#8293a9;font-size:.68rem;line-height:1.6}.seo-checks>div{align-items:flex-start}.seo-checks small{display:block;margin-top:.2rem;color:#8293a9;font-size:.61rem;line-height:1.55}.seo-checks>div.informational>i{color:#a4b4cb;background:rgba(148,163,184,.1);flex-shrink:0}
 .dashboard-head{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:2rem}.dashboard-head>div>span,.panel-head>div>span{color:#22d3ee;font-size:.65rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase}.dashboard-head h1{margin-top:.5rem;font-size:clamp(2.5rem,5vw,4.8rem);font-weight:850;letter-spacing:-.065em;line-height:.92}.dashboard-head p{margin-top:.65rem;color:#68778c;font-size:.82rem;text-transform:capitalize}.dashboard-head>a{display:flex;align-items:center;gap:1rem;min-height:3.2rem;padding:0 1.1rem;border-radius:.85rem;color:#061016;background:#22d3ee;font-size:.75rem;font-weight:850;box-shadow:0 15px 40px rgba(34,211,238,.14)}.dashboard-head>a i{font-style:normal}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}.stat-grid article{min-height:210px;padding:1.25rem;border:1px solid rgba(255,255,255,.075);border-radius:1.2rem;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.015))}.stat-grid article.accent{border-color:rgba(34,211,238,.17);background:linear-gradient(145deg,rgba(34,211,238,.075),rgba(255,255,255,.015))}.stat-grid article>div{display:flex;justify-content:space-between;color:#4d5b70;font-size:.6rem;font-weight:800}.stat-grid article>div i{color:#22d3ee;font-style:normal}.stat-grid article>strong{display:block;margin-top:2rem;font-size:3.5rem;font-weight:850;letter-spacing:-.07em}.stat-grid article.accent>strong{color:#67e8f9}.stat-grid h2{margin-top:.45rem;font-size:.82rem;font-weight:750}.stat-grid p{margin-top:.3rem;color:#58677c;font-size:.68rem}
 .dashboard-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.65fr);gap:.8rem;margin-top:.8rem}.lower-grid{grid-template-columns:1fr 1fr}.panel{padding:1.4rem;border:1px solid rgba(255,255,255,.075);border-radius:1.2rem;background:rgba(255,255,255,.022)}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.panel-head h2{margin-top:.4rem;font-size:1rem;font-weight:800}.panel-head>strong{display:flex;flex-direction:column;align-items:flex-end;color:#67e8f9;font-size:1.8rem;letter-spacing:-.04em}.panel-head>strong small{color:#536177;font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.panel-head>a{color:#718096;font-size:.68rem;font-weight:750}

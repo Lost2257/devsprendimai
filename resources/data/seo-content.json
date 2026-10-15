@@ -1,0 +1,1288 @@
+{
+  "lt": {
+    "services": {
+      "interneto-svetaines": {
+        "title": "Interneto svetainių kūrimas",
+        "seoDescription": "Modernios, greitos ir pardavimams paruoštos interneto svetainės Lietuvos verslui.",
+        "eyebrow": "Interneto svetainės",
+        "headline": "Svetainė, kuri ne tik atrodo gerai, bet ir",
+        "highlight": "augina verslą.",
+        "description": "Kuriu greitas, aiškias ir konversijoms paruoštas svetaines, kurios profesionaliai pristato jūsų verslą ir padeda lankytojui tapti klientu.",
+        "benefitsTitle": "Sukurta rezultatui, ne tik vaizdui",
+        "benefitsLead": "Kiekvienas sprendimas turi aiškų tikslą: pasitikėjimą, lengvą naudojimą ir daugiau kokybiškų užklausų.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Aiški žinutė",
+            "description": "Lankytojas per kelias sekundes supranta, kuo padedate ir kodėl verta rinktis jus."
+          },
+          {
+            "number": "02",
+            "title": "Greitis ir SEO",
+            "description": "Tvarkinga techninė bazė, greitas veikimas ir paieškos sistemoms suprantama struktūra."
+          },
+          {
+            "number": "03",
+            "title": "Konversijų logika",
+            "description": "Turinys ir veiksmai sudėliojami taip, kad natūraliai vestų iki kontakto ar pirkimo."
+          }
+        ],
+        "featureTitle": "Viskas, ko reikia užtikrintam startui",
+        "featureLead": "Nuo strategijos ir dizaino iki paleidimo — vienas aiškus procesas ir vienas atsakingas partneris.",
+        "features": [
+          "Turinio ir puslapių struktūra",
+          "Individualus UI/UX dizainas",
+          "Programavimas ir TVS",
+          "Kontaktų bei užklausų formos",
+          "Analitikos integracija",
+          "Apmokymai ir pagalba po starto"
+        ],
+        "process": [
+          {
+            "title": "Poreikio analizė",
+            "text": "Trumpai susipažįstame su jūsų verslu, auditorija ir konkrečiais tikslais."
+          },
+          {
+            "title": "Sprendimo planas",
+            "text": "Sutartos apimties, etapų ir terminų planas be neaiškių techninių formuluočių."
+          },
+          {
+            "title": "Kūrimas ir derinimas",
+            "text": "Reguliariai matote progresą, testuojate ir pateikiate grįžtamąjį ryšį."
+          },
+          {
+            "title": "Paleidimas ir augimas",
+            "text": "Paruošiame sprendimą realiam darbui ir liekame šalia po starto."
+          }
+        ]
+      },
+      "el-parduotuves": {
+        "title": "El. parduotuvių kūrimas",
+        "seoDescription": "Greitos, patogios ir pardavimams paruoštos el. parduotuvės su reikalingomis integracijomis.",
+        "eyebrow": "El. parduotuvės",
+        "headline": "El. parduotuvė, kurioje paprasta",
+        "highlight": "pirkti ir augti.",
+        "description": "Kuriu patogias el. parduotuves, kurios sklandžiai veikia telefone, supaprastina užsakymų valdymą ir yra paruoštos didesniam pardavimų kiekiui.",
+        "benefitsTitle": "Mažiau kliūčių pirkėjui, daugiau kontrolės jums",
+        "benefitsLead": "Parduotuvė projektuojama aplink realų pirkimo procesą — nuo produkto atradimo iki apmokėjimo ir pristatymo.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Patogus pirkimas",
+            "description": "Aiškūs produktai, filtrai, krepšelis ir trumpas atsiskaitymo kelias visuose įrenginiuose."
+          },
+          {
+            "number": "02",
+            "title": "Automatizuotas valdymas",
+            "description": "Mokėjimai, sąskaitos, likučiai ir pristatymas sujungiami į vieną veikiančią sistemą."
+          },
+          {
+            "number": "03",
+            "title": "Paruošta augimui",
+            "description": "Nuolaidos, analitika, rinkodaros įrankiai ir struktūra, kurią galima plėsti."
+          }
+        ],
+        "featureTitle": "Funkcijos, kurios dirba kartu",
+        "featureLead": "Parenkame tik tas funkcijas ir integracijas, kurios reikalingos jūsų prekybos modeliui.",
+        "features": [
+          "Produktų katalogas ir filtrai",
+          "Bankiniai bei kortelių mokėjimai",
+          "Kurjerių ir paštomatų integracijos",
+          "Kuponai ir lojalumo mechanikos",
+          "Sąskaitų generavimas",
+          "Pardavimų analitika"
+        ],
+        "process": [
+          {
+            "title": "Poreikio analizė",
+            "text": "Trumpai susipažįstame su jūsų verslu, auditorija ir konkrečiais tikslais."
+          },
+          {
+            "title": "Sprendimo planas",
+            "text": "Sutartos apimties, etapų ir terminų planas be neaiškių techninių formuluočių."
+          },
+          {
+            "title": "Kūrimas ir derinimas",
+            "text": "Reguliariai matote progresą, testuojate ir pateikiate grįžtamąjį ryšį."
+          },
+          {
+            "title": "Paleidimas ir augimas",
+            "text": "Paruošiame sprendimą realiam darbui ir liekame šalia po starto."
+          }
+        ]
+      },
+      "crm-sistemos": {
+        "title": "CRM sistemų kūrimas",
+        "seoDescription": "Individualios CRM sistemos klientams, pardavimams ir komandiniams procesams valdyti.",
+        "eyebrow": "CRM sistemos",
+        "headline": "Visa klientų informacija ir pardavimai —",
+        "highlight": "vienoje vietoje.",
+        "description": "Kuriu jūsų procesams pritaikytas CRM sistemas, kurios padeda komandai matyti bendrą vaizdą, neprarasti užklausų ir greičiau atlikti kasdienius darbus.",
+        "benefitsTitle": "Sistema prisitaiko prie verslo, ne atvirkščiai",
+        "benefitsLead": "Funkcionalumas kuriamas pagal realią jūsų darbo eigą, todėl komanda greičiau priima sistemą ir ja iš tikrųjų naudojasi.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Bendras vaizdas",
+            "description": "Kontaktai, istorija, pasiūlymai ir užduotys pasiekiami vienoje aiškioje vietoje."
+          },
+          {
+            "number": "02",
+            "title": "Valdomi pardavimai",
+            "description": "Matote kiekvieną etapą, atsakingą žmogų ir veiksmą, kurio reikia rezultatui."
+          },
+          {
+            "number": "03",
+            "title": "Mažiau rankinio darbo",
+            "description": "Priminimai, pranešimai, dokumentai ir duomenų perdavimas vyksta automatiškai."
+          }
+        ],
+        "featureTitle": "Moduliai pagal jūsų darbo eigą",
+        "featureLead": "Sistemą galima pradėti nuo svarbiausių funkcijų ir plėsti verslui augant.",
+        "features": [
+          "Klientų ir kontaktų bazė",
+          "Pardavimų piltuvėlis",
+          "Užduotys ir priminimai",
+          "Pasiūlymai bei dokumentai",
+          "Vartotojų rolės ir teisės",
+          "Ataskaitos ir integracijos"
+        ],
+        "process": [
+          {
+            "title": "Poreikio analizė",
+            "text": "Trumpai susipažįstame su jūsų verslu, auditorija ir konkrečiais tikslais."
+          },
+          {
+            "title": "Sprendimo planas",
+            "text": "Sutartos apimties, etapų ir terminų planas be neaiškių techninių formuluočių."
+          },
+          {
+            "title": "Kūrimas ir derinimas",
+            "text": "Reguliariai matote progresą, testuojate ir pateikiate grįžtamąjį ryšį."
+          },
+          {
+            "title": "Paleidimas ir augimas",
+            "text": "Paruošiame sprendimą realiam darbui ir liekame šalia po starto."
+          }
+        ]
+      },
+      "automatizacija": {
+        "title": "Verslo procesų automatizacija",
+        "seoDescription": "Procesų automatizavimas, API integracijos ir mažiau rankinio darbo jūsų komandai.",
+        "eyebrow": "Automatizacija",
+        "headline": "Mažiau pasikartojančio darbo.",
+        "highlight": "Daugiau laiko augimui.",
+        "description": "Sujungiu jūsų naudojamus įrankius ir automatizuoju pasikartojančius procesus, kad komanda dirbtų greičiau, tiksliau ir be bereikalingo kopijavimo.",
+        "benefitsTitle": "Automatizuojame tai, kas stabdo komandą",
+        "benefitsLead": "Pirmiausia randame daugiausiai laiko kainuojančias vietas, tada sukuriame patikimą ir pamatuojamą sprendimą.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Sutaupytas laikas",
+            "description": "Pasikartojantys veiksmai atliekami automatiškai, o komanda koncentruojasi į svarbesnį darbą."
+          },
+          {
+            "number": "02",
+            "title": "Mažiau klaidų",
+            "description": "Duomenys tarp sistemų perduodami vienodai ir laiku, be rankinio perrašymo."
+          },
+          {
+            "number": "03",
+            "title": "Aiškūs procesai",
+            "description": "Kiekvienas žingsnis turi taisykles, būseną ir atsakingą veiksmą."
+          }
+        ],
+        "featureTitle": "Sujungiame jūsų naudojamus įrankius",
+        "featureLead": "Automatizacija gali apimti vieną mažą užduotį arba visą procesą tarp kelių sistemų.",
+        "features": [
+          "CRM ir svetainių integracijos",
+          "Užklausų paskirstymas",
+          "Automatiniai el. laiškai",
+          "Dokumentų generavimas",
+          "Duomenų sinchronizavimas",
+          "Vidiniai pranešimai ir ataskaitos"
+        ],
+        "process": [
+          {
+            "title": "Poreikio analizė",
+            "text": "Trumpai susipažįstame su jūsų verslu, auditorija ir konkrečiais tikslais."
+          },
+          {
+            "title": "Sprendimo planas",
+            "text": "Sutartos apimties, etapų ir terminų planas be neaiškių techninių formuluočių."
+          },
+          {
+            "title": "Kūrimas ir derinimas",
+            "text": "Reguliariai matote progresą, testuojate ir pateikiate grįžtamąjį ryšį."
+          },
+          {
+            "title": "Paleidimas ir augimas",
+            "text": "Paruošiame sprendimą realiam darbui ir liekame šalia po starto."
+          }
+        ]
+      },
+      "aplikaciju-kurimas": {
+        "title": "Aplikacijų kūrimas",
+        "seoDescription": "Individualių web ir mobiliųjų aplikacijų kūrimas nuo MVP iki pilnai veikiančios verslo platformos.",
+        "eyebrow": "Aplikacijų kūrimas",
+        "headline": "Jūsų idėja —",
+        "highlight": "veikiantis skaitmeninis produktas.",
+        "description": "Kuriu greitas, patogias ir augimui paruoštas web bei mobiliąsias aplikacijas — nuo pirmos produkto versijos iki individualios verslo platformos.",
+        "benefitsTitle": "Produktas, kurį patogu naudoti ir lengva auginti",
+        "benefitsLead": "Aplikacija projektuojama aplink realius vartotojų poreikius, verslo tikslą ir tvirtą techninį pagrindą.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Aiški produkto kryptis",
+            "description": "Prieš programuojant išgryniname vartotoją, pagrindinę vertę ir svarbiausią pirmos versijos funkcionalumą."
+          },
+          {
+            "number": "02",
+            "title": "Patogi vartotojo patirtis",
+            "description": "Kiekvienas ekranas ir veiksmas kuriamas taip, kad produktu būtų lengva naudotis nuo pirmo prisijungimo."
+          },
+          {
+            "number": "03",
+            "title": "Paruošta plėtrai",
+            "description": "Modulinė architektūra leidžia pridėti funkcijas, integracijas ir didinti vartotojų skaičių."
+          }
+        ],
+        "featureTitle": "Pilnas aplikacijos kūrimo ciklas",
+        "featureLead": "Vienoje vietoje sujungiame produkto logiką, dizainą, programavimą, integracijas ir paleidimą.",
+        "features": [
+          "Produkto strategija ir MVP planas",
+          "UX prototipas ir UI dizainas",
+          "Web bei PWA programavimas",
+          "Vartotojų paskyros ir rolės",
+          "Mokėjimai bei API integracijos",
+          "Testavimas, paleidimas ir plėtra"
+        ],
+        "process": [
+          {
+            "title": "Produkto sesija",
+            "text": "Išgryniname problemą, vartotojus, tikslą ir sėkmės kriterijus."
+          },
+          {
+            "title": "Prototipas",
+            "text": "Sukuriame pagrindinių ekranų logiką ir patikriname vartotojo kelią."
+          },
+          {
+            "title": "Kūrimas",
+            "text": "Programuojame etapais, reguliariai demonstruojame ir testuojame."
+          },
+          {
+            "title": "Paleidimas",
+            "text": "Publikuojame produktą, stebime naudojimą ir planuojame kitą augimo etapą."
+          }
+        ]
+      },
+      "svetainiu-prieziura": {
+        "title": "Svetainių priežiūra",
+        "seoDescription": "Svetainių atnaujinimai, saugumas, atsarginės kopijos ir greita techninė pagalba.",
+        "eyebrow": "Svetainių priežiūra",
+        "headline": "Jūsų svetainė veikia stabiliai.",
+        "highlight": "Jūs dirbate ramiai.",
+        "description": "Prižiūriu svetainės techninę būklę, saugumą ir turinį, kad netikėti trikdžiai nestabdytų jūsų verslo.",
+        "benefitsTitle": "Techniniai rūpesčiai lieka mums",
+        "benefitsLead": "Prevencinė priežiūra kainuoja mažiau nei avarinis gedimų taisymas ir padeda išlaikyti klientų pasitikėjimą.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Stabilus veikimas",
+            "description": "Stebime kritinius rodiklius ir reaguojame į problemas, kol jos netapo nuostoliais."
+          },
+          {
+            "number": "02",
+            "title": "Didesnis saugumas",
+            "description": "Atnaujinimai, atsarginės kopijos ir bazinės saugumo priemonės atliekamos reguliariai."
+          },
+          {
+            "number": "03",
+            "title": "Greita pagalba",
+            "description": "Turite konkretų žmogų smulkiems pakeitimams ir techniniams klausimams."
+          }
+        ],
+        "featureTitle": "Priežiūra pagal jūsų poreikį",
+        "featureLead": "Pasirūpiname kasdieniais techniniais darbais ir aiškiai informuojame apie atliktus veiksmus.",
+        "features": [
+          "TVS ir įskiepių atnaujinimai",
+          "Atsarginės kopijos",
+          "Veikimo stebėjimas",
+          "Saugumo patikros",
+          "Smulkūs turinio pakeitimai",
+          "Konsultacijos ir prioritetinė pagalba"
+        ],
+        "process": [
+          {
+            "title": "Techninis auditas",
+            "text": "Įvertiname esamą būklę, rizikas ir svarbiausius darbus."
+          },
+          {
+            "title": "Priežiūros planas",
+            "text": "Sutariame prioritetus, reagavimo tvarką ir reguliarius veiksmus."
+          },
+          {
+            "title": "Nuolatinė priežiūra",
+            "text": "Atliekame atnaujinimus, kopijas, patikras ir reikalingus pakeitimus."
+          },
+          {
+            "title": "Aiški ataskaita",
+            "text": "Žinote, kas atlikta, kokia būklė ir ką verta planuoti toliau."
+          }
+        ]
+      }
+    },
+    "faq": [
+      {
+        "q": "Kiek kainuoja skaitmeninis projektas?",
+        "a": "Kaina priklauso nuo apimties, integracijų ir dizaino sudėtingumo. Po trumpo pokalbio pateikiame aiškią darbų apimtį, etapus ir kainos intervalą — be netikėtų priedų projekto eigoje."
+      },
+      {
+        "q": "Kiek laiko trunka sukurti svetainę ar aplikaciją?",
+        "a": "Nedidelė reprezentacinė svetainė dažniausiai užtrunka kelias savaites, o individuali sistema ar aplikacija — ilgiau. Tikslų terminą nustatome suskaidę projektą į etapus ir prioritetus."
+      },
+      {
+        "q": "Ar reikia jau turėti dizainą ir visą turinį?",
+        "a": "Ne. Galime pradėti nuo idėjos, eskizo ar esamos svetainės. Padėsime sudėlioti struktūrą, vartotojo kelią ir turinio prioritetus, o vizualinę kryptį patvirtinsime dar prieš programavimą."
+      },
+      {
+        "q": "Kam priklausys sukurtas sprendimas?",
+        "a": "Užbaigus projektą perduodame sutartą kodą, prieigas ir projekto medžiagą. Sprendimas kuriamas jūsų verslui — neliekate pririšti prie uždaros platformos ar vieno tiekėjo."
+      },
+      {
+        "q": "Kas vyksta po paleidimo?",
+        "a": "Po paleidimo patikriname realų veikimą, sutvarkome pastebėtus nesklandumus ir, jei reikia, tęsiame priežiūrą, analitikos gerinimą ar naujų funkcijų kūrimą."
+      },
+      {
+        "q": "Ar galima pradėti nuo mažesnės versijos?",
+        "a": "Taip. Dažnai rekomenduojame pradėti nuo aiškaus MVP: paleisti svarbiausią vertę, surinkti realų grįžtamąjį ryšį ir tik tada investuoti į kitą funkcijų etapą."
+      }
+    ],
+    "legal": {
+      "privacy": {
+        "eyebrow": "Teisinė informacija · 01",
+        "title": "Privatumo politika",
+        "description": "Kaip DevSprendimai renka, naudoja ir saugo jūsų asmens duomenis.",
+        "intro": "Ši politika paaiškina, kokius asmens duomenis tvarkau, kai lankotės devsprendimai.lt, siunčiate projekto užklausą ar tampate klientu.",
+        "highlights": [
+          "Aiškūs tikslai",
+          "Ribotas saugojimas",
+          "Jokių duomenų pardavimų"
+        ],
+        "sections": [
+          {
+            "title": "1. Duomenų valdytojas",
+            "paragraphs": [
+              "Duomenų valdytojas – Aivaras Razvodovskis, vykdantis individualią veiklą pagal pažymą Nr. 1400067. Korespondencijos adresas: Pramonės pr. 28, Kaunas, Lietuva. El. paštas: info@devsprendimai.lt, telefonas: +370 606 06227."
+            ]
+          },
+          {
+            "title": "2. Kokius duomenis tvarkau ir kodėl",
+            "paragraphs": [
+              "Kai pateikiate užklausą, tvarkau vardą, el. paštą, telefono numerį, įmonės pavadinimą, pasirinktą paslaugą ir žinutę. Šie duomenys naudojami atsakyti, įvertinti projektą, parengti pasiūlymą ir imtis veiksmų prieš sudarant sutartį.",
+              "Tik jums leidus analitiką, vidinėje statistikoje registruojamas lankytas puslapis, apsilankymo laikas, nukreipusio domeno ar UTM kampanijos pavadinimas, įrenginio ir naršyklės tipas. IP adresas ir naršyklės eilutė šiuose įrašuose nesaugomi; iš jų sukuriamas kiekvieną mėnesį kintantis vienkryptis pseudoniminis identifikatorius apytiksliam lankytojų skaičiui nustatyti. Duomenys nenaudojami reklaminei profiliacijai. Saugumo žurnalus atskirai gali tvarkyti prieglobos paslaugos teikėjas; formos apsaugai laikinai naudojamas užklausų dažnio ribojimo identifikatorius."
+            ],
+            "bullets": [
+              "Užklausos ir ikisutartinis bendravimas – BDAR 6 str. 1 d. b p.",
+              "Pasirenkama Google Analytics ir vidinė lankomumo analitika – sutikimas pagal BDAR 6 str. 1 d. a p.",
+              "Bendravimas su įmonių atstovais ir svetainės saugumas – teisėtas interesas pagal BDAR 6 str. 1 d. f p.",
+              "Sutarčių ir apskaitos duomenys – sutarties vykdymas ir teisinių prievolių laikymasis."
+            ]
+          },
+          {
+            "title": "3. Saugojimo terminai",
+            "bullets": [
+              "Svetainės kontaktinės užklausos saugomos iki 2 metų nuo pateikimo. Atskirai vykstančiam sutartiniam bendravimui ir dokumentams gali būti taikomi kiti toliau nurodyti terminai.",
+              "Techninių lankomumo duomenų saugojimo laikotarpis – 90 dienų; pasibaigus terminui įrašai periodiškai šalinami.",
+              "Sutarčių, sąskaitų ir apskaitos dokumentai saugomi tiek, kiek reikalauja taikomi teisės aktai.",
+              "Svetainės įrašų terminai tikrinami periodiškai. Jei svetainė kurį laiką nelankoma, kitas valymas atliekamas sulaukus apsilankymo. Serverio kopijoms, el. pašto korespondencijai ir sutartims taikoma atskira saugojimo tvarka."
+            ]
+          },
+          {
+            "title": "4. Duomenų gavėjai",
+            "paragraphs": [
+              "Duomenis gali tvarkyti tik paslaugoms būtini partneriai: Hostinger (svetainės ir el. pašto infrastruktūra), techninės priežiūros ar apskaitos paslaugų teikėjai. Jie duomenis tvarko pagal mano nurodymus ir taikomas apsaugos priemones. Duomenys neparduodami.",
+              "Duomenys gali būti pateikti valstybės institucijoms, kai tai privaloma pagal teisės aktus. Perdavimas už Europos ekonominės erdvės ribų galimas tik taikant BDAR numatytą teisėtą perdavimo pagrindą ir apsaugos priemones."
+            ]
+          },
+          {
+            "title": "5. Jūsų teisės",
+            "paragraphs": [
+              "Turite teisę prašyti susipažinti su savo duomenimis, juos ištaisyti, ištrinti ar apriboti jų tvarkymą, nesutikti su tvarkymu, pagrįstu teisėtu interesu, ir, kai taikoma, gauti duomenis perkeliamu formatu. Prašymą pateikite el. paštu info@devsprendimai.lt. Prieš įvykdant prašymą gali būti paprašyta patvirtinti tapatybę."
+            ]
+          },
+          {
+            "title": "6. Skundai ir saugumas",
+            "paragraphs": [
+              "Jeigu manote, kad duomenys tvarkomi netinkamai, pirmiausia kviečiu susisiekti tiesiogiai. Taip pat turite teisę pateikti skundą Valstybinei duomenų apsaugos inspekcijai.",
+              "Taikomos prieigos kontrolės, saugaus ryšio, atsarginių kopijų ir kitos pagrįstos techninės bei organizacinės priemonės. Vis dėlto nė vienas perdavimo ar saugojimo būdas negali užtikrinti absoliutaus saugumo."
+            ],
+            "links": [
+              {
+                "label": "Valstybinė duomenų apsaugos inspekcija",
+                "href": "https://vdai.lrv.lt/"
+              }
+            ]
+          },
+          {
+            "title": "7. „Google Analytics“",
+            "paragraphs": [
+              "Tik jums sutikus naudojama „Google Analytics 4“ lankomumo analitika. Ji apdoroja puslapių peržiūras, apsilankymų šaltinius, naršyklės ir įrenginio informaciją bei slapukų identifikatorius. Paslaugos teikėjas – Google Ireland Limited; tvarkant duomenis gali dalyvauti Google LLC JAV ir kiti Google paslaugų teikėjai. Apie Google duomenų tvarkymą ir tarptautinio perdavimo priemones skaitykite žemiau pateiktose nuorodose.",
+              "Teisinis pagrindas – jūsų sutikimas (BDAR 6 str. 1 d. a p.). Google žyma iki sutikimo nekraunama. Reklamos personalizavimas ir Google Signals svetainės integracijoje išjungti. Užklausų formų tekstų, el. pašto adresų ar telefono numerių į analitikos įvykius nepridedame.",
+              "Sutikimą bet kada galite atšaukti skiltyje „Slapukų nustatymai“. Atšaukus sustabdomas tolesnis rinkimas ir ištrinami šios svetainės Google Analytics slapukai; tai nepanaikina ankstesnio teisėto tvarkymo. Sutikimo pasirinkimas ir analitikos slapukai galioja iki 180 dienų. Google paskyroje surinktų įvykių saugojimui taikomi tos paskyros saugojimo nustatymai; dėl jų ar duomenų ištrynimo kreipkitės info@devsprendimai.lt."
+            ],
+            "links": [
+              {
+                "label": "Kaip Google naudoja partnerių svetainių duomenis",
+                "href": "https://policies.google.com/technologies/partner-sites"
+              },
+              {
+                "label": "Google duomenų perdavimo priemonės",
+                "href": "https://policies.google.com/privacy/frameworks"
+              }
+            ]
+          },
+          {
+            "title": "8. Politikos pakeitimai",
+            "paragraphs": [
+              "Politika gali būti atnaujinama pasikeitus svetainei, paslaugoms ar teisės aktams. Aktualios redakcijos data visada skelbiama šio puslapio viršuje."
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "eyebrow": "Teisinė informacija · 02",
+        "title": "Slapukų politika",
+        "description": "Būtinieji slapukai, pasirenkama Google Analytics analitika ir jūsų sutikimo valdymas.",
+        "intro": "Svetainėje naudojami būtini sesijos ir saugumo slapukai. Tik jums sutikus įjungiama „Google Analytics 4“ lankomumo analitika. Galite rinktis tik būtinuosius slapukus arba leisti analitiką ir bet kada pakeisti sprendimą.",
+        "highlights": [
+          "Analitika tik sutikus",
+          "Lygiavertis atsisakymas",
+          "Keičiamas pasirinkimas"
+        ],
+        "sections": [
+          {
+            "title": "1. Kas yra slapukai",
+            "paragraphs": [
+              "Slapukai – tai nedideli tekstiniai failai, kuriuos svetainė išsaugo jūsų įrenginyje. Jie padeda užtikrinti saugią sesiją, apsaugoti formas ir palaikyti pagrindines svetainės funkcijas."
+            ]
+          },
+          {
+            "title": "2. Naudojami slapukai",
+            "table": [
+              [
+                "Slapukas",
+                "Paskirtis",
+                "Trukmė"
+              ],
+              [
+                "Sesijos slapukas (pvz., devsprendimai-session)",
+                "Būtinas sesijos veikimui ir saugumui.",
+                "Iki 120 min. neveiklos"
+              ],
+              [
+                "XSRF-TOKEN",
+                "Apsaugo formas nuo neteisėtų užklausų (CSRF).",
+                "Iki 120 min."
+              ],
+              [
+                "_ga, _ga_LYW20LSJG9",
+                "Google Analytics lankytojo ir sesijos identifikatoriai. Tik sutikus.",
+                "Iki 180 dienų"
+              ],
+              [
+                "devsprendimai.cookie-consent.v2 (localStorage)",
+                "Prisimena jūsų slapukų pasirinkimą šioje naršyklėje.",
+                "180 dienų"
+              ],
+              [
+                "devsprendimai_analytics_consent",
+                "Perduoda serveriui tik jūsų analitikos pasirinkimą, be lankytojo identifikatoriaus.",
+                "Iki 180 dienų"
+              ]
+            ]
+          },
+          {
+            "title": "3. Sutikimas ir jo atšaukimas",
+            "paragraphs": [
+              "Būtinieji slapukai užtikrina svetainės veikimą ir saugumą. Analitiniai slapukai yra pasirenkami: kol nepaspaudžiate „Leisti analitiką“, Google žyma nekraunama ir Google analitikos užklausos nesiunčiamos. „Tik būtinieji“ išsaugo atsisakymą.",
+              "Savo sprendimą galite pakeisti paspaudę „Slapukų nustatymai“ puslapio apačioje arba „Slapukai“ pilno ekrano projekto peržiūroje. Atšaukus sutikimą ištrinami Google Analytics slapukai ir puslapis perkraunamas, kad analitika būtų sustabdyta. Pasibaigus 180 dienų pasirinkimo galiojimui paprašoma pasirinkti iš naujo."
+            ]
+          },
+          {
+            "title": "4. Naršyklės nustatymai",
+            "paragraphs": [
+              "Slapukus galite ištrinti arba blokuoti naršyklės nustatymuose. Užblokavus būtinuosius slapukus kontaktinė forma, prisijungimas ar kitos apsaugotos funkcijos gali neveikti tinkamai."
+            ]
+          },
+          {
+            "title": "5. Analitika ir vidinė statistika",
+            "paragraphs": [
+              "Google Analytics padeda suprasti, kurie puslapiai lankomi ir iš kur atvyksta lankytojai. Reklaminiai slapukai, Google Signals ir reklamos personalizavimas šioje integracijoje neįjungiami. Paslaugą teikia Google Ireland Limited; daugiau apie duomenų tvarkymą pateikta Privatumo politikoje.",
+              "Tas pats pasirinkimas valdo ir vidinę serverio lankomumo statistiką: be sutikimo ji nerenkama. Leidimas perduodamas pirmosios šalies pasirinkimo slapuku, todėl vidinė statistika pradedama nuo tolesnės puslapio užklausos. Šie įrašai saugomi iki 90 dienų. Būtini infrastruktūros ir saugumo žurnalai nėra ši analitika ir gali būti tvarkomi svetainės apsaugos tikslu."
+            ],
+            "links": [
+              {
+                "label": "Google duomenų naudojimas",
+                "href": "https://policies.google.com/technologies/partner-sites"
+              }
+            ]
+          },
+          {
+            "title": "6. Kontaktai",
+            "paragraphs": [
+              "Klausimus apie slapukus siųskite adresu info@devsprendimai.lt. Duomenų valdytojo rekvizitai pateikti Privatumo politikoje."
+            ]
+          }
+        ]
+      },
+      "terms": {
+        "eyebrow": "Teisinė informacija · 03",
+        "title": "Paslaugų teikimo sąlygos",
+        "description": "Bendros DevSprendimai skaitmeninių paslaugų teikimo sąlygos.",
+        "intro": "Šios sąlygos taikomos interneto svetainių, el. parduotuvių, CRM, aplikacijų, automatizavimo, priežiūros ir kitoms individualiai sutartoms skaitmeninėms paslaugoms.",
+        "highlights": [
+          "Aiški projekto apimtis",
+          "Skaidrūs mokėjimai",
+          "Vartotojų teisės"
+        ],
+        "sections": [
+          {
+            "title": "1. Paslaugų teikėjas",
+            "paragraphs": [
+              "Aivaras Razvodovskis, individualios veiklos pažymos Nr. 1400067, Pramonės pr. 28, Kaunas, Lietuva. El. paštas: info@devsprendimai.lt, tel. +370 606 06227."
+            ]
+          },
+          {
+            "title": "2. Sąlygų taikymas ir sutarties sudarymas",
+            "paragraphs": [
+              "Svetainėje pateikta informacija ir užklausos forma savaime nėra įpareigojantis pasiūlymas ar sutartis. Sutartis sudaroma šalims raštu patvirtinus individualų pasiūlymą, darbų apimtį, kainą, terminus ir mokėjimo tvarką. Individualaus pasiūlymo ar sutarties nuostatos turi pirmenybę prieš šias bendrąsias sąlygas."
+            ]
+          },
+          {
+            "title": "3. Apimtis, kaina ir mokėjimai",
+            "paragraphs": [
+              "Svetainėje rodomos kainos yra orientacinės pradinės kainos, jeigu aiškiai nenurodyta kitaip. Galutinė kaina priklauso nuo funkcijų, integracijų, turinio ir terminų bei patvirtinama prieš pradedant darbus.",
+              "Mokėjimų etapai ir terminai nustatomi pasiūlyme. Vėluojant atsiskaityti darbai gali būti pagrįstai sustabdyti, apie tai iš anksto informavus klientą. Papildomi darbai atliekami tik suderinus jų apimtį ir kainą."
+            ]
+          },
+          {
+            "title": "4. Kliento pareigos",
+            "bullets": [
+              "Laiku pateikti teisingą informaciją, turinį, prieigas ir sprendimus.",
+              "Užtikrinti, kad pateiktą tekstą, vaizdus, prekių ženklus ir kitą medžiagą klientas turi teisę naudoti.",
+              "Per sutartą laiką patikrinti pateiktus etapus ir pateikti vieningą grįžtamąjį ryšį.",
+              "Saugiai laikyti perduotus prisijungimo duomenis ir informuoti apie saugumo incidentus."
+            ]
+          },
+          {
+            "title": "5. Terminai, pakeitimai ir priėmimas",
+            "paragraphs": [
+              "Terminai skaičiuojami nuo sutarto avanso ir visos darbui būtinos informacijos gavimo, jei pasiūlyme nenustatyta kitaip. Klientui vėluojant pateikti medžiagą ar sprendimus, terminai gali būti atitinkamai pratęsti.",
+              "Į kainą įtrauktas korekcijų skaičius nustatomas individualiame pasiūlyme. Apimties pakeitimai gali keisti kainą ir terminus. Apie pastebėtus trūkumus klientas turi pranešti kuo greičiau ir suteikti pagrįstą galimybę juos ištaisyti."
+            ]
+          },
+          {
+            "title": "6. Intelektinė nuosavybė",
+            "paragraphs": [
+              "Individualiai sukurtų ir visiškai apmokėtų rezultatų turtinės teisės klientui perduodamos tokia apimtimi, kuri nustatyta pasiūlyme ar sutartyje. Iki visiško atsiskaitymo rezultatai negali būti naudojami komerciniam paleidimui, jei raštu nesusitarta kitaip.",
+              "Trečiųjų šalių programinei įrangai, šriftams, nuotraukoms, įskiepiams ir atvirojo kodo komponentams taikomos jų licencijos. Bendrosios žinios, metodai ir anksčiau sukurti pakartotinai naudojami komponentai lieka jų teisėto savininko nuosavybe."
+            ]
+          },
+          {
+            "title": "7. Vartotojų teisė atsisakyti nuotolinės sutarties",
+            "paragraphs": [
+              "Fizinis asmuo, sudarantis sutartį asmeniniais tikslais, paprastai turi teisę per 14 dienų nuo nuotolinės paslaugų sutarties sudarymo jos atsisakyti nenurodydamas priežasties. Apie atsisakymą pakanka aiškiai pranešti el. paštu info@devsprendimai.lt.",
+              "Jeigu vartotojas aiškiai paprašo pradėti darbus nepasibaigus 14 dienų terminui ir vėliau atsisako sutarties, jis sumoka proporcingai už iki atsisakymo suteiktas paslaugas. Teisė atsisakyti visiškai suteiktos paslaugos pasibaigia tik vartotojui iš anksto aiškiai sutikus pradėti vykdymą ir patvirtinus, kad visiškai įvykdžius sutartį ši teisė bus prarasta. Konkretaus užsakymo dokumentuose pateikiama visa privaloma informacija ir pasirinkimai."
+            ],
+            "links": [
+              {
+                "label": "ES informacija apie teisę atsisakyti sutarties",
+                "href": "https://europa.eu/youreurope/citizens/consumers/shopping/returns/index_en.htm"
+              }
+            ]
+          },
+          {
+            "title": "8. Atsakomybė ir paslaugų tęstinumas",
+            "paragraphs": [
+              "Paslaugos teikiamos profesionaliai ir pagal sutartą specifikaciją. Paslaugų teikėjas neatsako už kliento pateiktos medžiagos teisėtumą, kliento ar trečiųjų šalių pakeitimus, išorinių platformų sutrikimus ar aplinkybes, kurių pagrįstai negali kontroliuoti.",
+              "Jokia šių sąlygų nuostata neriboja atsakomybės, kurios negalima riboti pagal įstatymus, ir nepanaikina privalomų vartotojų teisių. Atsarginės kopijos, priežiūra ir reagavimo terminai taikomi tik tada, kai jie įtraukti į pasirinktą planą ar atskirą susitarimą."
+            ]
+          },
+          {
+            "title": "9. Sutarties nutraukimas",
+            "paragraphs": [
+              "Sutarties nutraukimo pagrindai ir atsiskaitymas nustatomi individualiame susitarime. Nutraukus projektą atsiskaitoma už faktiškai atliktus ir perduodamus darbus bei pagrįstas, iš anksto suderintas išlaidas. Vartotojams visais atvejais taikomos imperatyvios vartotojų apsaugos taisyklės."
+            ]
+          },
+          {
+            "title": "10. Skundai ir ginčai",
+            "paragraphs": [
+              "Klausimus ar pretenzijas siųskite info@devsprendimai.lt. Vartotojo rašytinis prašymas išnagrinėjamas nemokamai ir motyvuotas atsakymas pateikiamas ne vėliau kaip per 14 dienų.",
+              "Jeigu atsakymas netenkina arba per 14 dienų jo negaunate, galite kreiptis į Valstybinę vartotojų teisių apsaugos tarnybą, A. Goštauto g. 12, 01108 Vilnius, arba pateikti prašymą per Vartotojų teisių informacinę sistemą. Ginčams taikoma Lietuvos Respublikos teisė, neapribojant vartotojui privalomai taikomos apsaugos."
+            ],
+            "links": [
+              {
+                "label": "Valstybinė vartotojų teisių apsaugos tarnyba",
+                "href": "https://vvtat.lrv.lt/"
+              },
+              {
+                "label": "Pateikti prašymą per VTIS",
+                "href": "https://www.vtis.lt/"
+              }
+            ]
+          },
+          {
+            "title": "11. Sąlygų pakeitimai",
+            "paragraphs": [
+              "Atnaujintos sąlygos taikomos naujiems užsakymams nuo jų paskelbimo. Jau sudarytoms sutartims pakeitimai taikomi tik teisės aktų nustatyta tvarka arba šalims susitarus."
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "en": {
+    "services": {
+      "interneto-svetaines": {
+        "title": "Website development",
+        "seoDescription": "Fast, modern and conversion-ready websites for ambitious businesses.",
+        "eyebrow": "Business websites",
+        "headline": "A website that looks exceptional and",
+        "highlight": "grows your business.",
+        "description": "I build fast, clear and conversion-focused websites that present your business professionally and turn visitors into enquiries.",
+        "benefitsTitle": "Built for outcomes, not just appearance",
+        "benefitsLead": "Every decision supports trust, usability and more qualified enquiries.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Clear message",
+            "description": "Visitors quickly understand your value and why they should choose you."
+          },
+          {
+            "number": "02",
+            "title": "Speed and SEO",
+            "description": "A clean technical foundation helps users and search engines."
+          },
+          {
+            "number": "03",
+            "title": "Conversion logic",
+            "description": "Content and actions guide visitors naturally towards contact."
+          }
+        ],
+        "featureTitle": "Everything needed for a confident launch",
+        "featureLead": "Strategy, design, development and launch managed through one clear process.",
+        "features": [
+          "Content and page structure",
+          "Custom UI/UX design",
+          "Development and CMS",
+          "Contact and enquiry forms",
+          "Analytics integration",
+          "Training and launch support"
+        ],
+        "process": [
+          {
+            "title": "Discovery",
+            "text": "We clarify your business, audience and measurable goals."
+          },
+          {
+            "title": "Solution plan",
+            "text": "You receive a clear scope, stages, price and timeline."
+          },
+          {
+            "title": "Build and review",
+            "text": "You see progress regularly and provide feedback throughout delivery."
+          },
+          {
+            "title": "Launch and growth",
+            "text": "We launch, verify the result and plan the next improvements."
+          }
+        ]
+      },
+      "el-parduotuves": {
+        "title": "E-commerce development",
+        "seoDescription": "Fast, user-friendly online stores with the integrations your business needs.",
+        "eyebrow": "Online stores",
+        "headline": "An online store that is easy to",
+        "highlight": "buy from and scale.",
+        "description": "I build mobile-friendly stores that simplify purchasing, order management and future growth.",
+        "benefitsTitle": "Less friction for buyers, more control for you",
+        "benefitsLead": "The store is designed around the complete purchase journey.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Easy purchasing",
+            "description": "Clear products, filters, basket and checkout on every device."
+          },
+          {
+            "number": "02",
+            "title": "Automated management",
+            "description": "Payments, invoices, stock and delivery work as one system."
+          },
+          {
+            "number": "03",
+            "title": "Ready to grow",
+            "description": "Promotions, analytics and marketing tools are built into the foundation."
+          }
+        ],
+        "featureTitle": "Commerce features that work together",
+        "featureLead": "Only the functions and integrations your sales model actually needs.",
+        "features": [
+          "Product catalogue and filters",
+          "Bank and card payments",
+          "Courier and parcel terminal integrations",
+          "Discounts and loyalty",
+          "Invoice generation",
+          "Sales analytics"
+        ],
+        "process": [
+          {
+            "title": "Discovery",
+            "text": "We clarify your business, audience and measurable goals."
+          },
+          {
+            "title": "Solution plan",
+            "text": "You receive a clear scope, stages, price and timeline."
+          },
+          {
+            "title": "Build and review",
+            "text": "You see progress regularly and provide feedback throughout delivery."
+          },
+          {
+            "title": "Launch and growth",
+            "text": "We launch, verify the result and plan the next improvements."
+          }
+        ]
+      },
+      "crm-sistemos": {
+        "title": "Custom CRM development",
+        "seoDescription": "Custom CRM systems for managing customers, sales and team workflows.",
+        "eyebrow": "CRM systems",
+        "headline": "Customers, sales and team activity",
+        "highlight": "in one place.",
+        "description": "I create CRM systems shaped around your real workflow, helping teams move faster and lose fewer opportunities.",
+        "benefitsTitle": "The system adapts to your business",
+        "benefitsLead": "Functionality follows your real process, making adoption easier.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "One clear view",
+            "description": "Contacts, history, proposals and tasks stay together."
+          },
+          {
+            "number": "02",
+            "title": "Controlled sales",
+            "description": "Track every stage, owner and next action."
+          },
+          {
+            "number": "03",
+            "title": "Less manual work",
+            "description": "Reminders, documents and data flows are automated."
+          }
+        ],
+        "featureTitle": "Modules built around your workflow",
+        "featureLead": "Start with the essentials and expand as your business grows.",
+        "features": [
+          "Customer and contact database",
+          "Sales pipeline",
+          "Tasks and reminders",
+          "Proposals and documents",
+          "Roles and permissions",
+          "Reports and integrations"
+        ],
+        "process": [
+          {
+            "title": "Discovery",
+            "text": "We clarify your business, audience and measurable goals."
+          },
+          {
+            "title": "Solution plan",
+            "text": "You receive a clear scope, stages, price and timeline."
+          },
+          {
+            "title": "Build and review",
+            "text": "You see progress regularly and provide feedback throughout delivery."
+          },
+          {
+            "title": "Launch and growth",
+            "text": "We launch, verify the result and plan the next improvements."
+          }
+        ]
+      },
+      "automatizacija": {
+        "title": "Business process automation",
+        "seoDescription": "Workflow automation, API integrations and less manual work for your team.",
+        "eyebrow": "Automation",
+        "headline": "Less repetition.",
+        "highlight": "More meaningful work.",
+        "description": "I connect systems and automate repetitive processes so your team saves time and avoids preventable errors.",
+        "benefitsTitle": "Automation that produces real value",
+        "benefitsLead": "We begin with the processes that consume the most time.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Time saved",
+            "description": "Repeated actions happen automatically."
+          },
+          {
+            "number": "02",
+            "title": "Fewer errors",
+            "description": "Data moves consistently between systems."
+          },
+          {
+            "number": "03",
+            "title": "Clear processes",
+            "description": "Every step has rules, status and ownership."
+          }
+        ],
+        "featureTitle": "Connect the tools you already use",
+        "featureLead": "APIs, forms, CRM, email and documents can operate as one workflow.",
+        "features": [
+          "Process analysis",
+          "API integrations",
+          "Automatic notifications",
+          "Document generation",
+          "Data synchronisation",
+          "Monitoring and error handling"
+        ],
+        "process": [
+          {
+            "title": "Discovery",
+            "text": "We clarify your business, audience and measurable goals."
+          },
+          {
+            "title": "Solution plan",
+            "text": "You receive a clear scope, stages, price and timeline."
+          },
+          {
+            "title": "Build and review",
+            "text": "You see progress regularly and provide feedback throughout delivery."
+          },
+          {
+            "title": "Launch and growth",
+            "text": "We launch, verify the result and plan the next improvements."
+          }
+        ]
+      },
+      "aplikaciju-kurimas": {
+        "title": "Application development",
+        "seoDescription": "Custom web and mobile applications from MVP to a complete business platform.",
+        "eyebrow": "Web and mobile apps",
+        "headline": "Turn your idea into a",
+        "highlight": "real digital product.",
+        "description": "I design and build applications for customers, teams and new business models — from focused MVP to scalable platform.",
+        "benefitsTitle": "A product with a clear direction",
+        "benefitsLead": "We validate the user, value and priority functionality before building.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Clear product scope",
+            "description": "The first release focuses on the most valuable problem."
+          },
+          {
+            "number": "02",
+            "title": "Intuitive experience",
+            "description": "Every screen supports a simple user journey."
+          },
+          {
+            "number": "03",
+            "title": "Ready to scale",
+            "description": "Modular architecture supports new features and integrations."
+          }
+        ],
+        "featureTitle": "From prototype to production",
+        "featureLead": "Product thinking, design and engineering stay connected.",
+        "features": [
+          "Product and user analysis",
+          "Interactive UX prototype",
+          "Custom UI design",
+          "Frontend and backend development",
+          "API integrations",
+          "Launch and analytics"
+        ],
+        "process": [
+          {
+            "title": "Discovery",
+            "text": "We clarify your business, audience and measurable goals."
+          },
+          {
+            "title": "Solution plan",
+            "text": "You receive a clear scope, stages, price and timeline."
+          },
+          {
+            "title": "Build and review",
+            "text": "You see progress regularly and provide feedback throughout delivery."
+          },
+          {
+            "title": "Launch and growth",
+            "text": "We launch, verify the result and plan the next improvements."
+          }
+        ]
+      },
+      "svetainiu-prieziura": {
+        "title": "Website maintenance",
+        "seoDescription": "Updates, security, backups and responsive technical support.",
+        "eyebrow": "Maintenance",
+        "headline": "A website that stays",
+        "highlight": "fast and reliable.",
+        "description": "Regular updates, backups, monitoring and practical support keep your website healthy after launch.",
+        "benefitsTitle": "Fewer surprises, more stability",
+        "benefitsLead": "Technical care protects your investment and customer experience.",
+        "benefits": [
+          {
+            "number": "01",
+            "title": "Stable operation",
+            "description": "Critical health indicators are monitored."
+          },
+          {
+            "number": "02",
+            "title": "Better security",
+            "description": "Updates and backups are handled regularly."
+          },
+          {
+            "number": "03",
+            "title": "Fast support",
+            "description": "You have a reliable contact for technical questions."
+          }
+        ],
+        "featureTitle": "Practical ongoing care",
+        "featureLead": "A plan matched to the importance and complexity of your website.",
+        "features": [
+          "Core and plugin updates",
+          "Automated backups",
+          "Security checks",
+          "Performance monitoring",
+          "Small content changes",
+          "Monthly status summary"
+        ],
+        "process": [
+          {
+            "title": "Discovery",
+            "text": "We clarify your business, audience and measurable goals."
+          },
+          {
+            "title": "Solution plan",
+            "text": "You receive a clear scope, stages, price and timeline."
+          },
+          {
+            "title": "Build and review",
+            "text": "You see progress regularly and provide feedback throughout delivery."
+          },
+          {
+            "title": "Launch and growth",
+            "text": "We launch, verify the result and plan the next improvements."
+          }
+        ]
+      }
+    },
+    "faq": [
+      {
+        "q": "How much does a digital project cost?",
+        "a": "The price depends on scope, integrations and design complexity. After a short conversation, you receive a clear scope, stages and price range without unexpected additions during delivery."
+      },
+      {
+        "q": "How long does a website or application take?",
+        "a": "A compact company website usually takes a few weeks, while a custom system or application takes longer. We confirm the timeline after dividing the project into clear stages and priorities."
+      },
+      {
+        "q": "Do I need to have the design and all content ready?",
+        "a": "No. We can start with an idea, sketch or an existing website. I help shape the structure, user journey and content priorities before development begins."
+      },
+      {
+        "q": "Who owns the completed solution?",
+        "a": "After completion, you receive the agreed source code, access credentials and project materials. The solution belongs to your business and does not lock you into a closed platform."
+      },
+      {
+        "q": "What happens after launch?",
+        "a": "After launch, I verify real-world operation, resolve any issues and can continue with maintenance, analytics improvements or new features."
+      },
+      {
+        "q": "Can we start with a smaller version?",
+        "a": "Yes. An MVP is often the best first step: launch the most important value, gather real feedback and invest in the next feature stage with more confidence."
+      }
+    ],
+    "legal": {
+      "privacy": {
+        "eyebrow": "Legal information · 01",
+        "title": "Privacy Policy",
+        "description": "How DevSprendimai collects, uses and protects personal data.",
+        "intro": "This policy explains how I process personal data when you visit devsprendimai.lt, submit a project enquiry or become a client.",
+        "highlights": [
+          "Clear purposes",
+          "Limited retention",
+          "No sale of data"
+        ],
+        "sections": [
+          {
+            "title": "1. Data controller",
+            "paragraphs": [
+              "The controller is Aivaras Razvodovskis, operating under individual activity certificate No. 1400067. Correspondence address: Pramonės pr. 28, Kaunas, Lithuania. Email: info@devsprendimai.lt, phone: +370 606 06227."
+            ]
+          },
+          {
+            "title": "2. Data, purposes and legal bases",
+            "paragraphs": [
+              "When you submit an enquiry, I process your name, email, phone number, company, selected service and message to respond, assess the project, prepare a proposal and take steps before entering into a contract.",
+              "Only after you allow analytics, internal statistics record the visited page, visit time, referring domain or UTM campaign, device type and browser type. These records do not store raw IP addresses or user-agent strings; these are converted into a one-way pseudonymous identifier that changes monthly to estimate visitor counts. The data are not used for advertising profiles. The hosting provider may separately process security logs; form protection temporarily uses a rate-limiting identifier."
+            ],
+            "bullets": [
+              "Enquiries and pre-contract communication – Article 6(1)(b) GDPR.",
+              "Optional Google Analytics and internal visitor analytics – consent under Article 6(1)(a) GDPR.",
+              "Communication with company representatives and website security – legitimate interests under Article 6(1)(f) GDPR.",
+              "Contract and accounting data – contract performance and compliance with legal obligations."
+            ]
+          },
+          {
+            "title": "3. Retention",
+            "bullets": [
+              "Website enquiries are retained for up to 2 years from submission. Separate contractual correspondence and documents may follow the other retention periods below.",
+              "The retention period for technical visit records is 90 days; expired records are removed periodically.",
+              "Contracts, invoices and accounting records are retained for the periods required by applicable law.",
+              "Website records are checked periodically. If the site is idle, the next cleanup occurs when it receives a visit. Server backups, email correspondence and contracts follow separate retention procedures."
+            ]
+          },
+          {
+            "title": "4. Recipients and transfers",
+            "paragraphs": [
+              "Data may be processed by providers necessary for the service, including Hostinger (website and email infrastructure), technical maintenance and accounting providers. They process data under appropriate obligations. Personal data are not sold.",
+              "Data may be disclosed to public authorities where legally required. Transfers outside the EEA take place only with a lawful GDPR transfer mechanism and appropriate safeguards."
+            ]
+          },
+          {
+            "title": "5. Your rights",
+            "paragraphs": [
+              "You may request access, correction, deletion or restriction, object to processing based on legitimate interests and, where applicable, request data portability. Contact info@devsprendimai.lt. Identity verification may be required before fulfilling a request."
+            ]
+          },
+          {
+            "title": "6. Complaints and security",
+            "paragraphs": [
+              "If you believe your data are processed improperly, please contact me first. You may also lodge a complaint with the Lithuanian State Data Protection Inspectorate.",
+              "Reasonable access controls, secure connections, backups and organisational safeguards are used, although no transmission or storage method can guarantee absolute security."
+            ],
+            "links": [
+              {
+                "label": "Lithuanian State Data Protection Inspectorate",
+                "href": "https://vdai.lrv.lt/en/"
+              }
+            ]
+          },
+          {
+            "title": "7. Google Analytics",
+            "paragraphs": [
+              "Google Analytics 4 is enabled only with your consent. It processes page views, traffic sources, browser and device information, and cookie identifiers. The provider is Google Ireland Limited; processing may involve Google LLC in the US and other Google providers. Details of Google data processing and transfer safeguards are linked below.",
+              "The legal basis is your consent (Article 6(1)(a) GDPR). The Google tag is not loaded before consent. Advertising personalisation and Google Signals are disabled in this integration. We do not add enquiry text, email addresses or phone numbers to analytics events.",
+              "You can withdraw consent through Cookie settings at any time. Withdrawal stops further collection and deletes this site’s Google Analytics cookies, without affecting earlier lawful processing. Your choice and analytics cookies last up to 180 days. Collected event retention is governed by the Analytics account settings; contact info@devsprendimai.lt for details or deletion requests."
+            ],
+            "links": [
+              {
+                "label": "How Google uses data from partner sites",
+                "href": "https://policies.google.com/technologies/partner-sites"
+              },
+              {
+                "label": "Google data transfer safeguards",
+                "href": "https://policies.google.com/privacy/frameworks"
+              }
+            ]
+          },
+          {
+            "title": "8. Changes",
+            "paragraphs": [
+              "This policy may be updated when the website, services or law changes. The current revision date is always shown at the top of this page."
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "eyebrow": "Legal information · 02",
+        "title": "Cookie Policy",
+        "description": "Essential cookies, optional Google Analytics and your consent choices.",
+        "intro": "The site uses essential session and security cookies. Google Analytics 4 is enabled only with your permission. You can choose essential cookies only or allow analytics, and change your decision at any time.",
+        "highlights": [
+          "Analytics by consent",
+          "Equally easy refusal",
+          "Change at any time"
+        ],
+        "sections": [
+          {
+            "title": "1. What cookies are",
+            "paragraphs": [
+              "Cookies are small text files saved on your device. They support a secure session, protect forms and enable core website functionality."
+            ]
+          },
+          {
+            "title": "2. Cookies used",
+            "table": [
+              [
+                "Cookie",
+                "Purpose",
+                "Duration"
+              ],
+              [
+                "Session cookie (e.g. devsprendimai-session)",
+                "Required for session operation and security.",
+                "Up to 120 min. of inactivity"
+              ],
+              [
+                "XSRF-TOKEN",
+                "Protects forms against unauthorised requests (CSRF).",
+                "Up to 120 minutes"
+              ],
+              [
+                "_ga, _ga_LYW20LSJG9",
+                "Google Analytics visitor and session identifiers. Only with consent.",
+                "Up to 180 days"
+              ],
+              [
+                "devsprendimai.cookie-consent.v2 (localStorage)",
+                "Remembers your cookie choice in this browser.",
+                "180 days"
+              ],
+              [
+                "devsprendimai_analytics_consent",
+                "Tells the server only your analytics preference, without a visitor identifier.",
+                "Up to 180 days"
+              ]
+            ]
+          },
+          {
+            "title": "3. Consent and withdrawal",
+            "paragraphs": [
+              "Essential cookies keep the site secure and functional. Analytics is optional: no Google tag is loaded or analytics requests sent until you choose Allow analytics. Essential only saves your refusal.",
+              "Change your decision through Cookie settings in the footer or Cookies in the full-screen project viewer. Withdrawing consent deletes Google Analytics cookies and reloads the page to stop analytics. After 180 days, you are asked to choose again."
+            ]
+          },
+          {
+            "title": "4. Browser settings",
+            "paragraphs": [
+              "You can delete or block cookies in your browser. Blocking essential cookies may prevent contact forms, sign-in or other protected functions from working correctly."
+            ]
+          },
+          {
+            "title": "5. Analytics and internal statistics",
+            "paragraphs": [
+              "Google Analytics helps us understand which pages are visited and where visitors come from. Advertising cookies, Google Signals and advertising personalisation are not enabled by this integration. Google Ireland Limited provides the service; see the Privacy Policy for data-processing details.",
+              "The same choice controls internal server-side visitor statistics: they are not collected without consent. A first-party preference cookie carries that permission, so internal statistics start with the next page request. These records are retained for up to 90 days. Essential infrastructure and security logs are separate from these analytics and may be processed to protect the website."
+            ],
+            "links": [
+              {
+                "label": "Google data usage",
+                "href": "https://policies.google.com/technologies/partner-sites"
+              }
+            ]
+          },
+          {
+            "title": "6. Contact",
+            "paragraphs": [
+              "Questions about cookies may be sent to info@devsprendimai.lt. Full controller details are available in the Privacy Policy."
+            ]
+          }
+        ]
+      },
+      "terms": {
+        "eyebrow": "Legal information · 03",
+        "title": "Terms of Service",
+        "description": "General terms for DevSprendimai digital services.",
+        "intro": "These terms apply to websites, e-commerce, CRM, applications, automation, maintenance and other digital services agreed individually with a client.",
+        "highlights": [
+          "Defined project scope",
+          "Transparent payments",
+          "Consumer rights"
+        ],
+        "sections": [
+          {
+            "title": "1. Service provider",
+            "paragraphs": [
+              "Aivaras Razvodovskis, individual activity certificate No. 1400067, Pramonės pr. 28, Kaunas, Lithuania. Email: info@devsprendimai.lt, phone: +370 606 06227."
+            ]
+          },
+          {
+            "title": "2. Application and contract formation",
+            "paragraphs": [
+              "Website information and the enquiry form are not a binding offer or contract. A contract is formed when the parties confirm in writing an individual proposal covering scope, price, timing and payment. The individual proposal or contract prevails over these general terms."
+            ]
+          },
+          {
+            "title": "3. Scope, price and payment",
+            "paragraphs": [
+              "Website prices are indicative starting prices unless expressly stated otherwise. The final price depends on functionality, integrations, content and timing and is confirmed before work starts.",
+              "Payment stages are set out in the proposal. Work may be reasonably paused after notice if payment is overdue. Additional work is performed only after its scope and price are agreed."
+            ]
+          },
+          {
+            "title": "4. Client responsibilities",
+            "bullets": [
+              "Provide accurate information, content, access and decisions on time.",
+              "Ensure the client has rights to use all supplied text, images, trademarks and materials.",
+              "Review milestones and provide consolidated feedback within the agreed time.",
+              "Protect credentials and report security incidents."
+            ]
+          },
+          {
+            "title": "5. Timing, changes and acceptance",
+            "paragraphs": [
+              "Unless agreed otherwise, timelines begin after receipt of the agreed advance payment and all information needed for the work. Client delays may extend the schedule accordingly.",
+              "Included revisions are defined in the proposal. Scope changes may affect price and timing. The client should report defects promptly and allow a reasonable opportunity to correct them."
+            ]
+          },
+          {
+            "title": "6. Intellectual property",
+            "paragraphs": [
+              "Economic rights to bespoke, fully paid deliverables are transferred to the extent stated in the proposal or contract. Deliverables may not be commercially launched before full payment unless agreed otherwise.",
+              "Third-party software, fonts, images, plugins and open-source components remain subject to their licences. General know-how, methods and pre-existing reusable components remain the property of their lawful owner."
+            ]
+          },
+          {
+            "title": "7. Consumer withdrawal rights",
+            "paragraphs": [
+              "An individual contracting for personal purposes generally has 14 days from conclusion of a distance service contract to withdraw without giving a reason. A clear notice sent to info@devsprendimai.lt is sufficient.",
+              "If the consumer expressly requests performance to begin during the 14-day period and later withdraws, the consumer pays a proportionate amount for services supplied. The right is lost after full performance only where the consumer gave prior express consent and acknowledged that full performance would end the right. The order documents will provide all mandatory information and choices."
+            ],
+            "links": [
+              {
+                "label": "EU information on withdrawal rights",
+                "href": "https://europa.eu/youreurope/citizens/consumers/shopping/returns/index_en.htm"
+              }
+            ]
+          },
+          {
+            "title": "8. Liability and continuity",
+            "paragraphs": [
+              "Services are provided professionally and to the agreed specification. The provider is not responsible for the legality of client materials, changes by the client or third parties, external platform failures or circumstances outside reasonable control.",
+              "Nothing in these terms excludes liability that cannot legally be excluded or limits mandatory consumer rights. Backups, maintenance and response times apply only when included in the selected plan or a separate agreement."
+            ]
+          },
+          {
+            "title": "9. Termination",
+            "paragraphs": [
+              "Termination and settlement are governed by the individual agreement. On termination, payment is due for work actually completed and transferred and for reasonable pre-agreed expenses. Mandatory consumer protections always apply."
+            ]
+          },
+          {
+            "title": "10. Complaints and disputes",
+            "paragraphs": [
+              "Send questions or claims to info@devsprendimai.lt. A consumer’s written request will be reviewed free of charge and a reasoned response provided within 14 days.",
+              "If the response is unsatisfactory or not received within 14 days, consumers may contact the Lithuanian State Consumer Rights Protection Authority, A. Goštauto g. 12, 01108 Vilnius, or submit a request through VTIS. Lithuanian law applies without limiting mandatory consumer protection."
+            ],
+            "links": [
+              {
+                "label": "State Consumer Rights Protection Authority",
+                "href": "https://vvtat.lrv.lt/en/"
+              },
+              {
+                "label": "Submit a request through VTIS",
+                "href": "https://www.vtis.lt/"
+              }
+            ]
+          },
+          {
+            "title": "11. Changes",
+            "paragraphs": [
+              "Updated terms apply to new orders from publication. Existing contracts change only as permitted by law or agreed by the parties."
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

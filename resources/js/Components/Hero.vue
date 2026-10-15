@@ -108,10 +108,10 @@ onUnmounted(() => {
 .hero-signals i:nth-child(3) { right: 7%; top: 58%; animation-delay: -5s; }
 .hero-signals i:nth-child(4) { left: 38%; bottom: 13%; animation-delay: -2.1s; }
 .hero-layout { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0,1.12fr) minmax(360px,.7fr); align-items: center; gap: clamp(3rem,6vw,6rem); }
-.hero-copy { animation: rise .8s cubic-bezier(.2,.7,.2,1) both; }
+.hero-copy { min-width: 0; animation: rise .8s cubic-bezier(.2,.7,.2,1) both; }
 .hero-badge { display: inline-flex; align-items: center; gap: .65rem; padding: .55rem .85rem; border: 1px solid rgba(34,211,238,.18); border-radius: 999px; color: #9aeaf6; background: rgba(34,211,238,.07); font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .hero-badge i { width: 7px; height: 7px; border-radius: 50%; background: #22d3ee; box-shadow: 0 0 14px #22d3ee; animation: pulse 2s ease-in-out infinite; }
-.hero-copy h1 { max-width: 950px; margin-top: 1.6rem; font-size: clamp(3.5rem,7.3vw,7.8rem); font-weight: 850; letter-spacing: -.07em; line-height: .88; }
+.hero-copy h1 { max-width: 950px; margin-top: 1.6rem; overflow-wrap: anywhere; font-size: clamp(3.5rem,7.3vw,7.8rem); font-weight: 850; letter-spacing: -.07em; line-height: .88; }
 .hero-copy h1 span { display: block; color: transparent; background: linear-gradient(100deg,#22d3ee,#60a5fa 38%,#818cf8 55%,#22d3ee 78%); background-size: 220% 100%; background-clip: text; -webkit-background-clip: text; animation: gradient-flow 7s ease-in-out infinite; }
 .hero-copy > p { max-width: 690px; margin-top: 1.8rem; color: #94a3b8; font-size: clamp(1.05rem,1.45vw,1.22rem); line-height: 1.75; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2.2rem; }
@@ -161,7 +161,7 @@ onUnmounted(() => {
 @keyframes ticker { to { transform: translateX(-50%); } }
 
 @media (max-width: 1100px) {
-    .hero-layout { grid-template-columns: 1fr; }
+    .hero-layout { grid-template-columns: minmax(0,1fr); }
     .hero-panel { width: min(100%,650px); min-height: 470px; transform: none; }
     .card-one { right: -1rem; }
     .card-two { left: -1rem; }
@@ -171,7 +171,7 @@ onUnmounted(() => {
     .home-hero { min-height: auto; padding: 6.5rem 0 5.2rem; }
     .hero-layout { gap: 2.6rem; }
     .hero-badge { padding: .48rem .68rem; font-size: .62rem; letter-spacing: .06em; }
-    .hero-copy h1 { margin-top: 1.3rem; font-size: clamp(2.95rem,14.2vw,4.7rem); line-height: .91; }
+    .hero-copy h1 { margin-top: 1.3rem; font-size: clamp(2.45rem,12.5vw,4.7rem); line-height: .97; }
     .hero-copy > p { margin-top: 1.35rem; font-size: .98rem; line-height: 1.68; }
     .hero-actions { flex-direction: column; }
     .hero-actions a { width: 100%; min-height: 3.45rem; }

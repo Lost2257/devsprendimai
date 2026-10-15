@@ -1,19 +1,27 @@
 <script setup>
 import { computed } from 'vue'
 import { useLocale } from '@/composables/useLocale'
+import { sendProjectBrief } from '@/lib/projectPlanner'
 
 const { isEnglish } = useLocale()
 const packages = computed(() => isEnglish.value ? [
-    { name: 'Starter website', price: '€449', text: 'A focused landing page or compact company website.', points: ['Responsive design', 'Contact form', 'Technical SEO foundation'] },
-    { name: 'Business website', price: '€749', tag: 'Most popular', text: 'A complete website designed to build trust and generate enquiries.', points: ['Custom structure and design', 'Up to 7 core pages', 'Analytics and conversion setup'], featured: true },
-    { name: 'Online store', price: '€1,090', text: 'A sales-ready store with payments and delivery integrations.', points: ['Product catalogue', 'Payments and shipping', 'Order management'] },
-    { name: 'Web app / CRM', price: '€2,490', text: 'A custom MVP, client portal or internal business system.', points: ['UX/UI prototype', 'Core business logic', 'Scalable architecture'] },
+    { name: 'Starter website', service: 'Interneto svetainė', price: '€449', text: 'A focused landing page or compact company website.', points: ['Responsive design', 'Contact form', 'Technical SEO foundation'] },
+    { name: 'Business website', service: 'Interneto svetainė', price: '€749', tag: 'For growing businesses', text: 'A complete website designed to build trust and generate enquiries.', points: ['Custom structure and design', 'Up to 7 core pages', 'Analytics and conversion setup'], featured: true },
+    { name: 'Online store', service: 'El. parduotuvė', price: '€1,090', text: 'A sales-ready store with payments and delivery integrations.', points: ['Product catalogue', 'Payments and shipping', 'Order management'] },
+    { name: 'Web app / CRM', service: 'Aplikacijų kūrimas', price: '€2,490', text: 'A custom MVP, client portal or internal business system.', points: ['UX/UI prototype', 'Core business logic', 'Scalable architecture'] },
 ] : [
-    { name: 'Startinė svetainė', price: '449 €', text: 'Koncentruotas nukreipimo puslapis arba nedidelė įmonės svetainė.', points: ['Responsyvus dizainas', 'Kontaktų forma', 'Techninis SEO pagrindas'] },
-    { name: 'Verslo svetainė', price: '749 €', tag: 'Populiariausia', text: 'Pilna svetainė, kuri augina pasitikėjimą ir generuoja užklausas.', points: ['Individuali struktūra ir dizainas', 'Iki 7 pagrindinių puslapių', 'Analitika ir konversijų paruošimas'], featured: true },
-    { name: 'El. parduotuvė', price: '1 090 €', text: 'Pardavimams paruošta parduotuvė su mokėjimų ir pristatymo integracijomis.', points: ['Prekių katalogas', 'Mokėjimai ir pristatymas', 'Užsakymų valdymas'] },
-    { name: 'Web aplikacija / CRM', price: '2 490 €', text: 'Individualus MVP, klientų portalas arba vidinė verslo sistema.', points: ['UX/UI prototipas', 'Esminė verslo logika', 'Plėtrai paruošta architektūra'] },
+    { name: 'Startinė svetainė', service: 'Interneto svetainė', price: '449 €', text: 'Koncentruotas nukreipimo puslapis arba nedidelė įmonės svetainė.', points: ['Responsyvus dizainas', 'Kontaktų forma', 'Techninis SEO pagrindas'] },
+    { name: 'Verslo svetainė', service: 'Interneto svetainė', price: '749 €', tag: 'Augančiam verslui', text: 'Pilna svetainė, kuri augina pasitikėjimą ir generuoja užklausas.', points: ['Individuali struktūra ir dizainas', 'Iki 7 pagrindinių puslapių', 'Analitika ir konversijų paruošimas'], featured: true },
+    { name: 'El. parduotuvė', service: 'El. parduotuvė', price: '1 090 €', text: 'Pardavimams paruošta parduotuvė su mokėjimų ir pristatymo integracijomis.', points: ['Prekių katalogas', 'Mokėjimai ir pristatymas', 'Užsakymų valdymas'] },
+    { name: 'Web aplikacija / CRM', service: 'Aplikacijų kūrimas', price: '2 490 €', text: 'Individualus MVP, klientų portalas arba vidinė verslo sistema.', points: ['UX/UI prototipas', 'Esminė verslo logika', 'Plėtrai paruošta architektūra'] },
 ])
+
+const discussPackage = (item) => sendProjectBrief({
+    service: item.service,
+    message: isEnglish.value
+        ? `I am interested in “${item.name}” (published starting price: ${item.price}). Please help me confirm a suitable scope and final price.`
+        : `Domina „${item.name}“ (skelbiama startinė kaina: nuo ${item.price}). Norėčiau suderinti tinkamą apimtį ir galutinę kainą.`,
+})
 </script>
 
 <template>
@@ -35,10 +43,10 @@ const packages = computed(() => isEnglish.value ? [
                     <h3>{{ item.name }}</h3>
                     <p>{{ item.text }}</p>
                     <ul><li v-for="point in item.points" :key="point"><i>✓</i>{{ point }}</li></ul>
-                    <a href="#contact">{{ isEnglish ? 'Discuss this option' : 'Aptarti šį variantą' }} <span>→</span></a>
+                    <a href="#contact" @click.prevent="discussPackage(item)">{{ isEnglish ? 'Discuss this option' : 'Aptarti šį variantą' }} <span>→</span></a>
                 </article>
             </div>
-            <p class="pricing-note">{{ isEnglish ? 'Prices exclude VAT and third-party licences. Every proposal includes a fixed scope and timeline.' : 'Kainos nurodytos be PVM ir trečiųjų šalių licencijų. Kiekviename pasiūlyme fiksuojama tiksli apimtis ir terminai.' }}</p>
+            <p class="pricing-note">{{ isEnglish ? 'Third-party licences are quoted separately. The final price, applicable taxes, scope and timeline are confirmed in your proposal.' : 'Trečiųjų šalių licencijos vertinamos atskirai. Galutinė kaina, taikomi mokesčiai, apimtis ir terminai patvirtinami pasiūlyme.' }}</p>
         </div>
     </section>
 </template>

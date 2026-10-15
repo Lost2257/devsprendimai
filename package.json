@@ -3,7 +3,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "seo:content": "node scripts/export-seo-content.mjs",
+        "build": "node scripts/export-seo-content.mjs && vite build",
         "dev": "vite"
     },
     "devDependencies": {

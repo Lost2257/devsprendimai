@@ -12,13 +12,13 @@ class SeoHeaders
     {
         $response = $next($request);
 
-        if ($request->is(
+        if (! config('seo.indexable') || $response->getStatusCode() >= 400 || $request->is(
             'dashboard*',
             'login',
             'register',
             'forgot-password',
             'reset-password*',
-            'verify-email',
+            'verify-email*',
             'confirm-password',
             'profile*',
             'up',

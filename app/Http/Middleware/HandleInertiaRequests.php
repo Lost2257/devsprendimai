@@ -30,11 +30,15 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        // Protect private Inertia props stored in browser history. HTTPS and
+        // localhost provide the secure context required by Web Crypto.
+        \Inertia\Inertia::encryptHistory((bool) $request->user());
+
         return [
             ...parent::share($request),
 
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user()?->only(['id', 'name', 'email', 'email_verified_at']),
             ],
 
             'flash' => [
@@ -54,7 +58,7 @@ class HandleInertiaRequests extends Middleware
                         : null,
             ],
 
-            'newInquiries' => fn () => $request->user()
+            'newInquiries' => fn () => $request->user()?->hasAnyRole(['super-user', 'admin'])
                 ? Inquiry::where('is_read', false)->count()
                 : 0,
         ];

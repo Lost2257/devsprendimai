@@ -48,4 +48,16 @@ class TrafficAttributionTest extends TestCase
         $this->assertSame('Planšetė', TrafficAttribution::device('Mozilla/5.0 (iPad) AppleWebKit Safari/605.1'));
         $this->assertSame('Chrome', TrafficAttribution::browser('Mozilla/5.0 Chrome/130.0.0.0 Safari/537.36'));
     }
+
+    public function test_referrer_lookalikes_and_array_utm_values_are_not_trusted(): void
+    {
+        $request = Request::create('https://devsprendimai.lt/?utm_source[]=private&utm_campaign[]=private', 'GET', [], [], [], [
+            'HTTP_REFERER' => 'https://facebook.com.attacker.test/private?email=secret',
+        ]);
+        $attribution = TrafficAttribution::from($request);
+        $this->assertSame('referral', $attribution['medium']);
+        $this->assertSame('facebook.com.attacker.test', $attribution['source']);
+        $this->assertNull($attribution['campaign']);
+        $this->assertSame('https://facebook.com.attacker.test', $attribution['referrer']);
+    }
 }

@@ -17,9 +17,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
 
     $middleware->append(
-        \App\Http\Middleware\TrackVisits::class
-    );
-    $middleware->append(
         \App\Http\Middleware\SetLocale::class
     );
     $middleware->append(
@@ -27,9 +24,15 @@ return Application::configure(basePath: dirname(__DIR__))
     );
 
     $middleware->web(append: [
+        \App\Http\Middleware\SecurityHeaders::class,
+        \App\Http\Middleware\MaintainPrivacyRetention::class,
+        \App\Http\Middleware\TrackVisits::class,
         \App\Http\Middleware\HandleInertiaRequests::class,
         \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
     ]);
+
+    // This cookie is a consent preference only; it never grants application access.
+    $middleware->encryptCookies(except: ['devsprendimai_analytics_consent']);
 
     $middleware->alias([
         'role' => RoleMiddleware::class,
