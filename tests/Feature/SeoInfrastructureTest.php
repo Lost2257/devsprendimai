@@ -133,6 +133,51 @@ class SeoInfrastructureTest extends TestCase
         config(['seo.indexable' => false]);
         $this->get('/')->assertOk()->assertHeader('X-Robots-Tag', 'noindex, nofollow, noarchive')
             ->assertSee('name="robots" content="noindex, nofollow, noarchive"', false);
+        $this->get('/interneto-svetaines')->assertInertia(fn (Assert $page) => $page->where('seoIndexable', false));
+    }
+
+    public function test_home_prices_and_real_provider_are_readable_in_both_languages(): void
+    {
+        foreach (['/' => ['Interneto svetainių kūrimas', '449 €'], '/en' => ['Website development', '€449']] as $path => [$heading, $price]) {
+            $dom = $this->html($this->get($path)->assertOk()->getContent());
+            $this->assertStringContainsString($heading, $dom->query('//*[@id="app"]//main/h1')->item(0)->textContent);
+            $this->assertStringContainsString($price, $dom->query('//*[@id="pricing"]')->item(0)->textContent);
+            $this->assertSame(4, $dom->query('//*[@id="pricing"]/article')->length);
+            $this->assertStringContainsString('Aivaras Razvodovskis', $dom->query('//*[@id="about"]')->item(0)->textContent);
+        }
+    }
+
+    public function test_all_service_prices_guidance_and_localized_links_match_shared_content(): void
+    {
+        $content = json_decode(file_get_contents(resource_path('data/seo-content.json')), true, 512, JSON_THROW_ON_ERROR);
+        foreach (['lt' => '', 'en' => '/en'] as $locale => $prefix) {
+            foreach ($content[$locale]['services'] as $slug => $service) {
+                $path = $prefix.'/'.$slug;
+                $dom = $this->html($this->get($path)->assertOk()->getContent());
+                $this->assertSame($service['headline'].' '.$service['highlight'], $dom->query('//*[@id="app"]//main/h1')->item(0)->textContent, $path);
+                $this->assertSame($service['seoDescription'], $dom->query('//meta[@name="description"]')->item(0)->getAttribute('content'));
+                $pricingText = $dom->query('//*[@id="service-pricing"]')->item(0)->textContent;
+                $this->assertSame(3, $dom->query('//*[@id="service-pricing"]/article')->length);
+                foreach ($service['offers'] as $offer) {
+                    $this->assertStringContainsString($offer['price'], $pricingText, $path);
+                    $this->assertStringContainsString($offer['title'], $pricingText, $path);
+                    foreach ($offer['points'] as $point) $this->assertStringContainsString($point, $pricingText, $path);
+                }
+                $guide = $content[$locale]['guides'][$slug];
+                $main = $dom->query('//*[@id="app"]//main')->item(0)->textContent;
+                $this->assertStringContainsString($guide['intro'], $main);
+                $questions = $dom->query('//*[@id="service-questions"]')->item(0)->textContent;
+                foreach ($guide['faq'] as $faq) {
+                    $this->assertStringContainsString($faq['q'], $questions);
+                    $this->assertStringContainsString($faq['a'], $questions);
+                }
+                foreach ($guide['related'] as $link) {
+                    $this->assertArrayHasKey($link['slug'], $content[$locale]['services']);
+                    $href = 'https://devsprendimai.lt'.$prefix.'/'.$link['slug'];
+                    $this->assertGreaterThan(0, $dom->query('//*[@id="app"]//main//a[@href="'.$href.'"]')->length, $path);
+                }
+            }
+        }
     }
 
     public function test_project_text_cannot_inject_script_elements(): void
@@ -157,7 +202,7 @@ class SeoInfrastructureTest extends TestCase
             ->where('seoHealth.checks.2.ok', false)
             ->where('seoHealth.checks.5.ok', false)
             ->where('seoHealth.checks.7.informational', true)
-            ->where('seoHealth.checks.7.ok', false)
+            ->where('seoHealth.checks.7.ok', true)
             ->where('seoHealth.score', 71));
     }
 

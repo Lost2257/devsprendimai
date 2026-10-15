@@ -1,7 +1,9 @@
 <script setup>
 import { computed } from 'vue'
 import { useLocale } from '@/composables/useLocale'
+import { siteContent } from '@/data/siteContent'
 const { isEnglish } = useLocale()
+const copy = computed(() => siteContent[isEnglish.value ? 'en' : 'lt'])
 const cards = computed(() => isEnglish.value ? [
     ['Individual approach', 'Every solution is shaped around your business goals, never a generic template.'],
     ['Fast delivery', 'A clear process and concrete milestones help us reach the result sooner.'],
@@ -41,7 +43,7 @@ const cards = computed(() => isEnglish.value ? [
                 <p
                     class="mt-6 text-slate-400 max-w-2xl mx-auto"
                 >
-                    {{ isEnglish ? 'The goal is not only to build a website or system, but to create a solution that supports long-term business growth.' : 'Siekiu ne tik sukurti svetainę ar sistemą, bet ir pasiūlyti sprendimą, kuris padėtų jūsų verslui augti ilgalaikėje perspektyvoje.' }}
+                    {{ copy.aboutText }}
                 </p>
             </div>
 

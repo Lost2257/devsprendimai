@@ -24,8 +24,8 @@
     </header>
     <main>
         @if ($isHome)
-            <h1>{{ $english ? 'Digital solutions that grow your business.' : 'Skaitmeniniai sprendimai, kurie augina verslą.' }}</h1>
-            <p>{{ $english ? 'From a distinctive website or application to e-commerce, CRM and automation — I build solutions that look exceptional and deliver measurable value.' : 'Nuo išskirtinės svetainės ar aplikacijos iki el. parduotuvės, CRM ir automatizacijos — kuriu sprendimus, kurie ne tik gerai atrodo, bet ir realiai dirba jūsų naudai.' }}</p>
+            <h1>{{ $content['home']['headline'].' '.$content['home']['highlight'] }}</h1>
+            <p>{{ $content['home']['description'] }}</p>
             <p><a href="#contact">{{ $english ? 'Discuss a project' : 'Aptarkime projektą' }}</a></p>
             <section>
                 <h2>{{ $english ? 'Services for your business' : 'Paslaugos jūsų verslui' }}</h2>
@@ -35,6 +35,20 @@
                         <p>{{ $item['description'] }}</p>
                     </article>
                 @endforeach
+            </section>
+            <section id="pricing">
+                <h2>{{ $content['home']['pricingTitle'].' '.$content['home']['pricingHighlight'] }}</h2>
+                <p>{{ $content['home']['pricingIntro'] }}</p>
+                @foreach ($content['packages'] as $package)
+                    <article>
+                        <h3>{{ $package['name'] }}</h3>
+                        <p>{{ ($english ? 'from ' : 'nuo ').$package['price'] }}</p>
+                        <p>{{ $package['text'] }}</p>
+                        <ul>@foreach ($package['points'] as $point)<li>{{ $point }}</li>@endforeach</ul>
+                        <a href="#contact">{{ $english ? 'Discuss this option' : 'Aptarti šį variantą' }}</a>
+                    </article>
+                @endforeach
+                <p>{{ $content['home']['pricingNote'] }}</p>
             </section>
             @if (count($projects))
                 <section id="projects">
@@ -47,6 +61,10 @@
                     @endforeach
                 </section>
             @endif
+            <section id="about">
+                <h2>{{ $content['home']['aboutTitle'] }}</h2>
+                <p>{{ $content['home']['aboutText'] }}</p>
+            </section>
             <section id="faq">
                 <h2>{{ $english ? 'Frequently asked questions' : 'Dažniausiai užduodami klausimai' }}</h2>
                 @foreach ($content['faq'] as $item)
@@ -55,8 +73,7 @@
                 @endforeach
             </section>
         @elseif ($service)
-            <h1>{{ $service['title'] }}</h1>
-            <p>{{ $service['headline'].' '.$service['highlight'] }}</p>
+            <h1>{{ $service['headline'].' '.$service['highlight'] }}</h1>
             <p>{{ $service['description'] }}</p>
             <p><a href="#contact">{{ $english ? 'Discuss this service' : 'Aptarkime šią paslaugą' }}</a></p>
             <section>
@@ -72,6 +89,19 @@
                 <p>{{ $service['featureLead'] }}</p>
                 <ul>@foreach ($service['features'] as $feature)<li>{{ $feature }}</li>@endforeach</ul>
             </section>
+            <section id="service-pricing">
+                <h2>{{ $service['pricingTitle'] }}</h2>
+                @foreach ($service['offers'] as $offer)
+                    <article>
+                        <h3>{{ $offer['title'] }}</h3>
+                        <p>{{ ($english ? 'from ' : 'nuo ').$offer['price'] }}</p>
+                        <p>{{ $offer['description'] }}</p>
+                        <ul>@foreach ($offer['points'] as $point)<li>{{ $point }}</li>@endforeach</ul>
+                        <a href="#contact">{{ $english ? 'Discuss this option' : 'Aptarti šį variantą' }}</a>
+                    </article>
+                @endforeach
+                <p>{{ $content['home']['pricingNote'] }}</p>
+            </section>
             <section>
                 <h2>{{ $english ? 'How we work' : 'Kaip dirbame' }}</h2>
                 @foreach ($service['process'] as $step)
@@ -79,6 +109,28 @@
                     <p>{{ $step['text'] }}</p>
                 @endforeach
             </section>
+            @if ($guide = $content['guides'][$languagePath] ?? null)
+                <section>
+                    <h2>{{ $guide['title'] }}</h2>
+                    <p>{{ $guide['intro'] }}</p>
+                    @foreach ($guide['considerations'] as $item)
+                        <h3>{{ $item['title'] }}</h3>
+                        <p>{{ $item['text'] }}</p>
+                    @endforeach
+                </section>
+                <section id="service-questions">
+                    <h2>{{ $english ? 'Questions before choosing' : 'Klausimai prieš pasirenkant' }}</h2>
+                    @foreach ($guide['faq'] as $item)
+                        <details><summary>{{ $item['q'] }}</summary><p>{{ $item['a'] }}</p></details>
+                    @endforeach
+                </section>
+                <nav aria-label="{{ $english ? 'Related services and work' : 'Susijusios paslaugos ir darbai' }}">
+                    @foreach ($guide['related'] as $link)
+                        <a href="{{ $baseUrl.($english ? '/en' : '').'/'.$link['slug'] }}">{{ $link['label'] }}</a>
+                    @endforeach
+                    <a href="{{ $baseUrl.($english ? '/en' : '/').'#projects' }}">{{ $english ? 'View completed projects' : 'Peržiūrėti atliktus projektus' }}</a>
+                </nav>
+            @endif
         @elseif ($project)
             <article>
                 <h1>{{ data_get($project, 'title') }}</h1>

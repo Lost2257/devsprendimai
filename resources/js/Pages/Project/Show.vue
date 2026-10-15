@@ -20,6 +20,10 @@ const activeStep = ref(0)
 const pointerX = ref(0)
 const pointerY = ref(0)
 const touchStart = ref({ x: 0, y: 0 })
+const storyDialog = ref(null)
+const storyTrigger = ref(null)
+const storyTitle = ref(null)
+const storyOpen = ref(false)
 let wheelLocked = false
 let wheelTimer
 
@@ -31,6 +35,29 @@ const metrics = computed(() => [
 
 const services = computed(() => (props.project.services || '').split(/[,\n]/).map((item) => item.trim()).filter(Boolean))
 const technologies = computed(() => (props.project.technologies || '').split(/[,\n]/).map((item) => item.trim()).filter(Boolean))
+const storySections = computed(() => [
+    { key: 'description', title: isEnglish.value ? 'About the project' : 'Apie projektą', text: props.project.description },
+    { key: 'challenge', title: isEnglish.value ? 'Challenge' : 'Iššūkis', text: props.project.challenge },
+    { key: 'solution', title: isEnglish.value ? 'Solution' : 'Sprendimas', text: props.project.solution },
+    { key: 'result', title: isEnglish.value ? 'Result' : 'Rezultatas', text: props.project.result },
+].filter((section) => section.text?.trim()))
+const projectDetails = computed(() => [
+    { label: isEnglish.value ? 'Client' : 'Klientas', value: props.project.client },
+    { label: isEnglish.value ? 'Industry' : 'Industrija', value: props.project.industry },
+    { label: isEnglish.value ? 'Year' : 'Metai', value: props.project.year },
+    { label: isEnglish.value ? 'Duration' : 'Trukmė', value: props.project.duration },
+].filter((detail) => detail.value))
+const relatedServices = computed(() => {
+    const text = services.value.join(' ')
+    return [
+        { path: '/interneto-svetaines', label: isEnglish.value ? 'Website development' : 'Interneto svetainių kūrimas', match: /svetain|website|web design/i },
+        { path: '/el-parduotuves', label: isEnglish.value ? 'E-commerce development' : 'El. parduotuvių kūrimas', match: /parduot|commerce|woocommerce/i },
+        { path: '/aplikaciju-kurimas', label: isEnglish.value ? 'Application development' : 'Aplikacijų kūrimas', match: /aplikacij|application|mobile app/i },
+        { path: '/crm-sistemos', label: isEnglish.value ? 'CRM systems' : 'CRM sistemos', match: /\bcrm\b|customer relationship/i },
+        { path: '/automatizacija', label: isEnglish.value ? 'Business automation' : 'Verslo automatizacija', match: /automat/i },
+        { path: '/svetainiu-prieziura', label: isEnglish.value ? 'Website maintenance' : 'Svetainių priežiūra', match: /priežiūr|maintenance/i },
+    ].filter((service) => service.match.test(text))
+})
 const visualImages = computed(() => [...new Set([
     props.project.thumbnail,
     ...(props.project.gallery || []),
@@ -134,6 +161,18 @@ const setStep = (index) => { activeStep.value = Math.min(slides.value.length - 1
 const nextStep = () => setStep(activeStep.value === slides.value.length - 1 ? 0 : activeStep.value + 1)
 const previousStep = () => setStep(activeStep.value === 0 ? slides.value.length - 1 : activeStep.value - 1)
 
+const openStory = () => {
+    if (!storyDialog.value || storyDialog.value.open) return
+    storyDialog.value.showModal()
+    storyOpen.value = true
+    storyTitle.value?.focus({ preventScroll: true })
+}
+const closeStory = () => storyDialog.value?.close()
+const finishClosingStory = () => {
+    storyOpen.value = false
+    if (storyTrigger.value?.isConnected) storyTrigger.value.focus({ preventScroll: true })
+}
+
 const handleWheel = (event) => {
     if (wheelLocked || Math.abs(event.deltaY) < 18) return
     wheelLocked = true
@@ -141,6 +180,7 @@ const handleWheel = (event) => {
     wheelTimer = window.setTimeout(() => { wheelLocked = false }, 650)
 }
 const handleKey = (event) => {
+    if (storyOpen.value || event.defaultPrevented) return
     if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(event.key)) nextStep()
     if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) previousStep()
 }
@@ -203,7 +243,12 @@ onUnmounted(() => {
 
             <header class="experience-topbar">
                 <div class="project-breadcrumb"><Link :href="localize('/')" :prefetch="['hover','click']" cache-for="30s" view-transition>{{ isEnglish ? 'Home' : 'Pradžia' }}</Link><span>/</span><span>{{ project.title }}</span></div>
-                <div class="space-status"><i></i><span>VIRTUAL PROJECT SPACE</span><b>{{ String(activeStep + 1).padStart(2, '0') }} / {{ String(slides.length).padStart(2, '0') }}</b></div>
+                <div class="experience-tools">
+                    <button ref="storyTrigger" type="button" class="story-trigger" aria-haspopup="dialog" aria-controls="project-story-reader" @click="openStory">
+                        {{ isEnglish ? 'Read full case study' : 'Visa projekto istorija' }} <span aria-hidden="true">↗</span>
+                    </button>
+                    <div class="space-status"><i></i><span>VIRTUAL PROJECT SPACE</span><b>{{ String(activeStep + 1).padStart(2, '0') }} / {{ String(slides.length).padStart(2, '0') }}</b></div>
+                </div>
             </header>
 
             <section class="experience-stage">
@@ -267,6 +312,64 @@ onUnmounted(() => {
                 </div>
             </footer>
         </article>
+
+        <dialog
+            id="project-story-reader"
+            ref="storyDialog"
+            class="story-reader"
+            :style="{ '--project-accent': project.accent_color || '#22D3EE' }"
+            aria-labelledby="project-story-title"
+            @close="finishClosingStory"
+        >
+            <header class="story-reader-header">
+                <span>{{ isEnglish ? 'Full case study' : 'Visa projekto istorija' }}</span>
+                <button type="button" class="story-close" @click="closeStory">
+                    {{ isEnglish ? 'Close' : 'Uždaryti' }} <span aria-hidden="true">×</span>
+                </button>
+            </header>
+            <div class="story-reader-body">
+                <h2 id="project-story-title" ref="storyTitle" tabindex="-1">{{ project.title }}</h2>
+                <p v-if="project.subtitle" class="story-subtitle">{{ project.subtitle }}</p>
+
+                <dl v-if="projectDetails.length" class="story-details">
+                    <div v-for="detail in projectDetails" :key="detail.label">
+                        <dt>{{ detail.label }}</dt>
+                        <dd>{{ detail.value }}</dd>
+                    </div>
+                </dl>
+
+                <section v-for="section in storySections" :key="section.key" class="story-section" :aria-labelledby="`story-${section.key}`">
+                    <h3 :id="`story-${section.key}`">{{ section.title }}</h3>
+                    <p>{{ section.text }}</p>
+                </section>
+
+                <section v-if="metrics.length" class="story-section" aria-labelledby="story-metrics">
+                    <h3 id="story-metrics">{{ isEnglish ? 'Project outcomes' : 'Projekto rezultatai' }}</h3>
+                    <ul class="story-metrics">
+                        <li v-for="(metric, index) in metrics" :key="index">
+                            <strong v-if="metric.value">{{ metric.value }}</strong>
+                            <span v-if="metric.label">{{ metric.label }}</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section v-if="services.length" class="story-section" aria-labelledby="story-services">
+                    <h3 id="story-services">{{ isEnglish ? 'Services' : 'Paslaugos' }}</h3>
+                    <ul class="story-tags"><li v-for="(service, index) in services" :key="index">{{ service }}</li></ul>
+                </section>
+                <section v-if="technologies.length" class="story-section" aria-labelledby="story-technologies">
+                    <h3 id="story-technologies">{{ isEnglish ? 'Technologies' : 'Technologijos' }}</h3>
+                    <ul class="story-tags"><li v-for="(technology, index) in technologies" :key="index">{{ technology }}</li></ul>
+                </section>
+
+                <nav class="story-links" :aria-label="isEnglish ? 'Explore services and projects' : 'Paslaugos ir kiti projektai'">
+                    <h3>{{ isEnglish ? 'Explore further' : 'Sužinokite daugiau' }}</h3>
+                    <Link v-for="service in relatedServices" :key="service.path" :href="localize(service.path)" @click="closeStory">{{ service.label }} <span aria-hidden="true">↗</span></Link>
+                    <Link :href="`${localize('/')}#projects`" @click="closeStory">{{ isEnglish ? 'All projects' : 'Visi projektai' }} <span aria-hidden="true">↗</span></Link>
+                    <a v-if="project.url" :href="project.url" target="_blank" rel="noopener noreferrer">{{ isEnglish ? 'Visit the live project (new tab)' : 'Atidaryti projektą (naujame lange)' }} <span aria-hidden="true">↗</span></a>
+                </nav>
+            </div>
+        </dialog>
     </PublicLayout>
 </template>
 
@@ -294,5 +397,53 @@ onUnmounted(() => {
 @media(max-width:640px){.project-experience{padding:4.72rem max(.85rem,env(safe-area-inset-left)) max(.72rem,env(safe-area-inset-bottom)) max(.85rem,env(safe-area-inset-right));grid-template-rows:2.25rem minmax(0,1fr) 2.45rem}.experience-topbar{min-width:0;padding-bottom:.42rem}.project-breadcrumb{max-width:72%;font-size:.58rem}.space-status{gap:.45rem;font-size:.48rem}.experience-stage{grid-template-rows:auto minmax(0,1fr);align-content:stretch;gap:.62rem;padding:.62rem 0 .25rem}.slide-copy{align-self:start;overflow:hidden;padding:0 .08rem}.slide-copy>span{font-size:.5rem}.slide-copy h1{margin-top:.36rem}.slide-overview h1{font-size:clamp(2.15rem,10.8vw,3rem)}.slide-story h1,.slide-result h1{font-size:clamp(1.55rem,7.4vw,2.15rem)}.slide-copy p{margin-top:.52rem;font-size:.68rem;line-height:1.5}.tag-list{gap:.32rem;margin-top:.55rem}.tag-list i{padding:.3rem .44rem;font-size:.47rem}.project-meta{margin-top:.48rem;font-size:.47rem}.visual-space{height:100%;min-height:0;place-items:center;padding:0}.live-screen{width:100%;max-width:520px;border-radius:.9rem;transform:translate3d(0,0,var(--stage-depth)) rotateY(-1.25deg)}.screen-bar{height:1.75rem;padding-inline:.65rem;font-size:.36rem}.live-screen>img{width:100%;height:min(38svh,calc((100vw - 1.7rem) * .76));max-height:100%;aspect-ratio:auto;border-radius:0 0 .85rem .85rem;object-fit:cover}.screen-duo,.screen-abstract{width:100%;height:min(38svh,calc((100vw - 1.7rem) * .76));max-height:100%;aspect-ratio:auto;border-radius:0 0 .85rem .85rem}.screen-duo{gap:.45rem;padding:.65rem}.screen-duo>span{right:.55rem;bottom:.35rem;font-size:.28rem}.screen-abstract>strong{font-size:clamp(1.7rem,9vw,2.7rem)}.screen-abstract>small{font-size:.4rem}.screen-reflection{display:none}.experience-controls{min-width:0;padding-top:.42rem}.slide-tabs{gap:.22rem}.slide-tabs button{min-width:2.25rem;padding:.3rem .16rem}.control-actions button{width:2.15rem;height:2.15rem}.visual-space::after{bottom:-5%;height:18%}.room-wall{opacity:.13}.space-fog{height:34%;opacity:.55}.scene-flash{opacity:.62}}
 @media(max-height:720px) and (max-width:640px){.project-experience{padding-top:4.45rem;grid-template-rows:2rem minmax(0,1fr) 2.25rem}.experience-stage{gap:.3rem;padding:.3rem 0 .15rem}.slide-copy h1{margin-top:.2rem}.slide-copy p{margin-top:.3rem;-webkit-line-clamp:2}.tag-list,.project-meta{display:none}.live-screen>img,.screen-duo,.screen-abstract{height:min(28svh,calc((100vw - 1.7rem) * .62))}.screen-bar{height:1.5rem}}
 @media(max-height:600px) and (max-width:640px){.project-experience{padding-top:4.25rem;grid-template-rows:1.8rem minmax(0,1fr) 2.1rem}.experience-stage{gap:.18rem;padding:.18rem 0}.slide-copy>span,.slide-copy p,.mini-metrics{display:none}.slide-copy h1{font-size:1.35rem}.slide-overview h1{font-size:1.75rem}.live-screen>img,.screen-duo,.screen-abstract{height:min(25svh,calc((100vw - 1.7rem) * .55))}.screen-bar{height:1.35rem}}
+.experience-tools{display:flex;flex-shrink:0;align-items:center;gap:1rem}
+.story-trigger{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:44px;padding:.55rem .8rem;border:1px solid color-mix(in srgb,var(--project-accent) 35%,#263645);border-radius:.7rem;color:#d2f6ff;background:#08131e;font-size:.7rem;font-weight:750;line-height:1.3;white-space:nowrap}
+.story-trigger:hover{background:#102333;border-color:var(--project-accent)}
+.story-trigger:focus-visible,.story-reader :focus-visible{outline:2px solid var(--project-accent);outline-offset:3px}
+.story-reader{position:fixed;inset:0;width:min(48rem,calc(100vw - 2rem));max-width:calc(100vw - 2rem);max-height:calc(100dvh - 2rem);margin:auto;padding:0;overflow:hidden;border:1px solid color-mix(in srgb,var(--project-accent) 35%,#273747);border-radius:1.2rem;color:#eef7ff;background:#08111d;box-shadow:0 24px 100px #0009}
+.story-reader[open]{display:flex;flex-direction:column}
+.story-reader::backdrop{background:rgba(0,5,12,.88)}
+.story-reader-header{display:flex;flex-shrink:0;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem 1.5rem;border-bottom:1px solid #263545;background:#0b1724}
+.story-reader-header>span{color:#a8c9d9;font-size:.74rem;font-weight:750;letter-spacing:.04em}
+.story-close{display:inline-flex;flex-shrink:0;align-items:center;justify-content:center;gap:.65rem;min-height:44px;padding:.5rem .75rem;border:1px solid #3d5668;border-radius:.65rem;color:#e2f4ff;background:#122535;font-size:.8rem;font-weight:700}
+.story-close span{font-size:1.3rem;line-height:1}
+.story-close:hover{background:#203a4b}
+.story-reader-body{min-height:0;padding:1.75rem 2rem 2rem;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#456779 #08111d;overflow-wrap:anywhere}
+.story-reader h2{margin:0;font-size:clamp(1.6rem,5vw,2.5rem);font-weight:850;letter-spacing:-.04em;line-height:1.15}
+.story-reader h3{margin:0 0 .75rem;font-size:1.05rem;font-weight:800;line-height:1.4;color:#eef7ff}
+.story-reader p{margin:0;color:#bccad9;font-size:.95rem;line-height:1.8;white-space:pre-line}
+.story-reader .story-subtitle{margin-top:.9rem;color:#d3e5f2;font-size:1.05rem}
+.story-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.5rem 0 0;padding:1.25rem;border:1px solid #253747;border-radius:.8rem;background:#0d1b28}
+.story-details dt{color:#95aec1;font-size:.72rem;font-weight:700}
+.story-details dd{margin:.3rem 0 0;color:#e1f0fb;font-size:.88rem;line-height:1.5}
+.story-section{margin-top:1.75rem}
+.story-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin:0;padding:0;list-style:none}
+.story-tags li{max-width:100%;padding:.5rem .75rem;border:1px solid #294557;border-radius:.6rem;color:#c7ddec;background:#0d1e2b;font-size:.83rem;line-height:1.5}
+.story-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:0;padding:0;list-style:none}
+.story-metrics li{padding:1rem;border:1px solid #294557;border-radius:.8rem;background:#0d1e2b}
+.story-metrics strong{display:block;color:var(--project-accent);font-size:1.5rem;line-height:1.3}
+.story-metrics span{display:block;margin-top:.35rem;color:#c7ddec;font-size:.82rem;line-height:1.5}
+.story-links{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid #263545}
+.story-links h3{margin-bottom:.3rem}
+.story-links a{display:inline-flex;align-items:center;gap:.7rem;min-height:44px;color:#8ae7f5;font-size:.9rem;line-height:1.5;text-decoration:underline;text-underline-offset:4px}
+.story-links a:hover{color:#e3fbff}
+@media(max-width:900px){.experience-tools{gap:.6rem}.experience-tools .space-status>span{display:none}}
+@media(max-width:640px){
+    .project-experience{grid-template-rows:3.25rem minmax(0,1fr) 2.45rem}
+    .experience-topbar{gap:.5rem}
+    .project-breadcrumb{flex:1;min-width:0;max-width:none;gap:.35rem}
+    .experience-tools .space-status{display:none}
+    .story-trigger{padding:.45rem .6rem;font-size:.65rem}
+    .story-reader{width:calc(100vw - 1.5rem);max-width:calc(100vw - 1.5rem);max-height:calc(100dvh - max(1.5rem,env(safe-area-inset-top) + env(safe-area-inset-bottom)));border-radius:.85rem}
+    .story-reader-header{gap:.5rem;padding:.55rem .85rem}
+    .story-reader-header>span{font-size:.65rem}
+    .story-close{padding:.45rem .6rem;font-size:.75rem}
+    .story-reader-body{padding:1.25rem 1rem 1.5rem}
+    .story-reader p{font-size:.9rem}
+    .story-details{gap:.85rem;padding:1rem}
+    .story-metrics{grid-template-columns:1fr}
+    .story-metrics li{padding:.8rem 1rem}
+}
 @media(prefers-reduced-motion:reduce){.space-world,.live-screen,.slide-copy-enter-active,.slide-copy-leave-active,.screen-swap-enter-active,.screen-swap-leave-active{transition:none}.particle,.space-status i,.grid-plane,.space-aura,.scene-flash,.abstract-orbit i{animation:none}}
 </style>

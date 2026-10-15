@@ -62,6 +62,7 @@ class HandleInertiaRequests extends Middleware
 
             'appUrl' => $request->getSchemeAndHttpHost(),
             'locale' => app()->getLocale(),
+            'seoIndexable' => (bool) config('seo.indexable'),
 
             // Never enable third-party analytics for signed-in users or private pages.
             'analytics' => [

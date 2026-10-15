@@ -23,6 +23,8 @@ In **Admin → Data streams → this web stream → Enhanced measurement (gear) 
 
 `send_page_view: false` alone does not disable Enhanced Measurement's separate history listener. If left enabled, Back navigation can produce an extra view with the previous page's title/URL. See [Google's manual page-view documentation](https://developers.google.com/analytics/devguides/collection/ga4/views). This account-level setting cannot be changed by a website deployment.
 
+On 15 October 2026 the owner reported creating `generate_lead` as a key event using the code-based option. Their subsequent screenshot showed browser-history page changes unchecked and page loads still enabled; they were instructed to save. Account report ingestion and the persisted history setting have not been independently checked through Google account access. Analytics setup is separate from search indexing and is not an SEO activation switch.
+
 ## Verification
 
 Run `node --test tests/js/analytics.test.js` and `php artisan test --filter=AnalyticsConfigurationTest`, then `npm run build`.

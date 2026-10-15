@@ -7,6 +7,10 @@ import HeroScene from '@/Components/HeroScene.vue'
 import { useLocale } from '@/composables/useLocale'
 import { englishServices } from '@/data/services.en'
 import { sendProjectBrief } from '@/lib/projectPlanner'
+import { pricedService } from '@/data/pricing'
+import { siteContent } from '@/data/siteContent'
+import { serviceGuides } from '@/data/serviceGuides'
+import ServiceGuide from '@/Components/Services/Shared/ServiceGuide.vue'
 
 const page = usePage()
 const props = defineProps({
@@ -16,22 +20,13 @@ const props = defineProps({
     },
 })
 const { isEnglish, localize } = useLocale()
-const servicePrices = {
-    'Interneto svetainių kūrimas': ['449 €', '749 €', '1 490 €'],
-    'El. parduotuvių kūrimas': ['1 090 €', '1 790 €', '2 990 €'],
-    'CRM sistemų kūrimas': ['1 990 €', '3 490 €', '5 990 €'],
-    'Verslo procesų automatizacija': ['390 €', '990 €', '2 490 €'],
-    'Svetainių priežiūra': ['39 €/mėn.', '89 €/mėn.', '179 €/mėn.'],
-    'Aplikacijų kūrimas': ['2 490 €', '4 490 €', '7 990 €'],
-}
 const config = computed(() => {
     const source = isEnglish.value ? (englishServices[props.config.title] || props.config) : props.config
-    const prices = servicePrices[props.config.title] || []
-    return {
-        ...source,
-        offers: source.offers.map((offer, index) => ({ ...offer, price: offer.price || prices[index] })),
-    }
+    return pricedService(source, props.config.title, isEnglish.value)
 })
+const copy = computed(() => siteContent[isEnglish.value ? 'en' : 'lt'])
+const serviceSlug = computed(() => (page.url || '').split(/[?#]/)[0].replace(/^\/en(?=\/|$)/, '').replace(/^\/+|\/+$/g, ''))
+const guide = computed(() => serviceGuides[isEnglish.value ? 'en' : 'lt'][serviceSlug.value])
 const baseUrl = computed(() => (page.props.appUrl || '').replace(/\/$/, ''))
 const cleanPath = computed(() => (page.url || '/').split('?')[0])
 const canonicalUrl = computed(() => `${baseUrl.value}${cleanPath.value}`)
@@ -140,7 +135,7 @@ onUnmounted(() => {
                     <a href="#contact" class="button-primary">
                         {{ isEnglish ? 'Discuss a project' : 'Aptarkime projektą' }} <span aria-hidden="true">↗</span>
                     </a>
-                    <a href="#sprendimas" class="button-secondary">{{ isEnglish ? 'Learn more' : 'Sužinoti daugiau' }}</a>
+                    <a href="#service-pricing" class="button-secondary">{{ isEnglish ? 'View prices' : 'Peržiūrėti kainas' }}</a>
                 </div>
 
                 <div class="proof-row" aria-label="Pagrindiniai privalumai">
@@ -218,11 +213,11 @@ onUnmounted(() => {
         </div>
     </section>
 
-    <section class="section-block">
+    <section id="service-pricing" class="section-block">
         <div class="site-container">
             <div class="center-heading">
                 <span class="section-kicker">{{ isEnglish ? 'Solution options' : 'Sprendimo kryptys' }}</span>
-                <h2>{{ isEnglish ? 'Choose the right scope' : 'Pasirinkime tinkamą apimtį' }}</h2>
+                <h2>{{ config.pricingTitle }}</h2>
                 <p>{{ isEnglish ? 'Every solution is adapted to your goals, priorities and current stage of growth.' : 'Galutinis sprendimas visada pritaikomas pagal jūsų tikslus, prioritetus ir dabartinį verslo etapą.' }}</p>
             </div>
 
@@ -244,6 +239,7 @@ onUnmounted(() => {
                     <a href="#contact" @click.prevent="discussOffer(offer)">{{ isEnglish ? 'Discuss this option' : 'Aptarti šį variantą' }} <span>→</span></a>
                 </article>
             </div>
+            <p class="offer-note">{{ copy.pricingNote }}</p>
         </div>
     </section>
 
@@ -264,10 +260,13 @@ onUnmounted(() => {
         </div>
     </section>
 
+    <ServiceGuide v-if="guide" :guide="guide" />
     <WebsiteCTA :service="config.service" />
 </template>
 
 <style scoped>
+#service-pricing { scroll-margin-top: 6rem; }
+.offer-note { max-width: 78ch; margin: 1.4rem auto 0; color: #94a3b8; font-size: .85rem; line-height: 1.7; text-align: center; }
 .service-hero {
     position: relative;
     overflow: hidden;
@@ -318,6 +317,8 @@ onUnmounted(() => {
     gap: clamp(3rem, 7vw, 7rem);
 }
 
+.service-hero-grid > * { min-width: 0; }
+
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -344,6 +345,7 @@ onUnmounted(() => {
 
 .service-copy h1 {
     max-width: 800px;
+    overflow-wrap: anywhere;
     margin-top: 1.4rem;
     font-size: clamp(3rem, 6.2vw, 6.6rem);
     font-weight: 900;
@@ -542,7 +544,7 @@ onUnmounted(() => {
 
 @media (max-width: 1023px) {
     .service-hero { padding-top: 7rem; }
-    .service-hero-grid { grid-template-columns: 1fr; }
+    .service-hero-grid { grid-template-columns: minmax(0, 1fr); }
     .service-visual { width: min(100%, 650px); min-height: 450px; transform: none; }
     .feature-grid { grid-template-columns: 1fr; }
     .feature-copy { position: static; }

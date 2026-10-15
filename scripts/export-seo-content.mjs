@@ -6,6 +6,9 @@ import { websites, ecommerce, crm, automation, applications, maintenance } from 
 import { englishServices } from '../resources/js/data/services.en.js'
 import { faqItems, faqItemsEn } from '../resources/js/data/faq.js'
 import { legalPagesLt, legalPagesEn } from '../resources/js/data/legal.js'
+import { siteContent } from '../resources/js/data/siteContent.js'
+import { pricedService, getHomePackages } from '../resources/js/data/pricing.js'
+import { serviceGuides } from '../resources/js/data/serviceGuides.js'
 
 const services = {
     'interneto-svetaines': websites,
@@ -18,15 +21,15 @@ const services = {
 const pickContent = (service) => Object.fromEntries([
     'title', 'seoDescription', 'eyebrow', 'headline', 'highlight', 'description',
     'benefitsTitle', 'benefitsLead', 'benefits', 'featureTitle', 'featureLead',
-    'features', 'process',
+    'features', 'process', 'offers', 'pricingTitle',
 ].map((key) => [key, service[key]]))
 const content = {
-    lt: { services: {}, faq: faqItems, legal: legalPagesLt },
-    en: { services: {}, faq: faqItemsEn, legal: legalPagesEn },
+    lt: { home: siteContent.lt, packages: getHomePackages(), guides: serviceGuides.lt, services: {}, faq: faqItems, legal: legalPagesLt },
+    en: { home: siteContent.en, packages: getHomePackages(true), guides: serviceGuides.en, services: {}, faq: faqItemsEn, legal: legalPagesEn },
 }
 for (const [slug, service] of Object.entries(services)) {
-    content.lt.services[slug] = pickContent(service)
-    content.en.services[slug] = pickContent(englishServices[service.title])
+    content.lt.services[slug] = pickContent(pricedService(service, service.title))
+    content.en.services[slug] = pickContent(pricedService(englishServices[service.title], service.title, true))
 }
 
 const target = new URL('../resources/data/seo-content.json', import.meta.url)

@@ -28,8 +28,8 @@ final class PageSeo
         $isHome = $languagePath === '/';
         $public = $isHome || $service || $project || $legal;
         $seo = [
-            'title' => $english ? 'Website & e-commerce development | DevSprendimai' : ($settings?->site_title ?: 'Svetainių ir el. parduotuvių kūrimas | DevSprendimai'),
-            'description' => $english ? 'Custom websites, online stores, CRM systems and applications. Based in Kaunas, Lithuania, working with businesses remotely. Discuss your project.' : ($settings?->site_description ?: 'Individualios interneto svetainės, el. parduotuvės, CRM ir aplikacijos. Kūrėjas Kaune, dirbantis su verslais visoje Lietuvoje. Aptarkime jūsų projektą.'),
+            'title' => (!$english && $settings?->site_title) ? $settings->site_title : $content['home']['seoTitle'],
+            'description' => (!$english && $settings?->site_description) ? $settings->site_description : $content['home']['seoDescription'],
             'image' => $baseUrl.'/og.png',
             'image_alt' => $english ? 'DevSprendimai digital product studio' : 'DevSprendimai skaitmeninių sprendimų studija',
             'type' => 'website',

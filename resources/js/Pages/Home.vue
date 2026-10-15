@@ -14,6 +14,7 @@ import FAQ from '@/Components/FAQ.vue'
 import WebsiteCTA from '@/Components/Services/Shared/WebsiteCTA.vue'
 import { faqItems, faqItemsEn } from '@/data/faq'
 import { useLocale } from '@/composables/useLocale'
+import { siteContent } from '@/data/siteContent'
 
 const props = defineProps({
     projects: { type: Array, default: () => [] },
@@ -23,47 +24,15 @@ const props = defineProps({
 const page = usePage()
 const { isEnglish } = useLocale()
 const baseUrl = computed(() => (page.props.appUrl || '').replace(/\/$/, ''))
-const seoTitle = computed(() => isEnglish.value ? 'Website & e-commerce development | DevSprendimai' : (props.settings?.site_title || 'Svetainių ir el. parduotuvių kūrimas | DevSprendimai'))
-const seoDescription = computed(() => isEnglish.value ? 'Custom websites, online stores, CRM systems and applications. Based in Kaunas, Lithuania, working with businesses remotely. Discuss your project.' : (props.settings?.site_description || 'Individualios interneto svetainės, el. parduotuvės, CRM ir aplikacijos. Kūrėjas Kaune, dirbantis su verslais visoje Lietuvoje. Aptarkime jūsų projektą.'))
+const copy = computed(() => siteContent[isEnglish.value ? 'en' : 'lt'])
+const seoTitle = computed(() => (!isEnglish.value && props.settings?.site_title) || copy.value.seoTitle)
+const seoDescription = computed(() => (!isEnglish.value && props.settings?.site_description) || copy.value.seoDescription)
 const homeUrl = computed(() => `${baseUrl.value}${isEnglish.value ? '/en' : '/'}`)
 const socialImage = computed(() => props.settings?.og_image
     ? `${page.props.appUrl || ''}/storage/${props.settings.og_image}`
     : `${page.props.appUrl || ''}/og.png`)
 const organizationId = computed(() => `${baseUrl.value}/#organization`)
 const homeStructuredData = computed(() => [
-    {
-        '@type': 'Organization',
-        '@id': organizationId.value,
-        name: 'DevSprendimai',
-        legalName: 'Aivaras Razvodovskis',
-        alternateName: 'DS',
-        url: `${baseUrl.value}/`,
-        logo: `${baseUrl.value}/favicon.png`,
-        email: 'info@devsprendimai.lt',
-        telephone: '+37060606227',
-        identifier: 'Individualios veiklos pažyma Nr. 1400067',
-        address: {
-            '@type': 'PostalAddress',
-            streetAddress: 'Pramonės pr. 28',
-            addressLocality: 'Kaunas',
-            addressCountry: 'LT',
-        },
-        contactPoint: {
-            '@type': 'ContactPoint',
-            contactType: 'customer service',
-            telephone: '+37060606227',
-            email: 'info@devsprendimai.lt',
-            availableLanguage: ['lt', 'en'],
-        },
-    },
-    {
-        '@type': 'WebSite',
-        '@id': `${baseUrl.value}/#website`,
-        url: `${baseUrl.value}/`,
-        name: 'DevSprendimai',
-        inLanguage: isEnglish.value ? 'en' : 'lt-LT',
-        publisher: { '@id': organizationId.value },
-    },
     {
         '@type': 'WebPage',
         '@id': `${homeUrl.value}#webpage`,

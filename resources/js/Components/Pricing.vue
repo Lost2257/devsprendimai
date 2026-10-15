@@ -2,19 +2,12 @@
 import { computed } from 'vue'
 import { useLocale } from '@/composables/useLocale'
 import { sendProjectBrief } from '@/lib/projectPlanner'
+import { getHomePackages } from '@/data/pricing'
+import { siteContent } from '@/data/siteContent'
 
 const { isEnglish } = useLocale()
-const packages = computed(() => isEnglish.value ? [
-    { name: 'Starter website', service: 'Interneto svetainė', price: '€449', text: 'A focused landing page or compact company website.', points: ['Responsive design', 'Contact form', 'Technical SEO foundation'] },
-    { name: 'Business website', service: 'Interneto svetainė', price: '€749', tag: 'For growing businesses', text: 'A complete website designed to build trust and generate enquiries.', points: ['Custom structure and design', 'Up to 7 core pages', 'Analytics and conversion setup'], featured: true },
-    { name: 'Online store', service: 'El. parduotuvė', price: '€1,090', text: 'A sales-ready store with payments and delivery integrations.', points: ['Product catalogue', 'Payments and shipping', 'Order management'] },
-    { name: 'Web app / CRM', service: 'Aplikacijų kūrimas', price: '€2,490', text: 'A custom MVP, client portal or internal business system.', points: ['UX/UI prototype', 'Core business logic', 'Scalable architecture'] },
-] : [
-    { name: 'Startinė svetainė', service: 'Interneto svetainė', price: '449 €', text: 'Koncentruotas nukreipimo puslapis arba nedidelė įmonės svetainė.', points: ['Responsyvus dizainas', 'Kontaktų forma', 'Techninis SEO pagrindas'] },
-    { name: 'Verslo svetainė', service: 'Interneto svetainė', price: '749 €', tag: 'Augančiam verslui', text: 'Pilna svetainė, kuri augina pasitikėjimą ir generuoja užklausas.', points: ['Individuali struktūra ir dizainas', 'Iki 7 pagrindinių puslapių', 'Analitika ir konversijų paruošimas'], featured: true },
-    { name: 'El. parduotuvė', service: 'El. parduotuvė', price: '1 090 €', text: 'Pardavimams paruošta parduotuvė su mokėjimų ir pristatymo integracijomis.', points: ['Prekių katalogas', 'Mokėjimai ir pristatymas', 'Užsakymų valdymas'] },
-    { name: 'Web aplikacija / CRM', service: 'Aplikacijų kūrimas', price: '2 490 €', text: 'Individualus MVP, klientų portalas arba vidinė verslo sistema.', points: ['UX/UI prototipas', 'Esminė verslo logika', 'Plėtrai paruošta architektūra'] },
-])
+const packages = computed(() => getHomePackages(isEnglish.value))
+const copy = computed(() => siteContent[isEnglish.value ? 'en' : 'lt'])
 
 const discussPackage = (item) => sendProjectBrief({
     service: item.service,
@@ -30,9 +23,9 @@ const discussPackage = (item) => sendProjectBrief({
             <div class="pricing-heading">
                 <div>
                     <span>{{ isEnglish ? 'Transparent starting prices' : 'Aiškios startinės kainos' }}</span>
-                    <h2>{{ isEnglish ? 'Professional quality.' : 'Profesionali kokybė.' }}<br><em>{{ isEnglish ? 'Fair investment.' : 'Sąžininga investicija.' }}</em></h2>
+                    <h2>{{ copy.pricingTitle }}<br><em>{{ copy.pricingHighlight }}</em></h2>
                 </div>
-                <p>{{ isEnglish ? 'Clear starting points for planning. The final price is confirmed after a short scope review.' : 'Aiškus atspirties taškas planavimui. Galutinė kaina patvirtinama trumpai įvertinus projekto apimtį.' }}</p>
+                <p>{{ copy.pricingIntro }}</p>
             </div>
 
             <div class="pricing-grid mobile-snap">
@@ -46,7 +39,7 @@ const discussPackage = (item) => sendProjectBrief({
                     <a href="#contact" @click.prevent="discussPackage(item)">{{ isEnglish ? 'Discuss this option' : 'Aptarti šį variantą' }} <span>→</span></a>
                 </article>
             </div>
-            <p class="pricing-note">{{ isEnglish ? 'Third-party licences are quoted separately. The final price, applicable taxes, scope and timeline are confirmed in your proposal.' : 'Trečiųjų šalių licencijos vertinamos atskirai. Galutinė kaina, taikomi mokesčiai, apimtis ir terminai patvirtinami pasiūlyme.' }}</p>
+            <p class="pricing-note">{{ copy.pricingNote }}</p>
         </div>
     </section>
 </template>

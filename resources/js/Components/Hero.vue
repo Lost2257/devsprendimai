@@ -1,10 +1,12 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import HeroScene from '@/Components/HeroScene.vue'
 import { useLocale } from '@/composables/useLocale'
+import { siteContent } from '@/data/siteContent'
 
 const hero = ref(null)
 const { isEnglish } = useLocale()
+const copy = computed(() => siteContent[isEnglish.value ? 'en' : 'lt'])
 let finePointer = false
 
 const resetMotion = () => {
@@ -51,11 +53,11 @@ onUnmounted(() => {
                 <div class="hero-badge"><i></i> {{ isEnglish ? 'Now accepting new projects' : 'Priimami nauji projektai' }}</div>
 
                 <h1>
-                    {{ isEnglish ? 'Digital solutions' : 'Skaitmeniniai sprendimai,' }}
-                    <span>{{ isEnglish ? 'that grow your business.' : 'kurie augina verslą.' }}</span>
+                    {{ copy.headline }}
+                    <span>{{ copy.highlight }}</span>
                 </h1>
 
-                <p>{{ isEnglish ? 'From a distinctive website or application to e-commerce, CRM and automation — I build solutions that look exceptional and deliver measurable value.' : 'Nuo išskirtinės svetainės ar aplikacijos iki el. parduotuvės, CRM ir automatizacijos — kuriu sprendimus, kurie ne tik gerai atrodo, bet ir realiai dirba jūsų naudai.' }}</p>
+                <p>{{ copy.description }}</p>
 
                 <div class="hero-actions">
                     <a href="#contact" class="primary-action">{{ isEnglish ? 'Discuss a project' : 'Aptarkime projektą' }} <span>↗</span></a>

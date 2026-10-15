@@ -14,6 +14,7 @@ const props = defineProps({
 })
 
 const page = usePage()
+const robots = computed(() => page.props.seoIndexable === false ? 'noindex, nofollow, noarchive' : props.robots)
 const baseUrl = computed(() => (page.props.appUrl || '').replace(/\/$/, ''))
 const cleanPath = computed(() => (page.url || '/').split('?')[0].split('#')[0] || '/')
 const canonicalUrl = computed(() => `${baseUrl.value}${cleanPath.value}`)
@@ -49,8 +50,8 @@ watchEffect(() => {
     })
     const values = {
         description: props.description,
-        robots: props.robots,
-        googlebot: props.robots,
+        robots: robots.value,
+        googlebot: robots.value,
         'og:locale': isEnglishPage.value ? 'en_US' : 'lt_LT',
         'og:locale:alternate': isEnglishPage.value ? 'lt_LT' : 'en_US',
         'og:type': props.type,

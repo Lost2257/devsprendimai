@@ -1,0 +1,1 @@
+import{C as e,I as t,K as n,O as r,U as i}from"./app-CES8b8MQ.js";import{t as a}from"./PublicLayout-B6ubxZP8.js";import{c as o,r as s}from"./services-D0PHV-LV.js";var c={__name:`CRM`,setup(c){return(c,l)=>(t(),e(a,null,{default:i(()=>[r(o,{config:n(s)},null,8,[`config`])]),_:1}))}};export{c as default};

@@ -7,11 +7,11 @@ const commonProcess = [
 
 export const websites = {
     title: 'Interneto svetainių kūrimas',
-    seoDescription: 'Modernios, greitos ir pardavimams paruoštos interneto svetainės Lietuvos verslui.',
+    seoDescription: 'Interneto svetainių kūrimas verslui: individualus dizainas, mobili versija, turinio valdymas ir techninis SEO. Peržiūrėkite kainas ir darbų eigą.',
     eyebrow: 'Interneto svetainės',
-    headline: 'Svetainė, kuri ne tik atrodo gerai, bet ir',
-    highlight: 'augina verslą.',
-    description: 'Kuriu greitas, aiškias ir konversijoms paruoštas svetaines, kurios profesionaliai pristato jūsų verslą ir padeda lankytojui tapti klientu.',
+    headline: 'Interneto svetainių kūrimas',
+    highlight: 'jūsų verslui.',
+    description: 'Kuriu įmonių svetaines ir nukreipimo puslapius su aiškia struktūra, individualiu dizainu ir patogia mobiliąja versija. Suderiname turinio valdymą, užklausų formas ir techninį SEO, kad svetainę būtų patogu naudoti ir prižiūrėti.',
     visualLabel: 'Skaitmeninė patirtis',
     visualTitle: 'Nuo pirmo įspūdžio iki užklausos',
     proofs: ['Individualus dizainas', 'Mobilioji versija', 'Techninis SEO'],
@@ -40,10 +40,10 @@ export const websites = {
 
 export const ecommerce = {
     title: 'El. parduotuvių kūrimas',
-    seoDescription: 'Greitos, patogios ir pardavimams paruoštos el. parduotuvės su reikalingomis integracijomis.',
+    seoDescription: 'El. parduotuvių kūrimas su WooCommerce: prekių katalogas, mokėjimų ir pristatymo integracijos, patogus pirkimas telefonu. Apimtis ir startinės kainos.',
     eyebrow: 'El. parduotuvės',
-    headline: 'El. parduotuvė, kurioje paprasta',
-    highlight: 'pirkti ir augti.',
+    headline: 'El. parduotuvių kūrimas',
+    highlight: 'patogiai prekybai.',
     description: 'Kuriu patogias el. parduotuves, kurios sklandžiai veikia telefone, supaprastina užsakymų valdymą ir yra paruoštos didesniam pardavimų kiekiui.',
     visualLabel: 'E. komercijos sistema',
     visualTitle: 'Sklandi pirkėjo kelionė',
@@ -73,10 +73,10 @@ export const ecommerce = {
 
 export const crm = {
     title: 'CRM sistemų kūrimas',
-    seoDescription: 'Individualios CRM sistemos klientams, pardavimams ir komandiniams procesams valdyti.',
+    seoDescription: 'Individualių CRM sistemų kūrimas: klientų bazė, pardavimų etapai, užduotys ir integracijos. Sistema pagal jūsų procesus, su aiškia darbų apimtimi.',
     eyebrow: 'CRM sistemos',
-    headline: 'Visa klientų informacija ir pardavimai —',
-    highlight: 'vienoje vietoje.',
+    headline: 'Individualių CRM sistemų kūrimas',
+    highlight: 'pagal jūsų darbo eigą.',
     description: 'Kuriu jūsų procesams pritaikytas CRM sistemas, kurios padeda komandai matyti bendrą vaizdą, neprarasti užklausų ir greičiau atlikti kasdienius darbus.',
     visualLabel: 'Verslo valdymas',
     visualTitle: 'Aiški pardavimų sistema',
@@ -106,10 +106,10 @@ export const crm = {
 
 export const automation = {
     title: 'Verslo procesų automatizacija',
-    seoDescription: 'Procesų automatizavimas, API integracijos ir mažiau rankinio darbo jūsų komandai.',
+    seoDescription: 'Verslo procesų automatizavimas ir API integracijos: užklausų, dokumentų bei duomenų srautai tarp jūsų sistemų. Pradedame nuo konkretaus proceso.',
     eyebrow: 'Automatizacija',
-    headline: 'Mažiau pasikartojančio darbo.',
-    highlight: 'Daugiau laiko augimui.',
+    headline: 'Verslo procesų automatizavimas',
+    highlight: 'ir API integracijos.',
     description: 'Sujungiu jūsų naudojamus įrankius ir automatizuoju pasikartojančius procesus, kad komanda dirbtų greičiau, tiksliau ir be bereikalingo kopijavimo.',
     visualLabel: 'Išmanūs procesai',
     visualTitle: 'Duomenys juda automatiškai',
@@ -139,10 +139,10 @@ export const automation = {
 
 export const maintenance = {
     title: 'Svetainių priežiūra',
-    seoDescription: 'Svetainių atnaujinimai, saugumas, atsarginės kopijos ir greita techninė pagalba.',
+    seoDescription: 'Svetainių priežiūra: TVS ir įskiepių atnaujinimai, atsarginės kopijos, veikimo patikros ir techninė pagalba. Palyginkite mėnesinius priežiūros planus.',
     eyebrow: 'Svetainių priežiūra',
-    headline: 'Jūsų svetainė veikia stabiliai.',
-    highlight: 'Jūs dirbate ramiai.',
+    headline: 'Svetainių priežiūra',
+    highlight: 'po paleidimo.',
     description: 'Prižiūriu svetainės techninę būklę, saugumą ir turinį, kad netikėti trikdžiai nestabdytų jūsų verslo.',
     visualLabel: 'Nuolatinė priežiūra',
     visualTitle: 'Stebima. Atnaujinama. Apsaugota.',
@@ -177,10 +177,10 @@ export const maintenance = {
 
 export const applications = {
     title: 'Aplikacijų kūrimas',
-    seoDescription: 'Individualių web ir mobiliųjų aplikacijų kūrimas nuo MVP iki pilnai veikiančios verslo platformos.',
+    seoDescription: 'Web ir PWA aplikacijų kūrimas: MVP, klientų portalai ir vidinės verslo sistemos. UX/UI, vartotojų rolės, API integracijos ir etapinis paleidimas.',
     eyebrow: 'Aplikacijų kūrimas',
-    headline: 'Jūsų idėja —',
-    highlight: 'veikiantis skaitmeninis produktas.',
+    headline: 'Web aplikacijų kūrimas',
+    highlight: 'nuo MVP iki platformos.',
     description: 'Kuriu greitas, patogias ir augimui paruoštas web bei mobiliąsias aplikacijas — nuo pirmos produkto versijos iki individualios verslo platformos.',
     visualLabel: 'Produkto kūrimas',
     visualTitle: 'Nuo idėjos iki kasdien naudojamo produkto',

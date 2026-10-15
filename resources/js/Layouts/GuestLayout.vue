@@ -1,7 +1,3 @@
-<script setup>
-import { Link } from '@inertiajs/vue3'
-</script>
-
 <template>
     <main class="auth-space">
         <div class="auth-grid" aria-hidden="true"></div>
@@ -10,9 +6,9 @@ import { Link } from '@inertiajs/vue3'
 
         <div class="auth-frame">
             <header class="auth-header">
-                <Link href="/" class="auth-brand" aria-label="Grįžti į DevSprendimai svetainę">
+                <a href="/" class="auth-brand" aria-label="Grįžti į DevSprendimai svetainę">
                     <img src="/images/logo.png" alt="DevSprendimai">
-                </Link>
+                </a>
                 <span><i></i> Saugi administravimo erdvė</span>
             </header>
 
@@ -40,7 +36,7 @@ import { Link } from '@inertiajs/vue3'
 
             <footer class="auth-footer">
                 <span>DS / ADMIN ACCESS</span>
-                <Link href="/">Grįžti į svetainę <i>↗</i></Link>
+                <a href="/">Grįžti į svetainę <i>↗</i></a>
             </footer>
         </div>
     </main>

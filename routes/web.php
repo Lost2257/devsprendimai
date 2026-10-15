@@ -109,6 +109,26 @@ Route::middleware([
             : is_file(public_path('og.png'));
         $robotsFile = public_path('robots.txt');
         $hasVerificationTag = filled($settings?->google_site_verification) || filled(config('seo.google_site_verification'));
+        $verificationFile = public_path('googlec4c5c24cccbf3309.html');
+        $expectedVerificationContent = 'google-site-verification: googlec4c5c24cccbf3309.html';
+        $verificationContent = is_file($verificationFile) && is_readable($verificationFile)
+            ? file_get_contents($verificationFile)
+            : null;
+        $hasVerificationFile = in_array($verificationContent, [
+            $expectedVerificationContent,
+            $expectedVerificationContent."\n",
+            $expectedVerificationContent."\r\n",
+        ], true);
+        $verificationMethods = [];
+        if ($hasVerificationFile) {
+            $verificationMethods[] = 'HTML failas (turinys patikrintas aplikacijos public kataloge)';
+        }
+        if ($hasVerificationTag) {
+            $verificationMethods[] = 'HTML žyma';
+        }
+        $verificationDetail = $verificationMethods
+            ? 'Paruošta: '.implode(' ir ', $verificationMethods).'. Tai nėra viešo pasiekiamumo ar Google patvirtintos nuosavybės patikra. Būseną tikrinkite Search Console; DNS patvirtinimas taip pat galioja.'
+            : 'Tinkamo HTML failo aplikacijos public kataloge ir HTML žymos nerasta. Galimas DNS patvirtinimas. Tikrąją nuosavybės būseną tikrinkite Search Console.';
         $seoChecks = [
             ['label' => 'Pradžios SEO pavadinimas', 'ok' => filled($homeMetadata['title']), 'detail' => filled($settings?->site_title) ? 'Naudojamas jūsų nustatytas tekstas.' : 'Naudojamas paruoštas paslaugų pavadinimas.'],
             ['label' => 'Pradžios meta aprašymas', 'ok' => filled($homeMetadata['description']), 'detail' => filled($settings?->site_description) ? 'Naudojamas jūsų nustatytas aprašymas.' : 'Paruoštas aprašymas galioja ir neužpildžius nustatymų.'],
@@ -117,7 +137,7 @@ Route::middleware([
             ['label' => 'Pradinis HTML turinys', 'ok' => is_file(resource_path('data/seo-content.json')) && view()->exists('seo-content'), 'detail' => 'Paslaugų, projektų ir politikų turinys pateikiamas dar prieš JavaScript.'],
             ['label' => 'Projektų aprašymai ir vaizdų nuorodos', 'ok' => $projectCount > 0 && $completeProjects === $projectCount, 'detail' => $completeProjects.' iš '.$projectCount.' projektų užpildyta.'],
             ['label' => 'Sitemap ir robots konfigūracija', 'ok' => Route::has('sitemap') && is_file($robotsFile) && str_contains(file_get_contents($robotsFile), 'Sitemap: '.rtrim(config('app.url'), '/').'/sitemap.xml')],
-            ['label' => 'Search Console HTML žyma', 'ok' => $hasVerificationTag, 'informational' => true, 'detail' => $hasVerificationTag ? 'Žyma pridėta. Patvirtinimo būseną tikrinkite Google paskyroje.' : 'Nepridėta. Jei domenas patvirtintas per DNS, jos nereikia; paskyros būsena čia netikrinama.'],
+            ['label' => 'Search Console patvirtinimo priemonė', 'ok' => $hasVerificationFile || $hasVerificationTag, 'informational' => true, 'detail' => $verificationDetail],
         ];
         $readinessChecks = collect($seoChecks)->reject(fn ($check) => $check['informational'] ?? false);
         $seoScore = (int) round($readinessChecks->where('ok', true)->count() / max($readinessChecks->count(), 1) * 100);
