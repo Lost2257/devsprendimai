@@ -34,6 +34,12 @@ class HandleInertiaRequests extends Middleware
         // localhost provide the secure context required by Web Crypto.
         \Inertia\Inertia::encryptHistory((bool) $request->user());
 
+        $analyticsId = config('app.env') === 'production'
+            && !$request->user()
+            && !preg_match('#^(?:en/)?(?:dashboard|login|register|forgot-password|reset-password|verify-email|confirm-password|profile)(?:/|$)#', $request->path())
+                ? config('services.google_analytics.measurement_id')
+                : null;
+
         return [
             ...parent::share($request),
 
@@ -44,6 +50,14 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
+                // Consume once, never re-emit on a later request or consent change.
+                'enquiryConversion' => function () use ($request, $analyticsId) {
+                    $marker = $request->session()->pull('enquiry_conversion');
+
+                    return $analyticsId && $request->cookie('devsprendimai_analytics_consent') === 'granted'
+                        ? $marker
+                        : null;
+                },
             ],
 
             'appUrl' => $request->getSchemeAndHttpHost(),
@@ -51,11 +65,7 @@ class HandleInertiaRequests extends Middleware
 
             // Never enable third-party analytics for signed-in users or private pages.
             'analytics' => [
-                'measurementId' => config('app.env') === 'production'
-                    && !$request->user()
-                    && !$request->is('dashboard*', 'login', 'register', 'forgot-password', 'reset-password*', 'verify-email*', 'confirm-password', 'profile*')
-                        ? config('services.google_analytics.measurement_id')
-                        : null,
+                'measurementId' => $analyticsId,
             ],
 
             'newInquiries' => fn () => $request->user()?->hasAnyRole(['super-user', 'admin'])

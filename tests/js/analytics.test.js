@@ -151,3 +151,100 @@ test('page views use the new title, preserve attribution and redact unrelated qu
     assert.equal(views[1][2].page_title, 'Interneto svetainės')
     assert.equal(views[1][2].page_referrer, 'https://devsprendimai.lt/?utm_source=google')
 })
+
+const leadMarker = (overrides = {}) => ({ id: 'b3ce4c48-dc1e-43b2-9070-d3a2ab67a995', form_id: 'project_enquiry', locale: 'lt', ...overrides })
+const publicPage = { analytics: { measurementId: id }, auth: { user: null } }
+const leadEvents = (b) => b.commands().filter(([type, name]) => type === 'event' && name === 'generate_lead')
+
+test('one saved enquiry emits one generate_lead with fixed privacy-safe parameters', () => {
+    const b = browser(stored(true))
+    b.analytics.configure(id)
+    const complete = b.analytics.beginLeadSubmission()
+    const marker = leadMarker({ name: 'Private name', email: 'secret@example.com', service: 'arbitrary service', message: 'private message' })
+    assert.equal(complete(marker, publicPage), true)
+    assert.equal(complete(marker, publicPage), false)
+    assert.equal(b.analytics.beginLeadSubmission()(marker, publicPage), false)
+    assert.deepEqual(leadEvents(b), [['event', 'generate_lead', { form_id: 'project_enquiry', language: 'lt', send_to: id }]])
+    b.win.location.pathname = '/en'
+    b.win.location.href = 'https://devsprendimai.lt/en'
+    assert.equal(b.analytics.beginLeadSubmission()(leadMarker({ id: 'f670416d-c8af-433c-837b-7d5c4a3c6cfe', locale: 'en' }), publicPage), true)
+    assert.equal(leadEvents(b)[1][2].language, 'en')
+})
+
+test('no consent, refusal, expiration and delayed opt-in never replay enquiries', () => {
+    for (const choice of [null, stored(false), stored(true, Date.now() - 1)]) {
+        const b = browser(choice)
+        b.analytics.configure(id)
+        const complete = b.analytics.beginLeadSubmission()
+        b.analytics.setConsent(true)
+        assert.equal(complete(leadMarker(), publicPage), false)
+        assert.equal(b.analytics.beginLeadSubmission()(leadMarker(), publicPage), false)
+        assert.equal(leadEvents(b).length, 0)
+    }
+    const b = browser(stored(true))
+    b.analytics.configure(id)
+    const complete = b.analytics.beginLeadSubmission()
+    b.analytics.setConsent(false)
+    b.analytics.setConsent(true)
+    assert.equal(complete(leadMarker(), publicPage), false)
+    assert.equal(leadEvents(b).length, 0)
+})
+
+test('lead completion rejects missing, malformed, arbitrary form and locale markers', () => {
+    const b = browser(stored(true))
+    b.analytics.configure(id)
+    for (const marker of [null, {}, leadMarker({ id: '1' }), leadMarker({ form_id: 'secret@example.com' }), leadMarker({ locale: 'secret@example.com' })]) {
+        assert.equal(b.analytics.beginLeadSubmission()(marker, publicPage), false)
+    }
+    assert.equal(leadEvents(b).length, 0)
+})
+
+test('private or signed-in responses and paused configuration cannot create leads', () => {
+    for (const response of [{}, { ...publicPage, auth: { user: { id: 1 } } }, { analytics: { measurementId: null } }]) {
+        const b = browser(stored(true))
+        b.analytics.configure(id)
+        assert.equal(b.analytics.beginLeadSubmission()(leadMarker(), response), false)
+        assert.equal(leadEvents(b).length, 0)
+    }
+    const b = browser(stored(true))
+    b.analytics.configure(id)
+    const complete = b.analytics.beginLeadSubmission()
+    b.win.location.pathname = '/login'
+    assert.equal(complete(leadMarker(), publicPage), false)
+    b.win.location.pathname = '/'
+    const paused = b.analytics.beginLeadSubmission()
+    b.analytics.pause()
+    assert.equal(paused(leadMarker({ id: 'f670416d-c8af-433c-837b-7d5c4a3c6cfe' }), publicPage), false)
+    assert.equal(leadEvents(b).length, 0)
+})
+
+test('cross-tab withdrawal and regrant cancel an in-flight enquiry conversion', () => {
+    const b = browser(stored(true))
+    b.analytics.configure(id)
+    const complete = b.analytics.beginLeadSubmission()
+    b.storage.set(CONSENT_KEY, JSON.stringify(stored(false)))
+    b.events.storage({ key: CONSENT_KEY })
+    b.storage.set(CONSENT_KEY, JSON.stringify(stored(true)))
+    b.events.storage({ key: CONSENT_KEY })
+    assert.equal(complete(leadMarker(), publicPage), false)
+    assert.equal(leadEvents(b).length, 0)
+})
+
+test('consent expiring while an enquiry is pending does not track its success', (t) => {
+    const now = Date.now()
+    const b = browser(stored(true, now + 100))
+    b.analytics.configure(id)
+    const complete = b.analytics.beginLeadSubmission()
+    t.mock.method(Date, 'now', () => now + 200)
+    assert.equal(complete(leadMarker(), publicPage), false)
+    assert.equal(leadEvents(b).length, 0)
+})
+
+test('blocked or throwing Google code cannot throw from enquiry completion', () => {
+    const b = browser(stored(true))
+    b.analytics.configure(id)
+    const complete = b.analytics.beginLeadSubmission()
+    b.win.gtag = () => { throw new Error('Blocked analytics') }
+    assert.equal(complete(leadMarker(), publicPage), false)
+    assert.equal(complete(leadMarker(), publicPage), false)
+})

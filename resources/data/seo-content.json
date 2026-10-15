@@ -427,7 +427,7 @@
           {
             "title": "7. „Google Analytics“",
             "paragraphs": [
-              "Tik jums sutikus naudojama „Google Analytics 4“ lankomumo analitika. Ji apdoroja puslapių peržiūras, apsilankymų šaltinius, naršyklės ir įrenginio informaciją bei slapukų identifikatorius. Paslaugos teikėjas – Google Ireland Limited; tvarkant duomenis gali dalyvauti Google LLC JAV ir kiti Google paslaugų teikėjai. Apie Google duomenų tvarkymą ir tarptautinio perdavimo priemones skaitykite žemiau pateiktose nuorodose.",
+              "Tik jums sutikus naudojama „Google Analytics 4“ lankomumo analitika. Ji apdoroja puslapių peržiūras, sėkmingų projekto užklausų pateikimo įvykius (formos tipą ir puslapio kalbą), apsilankymų šaltinius, naršyklės ir įrenginio informaciją bei slapukų identifikatorius. Paslaugos teikėjas – Google Ireland Limited; tvarkant duomenis gali dalyvauti Google LLC JAV ir kiti Google paslaugų teikėjai. Apie Google duomenų tvarkymą ir tarptautinio perdavimo priemones skaitykite žemiau pateiktose nuorodose.",
               "Teisinis pagrindas – jūsų sutikimas (BDAR 6 str. 1 d. a p.). Google žyma iki sutikimo nekraunama. Reklamos personalizavimas ir Google Signals svetainės integracijoje išjungti. Užklausų formų tekstų, el. pašto adresų ar telefono numerių į analitikos įvykius nepridedame.",
               "Sutikimą bet kada galite atšaukti skiltyje „Slapukų nustatymai“. Atšaukus sustabdomas tolesnis rinkimas ir ištrinami šios svetainės Google Analytics slapukai; tai nepanaikina ankstesnio teisėto tvarkymo. Sutikimo pasirinkimas ir analitikos slapukai galioja iki 180 dienų. Google paskyroje surinktų įvykių saugojimui taikomi tos paskyros saugojimo nustatymai; dėl jų ar duomenų ištrynimo kreipkitės info@devsprendimai.lt."
             ],
@@ -518,7 +518,7 @@
           {
             "title": "5. Analitika ir vidinė statistika",
             "paragraphs": [
-              "Google Analytics padeda suprasti, kurie puslapiai lankomi ir iš kur atvyksta lankytojai. Reklaminiai slapukai, Google Signals ir reklamos personalizavimas šioje integracijoje neįjungiami. Paslaugą teikia Google Ireland Limited; daugiau apie duomenų tvarkymą pateikta Privatumo politikoje.",
+              "Google Analytics padeda suprasti, kurie puslapiai lankomi, iš kur atvyksta lankytojai ir kada sėkmingai pateikiamos projekto užklausos. Užklausų matavimui perduodamas tik formos tipas ir puslapio kalba, be formos turinio ar kontaktinių duomenų. Reklaminiai slapukai, Google Signals ir reklamos personalizavimas šioje integracijoje neįjungiami. Paslaugą teikia Google Ireland Limited; daugiau apie duomenų tvarkymą pateikta Privatumo politikoje.",
               "Tas pats pasirinkimas valdo ir vidinę serverio lankomumo statistiką: be sutikimo ji nerenkama. Leidimas perduodamas pirmosios šalies pasirinkimo slapuku, todėl vidinė statistika pradedama nuo tolesnės puslapio užklausos. Šie įrašai saugomi iki 90 dienų. Būtini infrastruktūros ir saugumo žurnalai nėra ši analitika ir gali būti tvarkomi svetainės apsaugos tikslu."
             ],
             "links": [
@@ -1070,7 +1070,7 @@
           {
             "title": "7. Google Analytics",
             "paragraphs": [
-              "Google Analytics 4 is enabled only with your consent. It processes page views, traffic sources, browser and device information, and cookie identifiers. The provider is Google Ireland Limited; processing may involve Google LLC in the US and other Google providers. Details of Google data processing and transfer safeguards are linked below.",
+              "Google Analytics 4 is enabled only with your consent. It processes page views, successful project enquiry submissions (form type and page language), traffic sources, browser and device information, and cookie identifiers. The provider is Google Ireland Limited; processing may involve Google LLC in the US and other Google providers. Details of Google data processing and transfer safeguards are linked below.",
               "The legal basis is your consent (Article 6(1)(a) GDPR). The Google tag is not loaded before consent. Advertising personalisation and Google Signals are disabled in this integration. We do not add enquiry text, email addresses or phone numbers to analytics events.",
               "You can withdraw consent through Cookie settings at any time. Withdrawal stops further collection and deletes this site’s Google Analytics cookies, without affecting earlier lawful processing. Your choice and analytics cookies last up to 180 days. Collected event retention is governed by the Analytics account settings; contact info@devsprendimai.lt for details or deletion requests."
             ],
@@ -1161,7 +1161,7 @@
           {
             "title": "5. Analytics and internal statistics",
             "paragraphs": [
-              "Google Analytics helps us understand which pages are visited and where visitors come from. Advertising cookies, Google Signals and advertising personalisation are not enabled by this integration. Google Ireland Limited provides the service; see the Privacy Policy for data-processing details.",
+              "Google Analytics helps us understand which pages are visited, where visitors come from and when project enquiries are successfully submitted. Enquiry measurement includes only the form type and page language, without form contents or contact details. Advertising cookies, Google Signals and advertising personalisation are not enabled by this integration. Google Ireland Limited provides the service; see the Privacy Policy for data-processing details.",
               "The same choice controls internal server-side visitor statistics: they are not collected without consent. A first-party preference cookie carries that permission, so internal statistics start with the next page request. These records are retained for up to 90 days. Essential infrastructure and security logs are separate from these analytics and may be processed to protect the website."
             ],
             "links": [

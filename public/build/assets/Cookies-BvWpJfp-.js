@@ -1,1 +1,0 @@
-import{C as e,I as t,O as n,U as r}from"./app-BCocQRQI.js";import{t as i}from"./PublicLayout-CEZ_LQhw.js";import{t as a}from"./LegalPage-DSwWpPwo.js";var o={__name:`Cookies`,setup(o){return(o,s)=>(t(),e(i,null,{default:r(()=>[n(a,{type:`cookies`})]),_:1}))}};export{o as default};

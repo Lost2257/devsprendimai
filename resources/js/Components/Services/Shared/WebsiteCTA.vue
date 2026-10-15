@@ -3,6 +3,7 @@ import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { useLocale } from '@/composables/useLocale'
 import { MESSAGE_LIMIT, mergeProjectBrief, PROJECT_BRIEF_EVENT } from '@/lib/projectPlanner'
+import { analytics } from '@/lib/analytics'
 
 const props = defineProps({
     service: { type: String, default: 'Kita' },
@@ -86,13 +87,15 @@ watch(selectedService, (service) => {
 })
 
 const submit = () => {
+    const completeLead = analytics?.beginLeadSubmission()
     form.post(localize('/contact'), {
         preserveScroll: true,
-        onSuccess: () => {
+        onSuccess: (page) => {
             form.reset()
             form.service = selectedService.value
             previousDraft = ''
             draftNotice.value = ''
+            completeLead?.(page.props.flash?.enquiryConversion, page.props)
         },
         onError: async (errors) => {
             await nextTick()

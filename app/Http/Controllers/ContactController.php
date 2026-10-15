@@ -7,12 +7,15 @@ use App\Models\Inquiry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class ContactController extends Controller
 {
     public function send(Request $request)
     {
+        // A previous response must never make an invalid/bot retry look like a lead.
+        $request->session()->forget('enquiry_conversion');
         // Hash the network identifier: cache keys need not contain a raw IP address.
         $identity = hash_hmac('sha256', (string) $request->ip(), (string) config('app.key'));
         $limits = ["contact:short:{$identity}" => [5, 600], "contact:hour:{$identity}" => [20, 3600]];
@@ -81,7 +84,23 @@ class ContactController extends Controller
             report($exception);
         }
 
-        return $this->sent();
+        $response = $this->sent();
+
+        // The opaque, one-response marker is not an inquiry ID and contains no
+        // contact data. Only a genuinely persisted, consented guest enquiry can
+        // provide it; the browser independently checks consent again.
+        if (config('app.env') === 'production'
+            && !$request->user()
+            && $request->cookie('devsprendimai_analytics_consent') === 'granted'
+            && preg_match('/^G-[A-Z0-9]+$/', (string) config('services.google_analytics.measurement_id'))) {
+            $response->with('enquiry_conversion', [
+                'id' => (string) Str::uuid(),
+                'form_id' => 'project_enquiry',
+                'locale' => app()->isLocale('en') ? 'en' : 'lt',
+            ]);
+        }
+
+        return $response;
     }
 
     private function sent()

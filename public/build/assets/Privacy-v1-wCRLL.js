@@ -1,0 +1,1 @@
+import{C as e,I as t,O as n,U as r}from"./app-CIcwG1Fv.js";import{t as i}from"./PublicLayout-BFxSYtQ4.js";import{t as a}from"./LegalPage-CpzsuO2H.js";var o={__name:`Privacy`,setup(o){return(o,s)=>(t(),e(i,null,{default:r(()=>[n(a,{type:`privacy`})]),_:1}))}};export{o as default};

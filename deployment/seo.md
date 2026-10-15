@@ -24,6 +24,7 @@ This is read-only and does not execute analytics. It checks every sitemap page's
 ## Account-side work still required
 
 1. Open [Google Search Console](https://search.google.com/search-console), add the actual domain and verify ownership. Domain verification uses the exact DNS TXT value issued by Google. Alternatively, a URL-prefix property can use its HTML token in Dashboard → SEO settings. Never invent a verification token.
+   The owner supplied `public/googlec4c5c24cccbf3309.html` for the URL-prefix property. On this shared-host layout, also copy it to the root `public_html/googlec4c5c24cccbf3309.html`, preserving any existing verification files. Its public response must be HTTP 200 with the exact Google verification line. Do not remove it after verification; serving the file alone does not prove the owner clicked Verify or Google accepted ownership.
 2. Submit `https://devsprendimai.lt/sitemap.xml` in the verified property's Sitemaps report.
 3. Inspect the homepage, a service and a project in URL Inspection. Test live availability and request indexing when appropriate. Google's index state cannot be inferred from a local checklist or an empty `site:` search alone.
 4. Use the [Rich Results Test](https://search.google.com/test/rich-results) and Search Console reports to confirm how Google actually renders the deployment.

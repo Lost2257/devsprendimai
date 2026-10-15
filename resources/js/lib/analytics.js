@@ -20,6 +20,8 @@ export function createAnalytics(win, doc) {
     let active = false
     let lastPage = null
     let pageTitle = ''
+    let consentRevision = 0
+    const consumedLeads = new Set()
     let canPersistChoice = true
     let choice = readChoice()
     try { win.localStorage.removeItem('devsprendimai.cookie-consent.v1') } catch { /* Older preferences are never reused. */ }
@@ -138,7 +140,45 @@ export function createAnalytics(win, doc) {
         trackPage()
     }
 
+    function beginLeadSubmission() {
+        // Capture permission at submission time. A later opt-in must not cause
+        // an earlier enquiry to be tracked, even if its response is still pending.
+        const permitted = active && getConsent() === true && isPublicPath(win.location.pathname)
+        const revision = consentRevision
+        const submissionId = measurementId
+        let completed = false
+
+        return (marker, page = {}) => {
+            if (completed) return false
+            completed = true
+            if (!marker || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(marker.id || '')
+                || marker.form_id !== 'project_enquiry' || !['lt', 'en'].includes(marker.locale)) return false
+            if (consumedLeads.has(marker.id)) return false
+            consumedLeads.add(marker.id)
+
+            if (!permitted || !active || revision !== consentRevision || getConsent() !== true
+                || !measurementId || submissionId !== measurementId
+                || page.auth?.user || page.analytics?.measurementId !== measurementId
+                || !isPublicPath(win.location.pathname)) return false
+
+            // Fixed, allowlisted parameters only. Do not send the marker, form
+            // values, inquiry ID or invented monetary value to Google.
+            try {
+                win.gtag('event', 'generate_lead', {
+                    form_id: 'project_enquiry',
+                    language: marker.locale,
+                    send_to: measurementId,
+                })
+                return true
+            } catch {
+                // Analytics must never prevent the enquiry success/reset UI.
+                return false
+            }
+        }
+    }
+
     function setConsent(analytics) {
+        consentRevision++
         choice = { version: 2, analytics: analytics === true, updatedAt: Date.now(), expiresAt: Date.now() + consentLifetime }
         try {
             win.localStorage.setItem(CONSENT_KEY, JSON.stringify(choice))
@@ -160,6 +200,7 @@ export function createAnalytics(win, doc) {
 
     win.addEventListener('storage', (event) => {
         if (event.key !== CONSENT_KEY && event.key !== null) return
+        consentRevision++
         choice = readChoice()
         syncConsentCookie()
         if (getConsent() !== true) {
@@ -173,7 +214,7 @@ export function createAnalytics(win, doc) {
         win.dispatchEvent(new win.CustomEvent(CONSENT_EVENT))
     })
 
-    return { configure, getConsent, setConsent, pause }
+    return { configure, getConsent, setConsent, pause, beginLeadSubmission }
 }
 
 export const analytics = typeof window !== 'undefined' ? createAnalytics(window, document) : null
