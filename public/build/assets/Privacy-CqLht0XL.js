@@ -1,1 +1,0 @@
-import{C as e,I as t,O as n,U as r}from"./app-gsRbyhv2.js";import{t as i}from"./PublicLayout-q7bcC5QJ.js";import{t as a}from"./LegalPage-DOeBeJuD.js";var o={__name:`Privacy`,setup(o){return(o,s)=>(t(),e(i,null,{default:r(()=>[n(a,{type:`privacy`})]),_:1}))}};export{o as default};

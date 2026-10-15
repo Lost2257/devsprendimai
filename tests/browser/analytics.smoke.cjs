@@ -15,6 +15,10 @@ async function main() {
         const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } })
         const page = await context.newPage()
         const google = [], hits = [], errors = []
+        const waitForHit = async (predicate, timeout = 15000) => {
+            const deadline = Date.now() + timeout
+            while (!hits.some(predicate) && Date.now() < deadline) await page.waitForTimeout(200)
+        }
         page.on('pageerror', (error) => errors.push(error.message))
         page.on('request', (request) => {
             const url = new URL(request.url())
@@ -39,7 +43,7 @@ async function main() {
 
         await page.getByRole('button', { name: 'Slapukų nustatymai', exact: true }).click()
         await page.getByRole('button', { name: 'Leisti analitiką', exact: true }).click()
-        await page.waitForTimeout(5000)
+        await waitForHit((hit) => hit.event === 'page_view')
         console.log('INITIAL_HITS', JSON.stringify(hits))
         assert.equal(hits.filter((hit) => hit.event === 'page_view').length, 1, 'One initial page view')
         assert(hits.every((hit) => hit.id === 'G-LYW20LSJG9'), 'Correct GA4 stream')
@@ -50,14 +54,17 @@ async function main() {
         const before = hits.filter((hit) => hit.event === 'page_view').length
         await page.locator('a[href="/interneto-svetaines"]').first().click()
         await page.waitForURL('**/interneto-svetaines')
-        await page.waitForTimeout(4000)
+        const navigationStarted = Date.now()
+        // GA may batch an already-enqueued event; wait on the actual matching hit.
+        await waitForHit((hit) => hit.event === 'page_view' && new URL(hit.path).pathname === '/interneto-svetaines')
+        console.log('NAVIGATION_HIT_WAIT_MS', Date.now() - navigationStarted)
         console.log('NAVIGATION_HITS', JSON.stringify(hits))
         assert.equal(hits.filter((hit) => hit.event === 'page_view').length, before + 1, 'One page view per Inertia navigation')
         const serviceView = hits.filter((hit) => hit.event === 'page_view').at(-1)
         assert.equal(new URL(serviceView.path).pathname, '/interneto-svetaines')
         assert.equal(serviceView.title, await page.title(), 'SPA view uses updated page title')
         await page.goBack()
-        await page.waitForTimeout(4000)
+        await page.waitForTimeout(6000)
         const manualViews = await page.evaluate(() => window.dataLayer
             .filter((entry) => entry[0] === 'event' && entry[1] === 'page_view')
             .map((entry) => entry[2]))

@@ -5,6 +5,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
     stats: Object,
+    mailNotificationsEnabled: { type: Boolean, default: false },
     recentProjects: { type: Array, default: () => [] },
     recentInquiries: { type: Array, default: () => [] },
     visitSeries: { type: Array, default: () => [] },
@@ -23,8 +24,8 @@ const completedChecks = computed(() => readinessChecks.value.filter((check) => c
 const today = new Intl.DateTimeFormat('lt-LT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(new Date())
 
 const statCards = computed(() => [
-    { label: 'Šiandienos lankytojai', value: props.stats.today_visits, meta: 'Svetainės srautas', accent: true },
-    { label: 'Šio mėnesio srautas', value: props.stats.month_visits, meta: `${props.stats.unique_visitors || 0} unikalūs lankytojai` },
+    { label: 'Šiandienos peržiūros', value: props.stats.today_visits, meta: 'Svetainės puslapių peržiūros', accent: true },
+    { label: 'Šio mėnesio peržiūros', value: props.stats.month_visits, meta: `${props.stats.unique_visitors || 0} apytiksliai unikalūs lankytojai` },
     { label: 'Naujos užklausos', value: props.stats.new_inquiries, meta: `${props.stats.inquiries} iš viso`, accent: true },
     { label: 'Publikuoti projektai', value: props.stats.projects, meta: 'Portfolio turinys' },
 ])
@@ -36,6 +37,13 @@ const statCards = computed(() => [
             <div><span>Valdymo apžvalga</span><h1>Labas, {{ $page.props.auth?.user?.name?.split(' ')[0] || 'Aivarai' }}.</h1><p>{{ today }} · štai kas vyksta jūsų svetainėje.</p></div>
             <Link href="/dashboard/projects/create">Naujas projektas <i>↗</i></Link>
         </header>
+
+        <section v-if="!mailNotificationsEnabled" class="mail-warning" role="status">
+            <strong>El. pašto pranešimai dar nesukonfigūruoti</strong>
+            <p>Užklausos išsaugomos čia, tačiau pranešimai į jūsų paštą nesiunčiami. Kol prijungiamas pašto siuntimas, reguliariai peržiūrėkite naujas užklausas.</p>
+            <Link href="/dashboard/inquiries">Peržiūrėti užklausas →</Link>
+        </section>
+        <p class="analytics-note">Nauji analitikos įrašai renkami tik lankytojui sutikus. Tai vidinė statistika, ne „Google Analytics“ ataskaita.</p>
 
         <section class="stat-grid">
             <article v-for="(card,index) in statCards" :key="card.label" :class="{ accent: card.accent }">
@@ -74,7 +82,7 @@ const statCards = computed(() => [
                     <div v-for="source in trafficSources" :key="`${source.source}-${source.medium}`">
                         <i :style="{ width: `${Math.max((Number(source.visits) / maxSourceVisits) * 100, 3)}%` }"></i>
                         <span><strong>{{ source.source }}</strong><small>{{ source.medium || 'kitas šaltinis' }}</small></span>
-                        <b>{{ source.visits }}<small>{{ source.visitors }} žmonės</small></b>
+                        <b>{{ source.visits }}<small>{{ source.visitors }} apyt. lankytojai</small></b>
                     </div>
                 </div>
                 <div v-else class="empty-state">Šaltinių duomenys pradės kauptis po atnaujinimo.</div>
@@ -144,6 +152,7 @@ const statCards = computed(() => [
 </template>
 
 <style scoped>
+.mail-warning{margin-bottom:1rem;padding:1.1rem 1.25rem;border:1px solid #f59e0b55;border-radius:1rem;background:#f59e0b0d;color:#fde68a}.mail-warning strong{font-size:.9rem}.mail-warning p{margin:.5rem 0;color:#c4b99b;font-size:.8rem;line-height:1.65}.mail-warning a{display:inline-block;padding:.35rem 0;font-size:.8rem;font-weight:800;text-decoration:underline;text-underline-offset:3px}.analytics-note{margin:0 0 1rem;color:#8a9bb1;font-size:.75rem;line-height:1.6}
 .seo-note{margin-top:.85rem;color:#8293a9;font-size:.68rem;line-height:1.6}.seo-checks>div{align-items:flex-start}.seo-checks small{display:block;margin-top:.2rem;color:#8293a9;font-size:.61rem;line-height:1.55}.seo-checks>div.informational>i{color:#a4b4cb;background:rgba(148,163,184,.1);flex-shrink:0}
 .dashboard-head{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:2rem}.dashboard-head>div>span,.panel-head>div>span{color:#22d3ee;font-size:.65rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase}.dashboard-head h1{margin-top:.5rem;font-size:clamp(2.5rem,5vw,4.8rem);font-weight:850;letter-spacing:-.065em;line-height:.92}.dashboard-head p{margin-top:.65rem;color:#68778c;font-size:.82rem;text-transform:capitalize}.dashboard-head>a{display:flex;align-items:center;gap:1rem;min-height:3.2rem;padding:0 1.1rem;border-radius:.85rem;color:#061016;background:#22d3ee;font-size:.75rem;font-weight:850;box-shadow:0 15px 40px rgba(34,211,238,.14)}.dashboard-head>a i{font-style:normal}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}.stat-grid article{min-height:210px;padding:1.25rem;border:1px solid rgba(255,255,255,.075);border-radius:1.2rem;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.015))}.stat-grid article.accent{border-color:rgba(34,211,238,.17);background:linear-gradient(145deg,rgba(34,211,238,.075),rgba(255,255,255,.015))}.stat-grid article>div{display:flex;justify-content:space-between;color:#4d5b70;font-size:.6rem;font-weight:800}.stat-grid article>div i{color:#22d3ee;font-style:normal}.stat-grid article>strong{display:block;margin-top:2rem;font-size:3.5rem;font-weight:850;letter-spacing:-.07em}.stat-grid article.accent>strong{color:#67e8f9}.stat-grid h2{margin-top:.45rem;font-size:.82rem;font-weight:750}.stat-grid p{margin-top:.3rem;color:#58677c;font-size:.68rem}

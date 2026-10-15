@@ -1,1 +1,0 @@
-import{C as e,I as t,O as n,U as r}from"./app-gsRbyhv2.js";import{t as i}from"./PublicLayout-q7bcC5QJ.js";import{t as a}from"./LegalPage-DOeBeJuD.js";var o={__name:`Cookies`,setup(o){return(o,s)=>(t(),e(i,null,{default:r(()=>[n(a,{type:`cookies`})]),_:1}))}};export{o as default};

@@ -1,0 +1,1 @@
+import{C as e,I as t,K as n,O as r,U as i}from"./app-BCocQRQI.js";import{t as a}from"./PublicLayout-CEZ_LQhw.js";import{c as o,n as s}from"./services-CZ9yq6g3.js";var c={__name:`Automation`,setup(c){return(c,l)=>(t(),e(a,null,{default:i(()=>[r(o,{config:n(s)},null,8,[`config`])]),_:1}))}};export{c as default};

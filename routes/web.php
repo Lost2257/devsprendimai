@@ -132,6 +132,7 @@ Route::middleware([
         });
 
         return Inertia::render('Dashboard', [
+            'mailNotificationsEnabled' => !in_array(config('mail.default'), ['log', 'array', null], true),
             'stats' => [
 
                 'users' => User::count(),

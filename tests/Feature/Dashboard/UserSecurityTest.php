@@ -89,4 +89,11 @@ class UserSecurityTest extends TestCase
         $this->post('/logout')->assertRedirect('/');
         $this->get('/')->assertViewHas('page', fn ($page) => $page['clearHistory'] === true && $page['encryptHistory'] === false);
     }
+
+    public function test_dashboard_warns_when_notifications_only_go_to_logs(): void
+    {
+        config(['mail.default' => 'log']);
+        $this->actingAs($this->account('admin'))->get('/dashboard')
+            ->assertInertia(fn (Assert $page) => $page->where('mailNotificationsEnabled', false)->missing('mail'));
+    }
 }
