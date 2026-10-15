@@ -5,6 +5,15 @@
 
     RewriteEngine On
 
+    # On the shared host this is a nested directory, not the document root.
+    # Its own rules must reject direct /public URLs as well as the parent rules.
+    # Internal /storage -> /public/storage rewrites keep their original request.
+    RewriteCond %{HTTP_HOST} ^(?:www\.)?devsprendimai\.lt$ [NC]
+    RewriteCond %{THE_REQUEST} \s/+public(?:[/\s?]) [NC]
+    RewriteRule ^ - [F,L]
+
+    RewriteRule ^storage/.*\.(?:php[0-9]?|phtml|phar)(?:/|$) - [F,L,NC]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
