@@ -12,7 +12,7 @@ async function main() {
     const base = process.env.LEAD_SMOKE_URL.replace(/\/$/, '')
     const browser = await chromium.launch({ headless: true, channel: 'msedge' })
     try {
-        for (const scenario of [{ locale: 'lt', width: 1440, consent: true }, { locale: 'en', width: 390, consent: true }, { locale: 'lt', width: 320, consent: false }]) {
+        for (const scenario of [{ locale: 'lt', width: 1440, consent: true }, { locale: 'en', width: 390, consent: true }, { locale: 'lt', width: 320, consent: false }, { locale: 'en', width: 320, consent: false }]) {
             const { locale, width, consent } = scenario
             const context = await browser.newContext({ viewport: { width, height: 1000 } })
             const page = await context.newPage()
@@ -41,7 +41,15 @@ async function main() {
             await page.goto(`${base}${locale === 'en' ? '/en' : '/'}`, { waitUntil: 'networkidle' })
             initialPage = JSON.parse(await page.locator('#app').getAttribute('data-page'))
             assert(initialPage.props.analytics?.measurementId, 'Test target must expose production public analytics configuration')
-            const button = consent ? (locale === 'en' ? 'Allow analytics' : 'Leisti analitiką') : (locale === 'en' ? 'Necessary only' : 'Tik būtinieji')
+            const panel = page.locator('.cookie-panel')
+            await panel.waitFor({ state: 'visible' })
+            const bounds = await panel.boundingBox()
+            assert(bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.width <= width + 1 && bounds.y + bounds.height <= 1001, 'Consent panel stays inside the viewport')
+            assert(await panel.evaluate(element => element.scrollWidth <= element.clientWidth + 1), 'Consent copy has no horizontal overflow')
+            for (const action of await panel.locator('button').all()) {
+                assert((await action.boundingBox()).height >= 44, 'Consent choices retain accessible touch targets')
+            }
+            const button = consent ? (locale === 'en' ? 'Allow analytics' : 'Leisti analitiką') : (locale === 'en' ? 'Essential only' : 'Tik būtinieji')
             await page.getByRole('button', { name: button, exact: true }).click()
             const leads = () => page.evaluate(() => (window.dataLayer || []).map(item => [...item]).filter(([kind, name]) => kind === 'event' && name === 'generate_lead'))
             const submit = async () => {
@@ -76,7 +84,7 @@ async function main() {
                 assert.equal(await page.locator('#contact-name').inputValue(), '', 'Throwing Google cannot break success UI')
                 assert.equal((await leads()).length, 1)
                 await page.evaluate(() => { window.gtag = function () { window.dataLayer.push(arguments) } })
-                await page.locator(`a[href="${locale === 'en' ? '/en' : ''}/interneto-svetaines"]`).first().click()
+                await page.locator(`a[href="${locale === 'en' ? '/en' : ''}/interneto-svetaines"]:visible`).first().click()
                 await page.waitForURL('**/interneto-svetaines')
                 await page.goBack({ waitUntil: 'networkidle' })
                 assert.equal((await leads()).length, 1, 'History restoration cannot replay the success marker')
