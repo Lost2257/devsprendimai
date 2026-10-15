@@ -8,7 +8,7 @@ function browser(saved = null, blockedStorage = false) {
     if (saved) storage.set(CONSENT_KEY, JSON.stringify(saved))
     let reloads = 0
     const win = {
-        location: { hostname: 'devsprendimai.lt', pathname: '/', reload: () => reloads++ },
+        location: { hostname: 'devsprendimai.lt', pathname: '/', href: 'https://devsprendimai.lt/', reload: () => reloads++ },
         localStorage: {
             getItem: (key) => { if (blockedStorage) throw new Error('Blocked'); return storage.get(key) || null },
             setItem: (key, value) => { if (blockedStorage) throw new Error('Blocked'); storage.set(key, value) },
@@ -18,13 +18,14 @@ function browser(saved = null, blockedStorage = false) {
         dispatchEvent: (event) => events[event.type]?.(event),
     }
     const doc = {
+        title: 'DevSprendimai', referrer: '',
         createElement: () => ({}), head: { appendChild: (node) => scripts.push(node) },
         get cookie() { return '_ga=123; _ga_LYW20LSJG9=abc; XSRF-TOKEN=safe' },
         set cookie(value) { cookies.push(value) },
     }
     const analytics = createAnalytics(win, doc)
     return { analytics, win, scripts, cookies, storage, events, reloads: () => reloads,
-        commands: () => (win.dataLayer || []).map((item) => [...item]) }
+        doc, commands: () => (win.dataLayer || []).map((item) => [...item]) }
 }
 const stored = (analytics, expiresAt = Date.now() + 100000) => ({ version: 1, analytics, expiresAt })
 
@@ -46,6 +47,7 @@ test('affirmative consent loads tag once and sets consent before configuration',
     b.analytics.configure(id)
     b.analytics.setConsent(true)
     b.win.location.pathname = '/en/interneto-svetaines'
+    b.win.location.href = 'https://devsprendimai.lt/en/interneto-svetaines'
     b.analytics.configure(id)
     b.analytics.setConsent(true)
     assert.equal(b.scripts.length, 1)
@@ -56,8 +58,9 @@ test('affirmative consent loads tag once and sets consent before configuration',
     assert.equal(commands[1][2].analytics_storage, 'granted')
     assert.equal(commands[1][2].ad_storage, 'denied')
     assert.equal(commands.filter(([type]) => type === 'config').length, 1)
-    assert.equal(commands.filter(([type]) => type === 'event').length, 0)
-    assert.equal(commands.at(-1)[2].allow_google_signals, false)
+    assert.equal(commands.filter(([type]) => type === 'event').length, 2)
+    assert.equal(commands.find(([type]) => type === 'config')[2].allow_google_signals, false)
+    assert.equal(commands.find(([type]) => type === 'config')[2].send_page_view, false)
 })
 
 test('revocation stops collection, clears only analytics cookies and unloads tag', () => {
@@ -112,4 +115,21 @@ test('withdrawal in another tab disables this tab too', () => {
     b.events.storage({ key: CONSENT_KEY })
     assert.equal(b.win[`ga-disable-${id}`], true)
     assert.equal(b.reloads(), 1)
+})
+
+test('page views use the new title, preserve attribution and redact unrelated query fields', () => {
+    const b = browser(stored(true))
+    b.win.location.href = 'https://devsprendimai.lt/?utm_source=google&email=private%40example.com#contact'
+    b.doc.referrer = 'https://google.com/search?q=private'
+    b.analytics.configure(id)
+    b.win.location.href = 'https://devsprendimai.lt/interneto-svetaines'
+    b.doc.title = 'Interneto svetainės'
+    b.analytics.configure(id)
+    b.analytics.configure(id)
+    const views = b.commands().filter(([type, name]) => type === 'event' && name === 'page_view')
+    assert.equal(views.length, 2)
+    assert.equal(views[0][2].page_location, 'https://devsprendimai.lt/?utm_source=google')
+    assert.equal(views[0][2].page_referrer, 'https://google.com/search')
+    assert.equal(views[1][2].page_title, 'Interneto svetainės')
+    assert.equal(views[1][2].page_referrer, 'https://devsprendimai.lt/?utm_source=google')
 })

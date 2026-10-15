@@ -8,6 +8,12 @@ import { analytics, isPublicPath } from './lib/analytics';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME || 'DevSprendimai';
+let analyticsTimer;
+const updateAnalytics = (page) => nextTick(() => {
+    clearTimeout(analyticsTimer);
+    // Allow Inertia Head's queued title update to complete before recording a view.
+    analyticsTimer = setTimeout(() => analytics.configure(page.props.analytics?.measurementId), 0);
+});
 
 createInertiaApp({
     title: (title) => title?.toLowerCase().includes(appName.toLowerCase())
@@ -19,7 +25,7 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        nextTick(() => analytics.configure(props.initialPage.props.analytics?.measurementId));
+        updateAnalytics(props.initialPage);
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
@@ -34,5 +40,5 @@ router.on('before', (event) => {
     if (!isPublicPath(event.detail.visit.url.pathname)) analytics.pause();
 });
 router.on('navigate', (event) => {
-    nextTick(() => analytics.configure(event.detail.page.props.analytics?.measurementId));
+    updateAnalytics(event.detail.page);
 });

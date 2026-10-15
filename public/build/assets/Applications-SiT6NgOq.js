@@ -1,0 +1,1 @@
+import{D as e,F as t,G as n,H as r,S as i}from"./app-Pb7QTuPK.js";import{t as a}from"./PublicLayout-Ctc6pv8_.js";import{c as o,t as s}from"./services-gb53J1Pb.js";var c={__name:`Applications`,setup(c){return(c,l)=>(t(),i(a,null,{default:r(()=>[e(o,{config:n(s)},null,8,[`config`])]),_:1}))}};export{c as default};

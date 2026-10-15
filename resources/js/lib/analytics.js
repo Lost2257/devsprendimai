@@ -11,12 +11,13 @@ export function isPublicPath(path) {
     return !/^\/(?:en\/)?(?:dashboard|login|register|forgot-password|reset-password|verify-email|confirm-password|profile)(?:\/|$)/.test(path)
 }
 
-// Browser-history measurement is handled by GA4 Enhanced Measurement. Do not also
-// send manual page_view events on Inertia navigation, which would double-count.
+// Inertia owns page changes. GA4's separate enhanced-history page views should
+// remain disabled for this stream to avoid counting each navigation twice.
 export function createAnalytics(win, doc) {
     let measurementId = null
     let loadedId = null
     let active = false
+    let lastPage = null
     let choice = readChoice()
 
     function readChoice() {
@@ -49,6 +50,7 @@ export function createAnalytics(win, doc) {
 
     function pause() {
         active = false
+        lastPage = null
         if (loadedId) win[`ga-disable-${loadedId}`] = true
     }
 
@@ -77,7 +79,7 @@ export function createAnalytics(win, doc) {
         }
 
         win.gtag('config', measurementId, {
-            send_page_view: true,
+            send_page_view: false,
             allow_google_signals: false,
             allow_ad_personalization_signals: false,
             cookie_expires: consentLifetime / 1000,
@@ -86,10 +88,39 @@ export function createAnalytics(win, doc) {
         })
     }
 
+    function safeUrl(value, includeCampaign = false) {
+        try {
+            const url = new URL(value, win.location.href)
+            if (!/^https?:$/.test(url.protocol) || !isPublicPath(url.pathname)) return ''
+            const campaign = new URLSearchParams()
+            if (includeCampaign) {
+                for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
+                    if (url.searchParams.has(key)) campaign.set(key, url.searchParams.get(key).slice(0, 100))
+                }
+            }
+            return url.origin + url.pathname + (campaign.size ? `?${campaign}` : '')
+        } catch { return '' }
+    }
+
+    function trackPage() {
+        if (!active || getConsent() !== true) return
+        const location = safeUrl(win.location.href, true)
+        if (!location || location === lastPage) return
+        const fields = {
+            page_location: location,
+            page_title: doc.title,
+            page_referrer: lastPage || (doc.referrer ? safeUrl(doc.referrer) : ''),
+        }
+        win.gtag('set', fields)
+        win.gtag('event', 'page_view', { ...fields, send_to: measurementId })
+        lastPage = location
+    }
+
     function configure(id) {
         measurementId = /^G-[A-Z0-9]+$/.test(id || '') ? id : null
         if (getConsent() !== true) clearAnalyticsCookies()
         activate()
+        trackPage()
     }
 
     function setConsent(analytics) {
@@ -101,6 +132,7 @@ export function createAnalytics(win, doc) {
             clearAnalyticsCookies()
         } else {
             activate()
+            trackPage()
         }
         win.dispatchEvent(new win.CustomEvent(CONSENT_EVENT))
         // Unload Google's history/engagement listeners when consent is withdrawn.
@@ -116,6 +148,7 @@ export function createAnalytics(win, doc) {
             if (loadedId) win.location.reload()
         } else {
             activate()
+            trackPage()
         }
         win.dispatchEvent(new win.CustomEvent(CONSENT_EVENT))
     })
