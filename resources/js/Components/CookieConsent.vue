@@ -7,7 +7,7 @@ import { analytics, CONSENT_EVENT, OPEN_CONSENT_EVENT, openConsentSettings } fro
 defineProps({ immersive: Boolean })
 const page = usePage()
 const { isEnglish, localize } = useLocale()
-const enabled = computed(() => Boolean(page.props.analytics?.measurementId))
+const enabled = computed(() => Boolean(page.props.analytics?.measurementId || page.props.analytics?.pageViews))
 const visible = ref(false)
 const choice = ref(null)
 const panel = ref(null)

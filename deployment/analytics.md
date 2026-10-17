@@ -6,7 +6,7 @@
 - LT/EN consent choices (version 2) expire after 180 days and are stored in localStorage, with an explicit analytics-preference cookie for internal statistics. Both optional analytics systems require consent. Cookie settings in the footer (or in the full-screen project viewer) allow withdrawal. Withdrawal removes GA cookies and reloads to unload the Google library. Changes propagate across tabs.
 - Inertia navigation sends one explicit `page_view` after updating the page title. Keep GA4 Enhanced Measurement's **Page changes based on browser history events** disabled for this web stream. Do not install a second tag for this stream.
 - The initial `config` call uses `send_page_view: false`; initial consent and completed public navigation each record one view. Consecutive identical URLs are deduplicated, unrelated query parameters and fragments are excluded, and private navigation pauses collection.
-- Google Analytics and server-side dashboard statistics are separate data sources. Both exclude visitors refusing consent and administrators; ad blockers may additionally block GA4. Initial opt-in is measured by GA, while internal counts begin on the next request carrying the granted preference.
+- Google Analytics and dashboard statistics are separate data sources. Both exclude visitors refusing consent and signed-in users; ad blockers may additionally block either tracker. Internal counts are independent of the Google tag and begin when the current public page is displayed with consent, including initial opt-in.
 - Google Analytics event retention and reporting settings belong to the Google account; the application does not change them. Browser GA cookies are limited to 180 days without renewal on each hit.
 
 ## Successful enquiry measurement
@@ -25,9 +25,19 @@ In **Admin → Data streams → this web stream → Enhanced measurement (gear) 
 
 On 15 October 2026 the owner reported creating `generate_lead` as a key event using the code-based option. Their subsequent screenshot showed browser-history page changes unchecked and page loads still enabled; they were instructed to save. Account report ingestion and the persisted history setting have not been independently checked through Google account access. Analytics setup is separate from search indexing and is not an SEO activation switch.
 
-## Verification
+## Internal page-view measurement (17 October 2026)
 
-Run `node --test tests/js/analytics.test.js` and `php artisan test --filter=AnalyticsConfigurationTest`, then `npm run build`.
+- The browser reports actual displayed public pages through `POST /analytics/page-view`, after consent and public guest eligibility. Prefetch/hover requests do not count; using an Inertia-prefetched page and Back/Forward navigation do count. Ordinary GET requests no longer insert visits, avoiding duplicate server/client counts.
+- The endpoint requires the granted preference, a guest production request, normal web CSRF protection, rate limits and an allowed public URL. Project URLs must correspond to existing projects. Browser payloads contain only a random per-view UUID, the public URL with allowlisted campaign parameters, and a referring origin; no form contents or arbitrary query parameters are recorded.
+- A unique nullable `visits.event_id` deduplicates repeated delivery without deleting or rewriting old visit records. Visitor pseudonyms continue to rotate monthly, raw IP/user-agent strings are not stored, and the existing 90-day retention applies. New visits require JavaScript and consent; blocked requests may still cause undercounting. There is no silent no-consent fallback.
+- The dashboard explicitly shows its last refresh and last recorded visit times in the application timezone, provides a refresh button, and uses the actual seven-day sum beside the seven-day chart. Monthly totals remain in the monthly card. Previously missed views cannot be reconstructed from these records.
+- Before applying the migration, create and verify a private backup with `deployment/backup.php`. Keep the added column on a code-only rollback unless a separately reviewed database rollback is required; existing legacy rows have a null event ID.
+
+## Verification commands
+
+Run `node --test tests/js/*.test.js` and `php artisan test`, then `npm run build`.
+
+Run `STATS_SMOKE_URL=https://devsprendimai.lt node tests/browser/internal-statistics.smoke.cjs` with Playwright available for a non-writing live check. By default, every internal statistics POST is intercepted, Google/third-party requests and other writes are blocked, and no test visits or enquiries are saved. It covers initial consent, prefetch versus cached navigation, Back, reload, withdrawal, LT/EN desktop/mobile, CSRF headers and payload redaction. To test actual persistence, set `STATS_SMOKE_WRITE=1` only against an explicitly configured localhost preview with a disposable database; the script rejects this option for public hosts.
 
 In a clean browser, verify no `googletagmanager.com/gtag/js` or Google Analytics requests before consent or after refusal. Accept analytics, inspect the measurement ID and one page-view request per Inertia navigation, then withdraw consent and confirm cookies and further collection stop. Check both `/` and `/en`, and verify `/login` never loads a tag. Tag Assistant needs consent to detect the loaded Google tag.
 

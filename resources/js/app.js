@@ -6,6 +6,7 @@ import { createInertiaApp, router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { analytics, isPublicPath } from './lib/analytics';
+import { pageViews } from './lib/pageViews';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME || 'DevSprendimai';
@@ -31,9 +32,13 @@ createInertiaApp({
 });
 
 router.on('before', (event) => {
-    if (!isPublicPath(event.detail.visit.url.pathname)) analytics.pause();
+    if (!isPublicPath(event.detail.visit.url.pathname)) {
+        pageViews.pause();
+        analytics.pause();
+    }
 });
 router.on('navigate', (event) => {
     // Public views are recorded by SeoHead after the new page actually renders.
+    if (event.detail.page.props.analytics?.pageViews !== true || event.detail.page.props.auth?.user) pageViews.configure(false);
     if (!event.detail.page.props.analytics?.measurementId) analytics.configure(null);
 });

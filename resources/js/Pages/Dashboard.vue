@@ -1,6 +1,6 @@
 <script setup>
-import { computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { computed, ref } from 'vue'
+import { Link, router } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
@@ -14,8 +14,28 @@ const props = defineProps({
     devices: { type: Array, default: () => [] },
     campaigns: { type: Array, default: () => [] },
     seoHealth: { type: Object, default: () => ({ score: 0, checks: [] }) },
+    analyticsSummary: { type: Object, default: () => ({}) },
 })
 
+const refreshing = ref(false)
+const refreshError = ref('')
+const weekVisits = computed(() => props.visitSeries.reduce((total, day) => total + Number(day.count), 0))
+const formatAnalyticsTime = (value) => {
+    if (!value || Number.isNaN(new Date(value).getTime())) return 'Dar nėra'
+    return new Intl.DateTimeFormat('lt-LT', {
+        timeZone: props.analyticsSummary.timeZone || 'Europe/Vilnius',
+        month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+    }).format(new Date(value))
+}
+const refreshStatistics = () => {
+    if (refreshing.value) return
+    router.reload({
+        only: ['stats', 'visitSeries', 'trafficSources', 'topPages', 'devices', 'campaigns', 'analyticsSummary'],
+        onStart: () => { refreshing.value = true; refreshError.value = '' },
+        onError: () => { refreshError.value = 'Nepavyko atnaujinti. Pabandykite dar kartą.' },
+        onFinish: () => { refreshing.value = false },
+    })
+}
 const maxVisits = computed(() => Math.max(...props.visitSeries.map((day) => day.count), 1))
 const maxSourceVisits = computed(() => Math.max(...props.trafficSources.map((source) => Number(source.visits)), 1))
 const deviceTotal = computed(() => Math.max(props.devices.reduce((total, device) => total + Number(device.visits), 0), 1))
@@ -24,7 +44,7 @@ const completedChecks = computed(() => readinessChecks.value.filter((check) => c
 const today = new Intl.DateTimeFormat('lt-LT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(new Date())
 
 const statCards = computed(() => [
-    { label: 'Šiandienos peržiūros', value: props.stats.today_visits, meta: 'Svetainės puslapių peržiūros', accent: true },
+    { label: 'Šiandienos peržiūros', value: props.stats.today_visits, meta: 'Peržiūros su analitikos sutikimu', accent: true },
     { label: 'Šio mėnesio peržiūros', value: props.stats.month_visits, meta: `${props.stats.unique_visitors || 0} apytiksliai unikalūs lankytojai` },
     { label: 'Naujos užklausos', value: props.stats.new_inquiries, meta: `${props.stats.inquiries} iš viso`, accent: true },
     { label: 'Publikuoti projektai', value: props.stats.projects, meta: 'Portfolio turinys' },
@@ -43,7 +63,18 @@ const statCards = computed(() => [
             <p>Užklausos išsaugomos čia, tačiau pranešimai į jūsų paštą nesiunčiami. Kol prijungiamas pašto siuntimas, reguliariai peržiūrėkite naujas užklausas.</p>
             <Link href="/dashboard/inquiries">Peržiūrėti užklausas →</Link>
         </section>
-        <p class="analytics-note">Nauji analitikos įrašai renkami tik lankytojui sutikus. Tai vidinė statistika, ne „Google Analytics“ ataskaita.</p>
+        <section class="analytics-status" aria-label="Statistikos būsena">
+            <div>
+                <p class="analytics-note">Vidinė svetainės statistika, ne „Google Analytics“ ataskaita. Naujos peržiūros skaičiuojamos tik leidus analitiką; prisijungusių administratorių ir robotų apsilankymai neįtraukiami.</p>
+                <p class="analytics-freshness" aria-live="polite">
+                    <span>Duomenys atnaujinti: <strong>{{ formatAnalyticsTime(analyticsSummary.refreshedAt) }}</strong></span>
+                    <span>Paskutinė peržiūra: <strong>{{ formatAnalyticsTime(analyticsSummary.lastVisitAt) }}</strong></span>
+                    <span>{{ analyticsSummary.timeZone || 'Europe/Vilnius' }}</span>
+                </p>
+                <p v-if="refreshError" class="analytics-error" role="alert">{{ refreshError }}</p>
+            </div>
+            <button type="button" class="refresh-statistics" :disabled="refreshing" @click="refreshStatistics">{{ refreshing ? 'Atnaujinama…' : 'Atnaujinti statistiką' }} <span aria-hidden="true">↻</span></button>
+        </section>
 
         <section class="stat-grid">
             <article v-for="(card,index) in statCards" :key="card.label" :class="{ accent: card.accent }">
@@ -56,10 +87,10 @@ const statCards = computed(() => [
 
         <section class="dashboard-grid">
             <article class="panel traffic-panel">
-                <div class="panel-head"><div><span>Analitika</span><h2>Pastarųjų 7 dienų srautas</h2></div><strong>{{ stats.month_visits }}<small>šį mėnesį</small></strong></div>
+                <div class="panel-head"><div><span>Analitika</span><h2>Pastarųjų 7 dienų srautas</h2></div><strong>{{ weekVisits }}<small>per 7 dienas</small></strong></div>
                 <div class="chart">
                     <div v-for="day in visitSeries" :key="day.label" class="chart-column">
-                        <div class="bar-wrap"><i :style="{ height: `${Math.max((day.count / maxVisits) * 100, 4)}%` }"><b>{{ day.count }}</b></i></div>
+                        <div class="bar-wrap"><i :style="{ height: `${day.count ? Math.max((day.count / maxVisits) * 100, 4) : 0}%` }"><b>{{ day.count }}</b></i></div>
                         <span>{{ day.label }}</span>
                     </div>
                 </div>
@@ -152,6 +183,7 @@ const statCards = computed(() => [
 </template>
 
 <style scoped>
+.analytics-status{display:flex;align-items:center;justify-content:space-between;gap:1.25rem;margin-bottom:1rem;padding:1rem 1.15rem;border:1px solid #22d3ee26;border-radius:1rem;background:#22d3ee05}.analytics-status>div{min-width:0}.analytics-status .analytics-note{margin:0;color:#a4b4c8;max-width:90ch}.analytics-freshness{display:flex;flex-wrap:wrap;gap:.35rem 1rem;margin-top:.65rem;color:#8a9bb1;font-size:.7rem;line-height:1.6}.analytics-freshness strong{color:#d2e0ee;font-weight:650}.refresh-statistics{display:inline-flex;align-items:center;justify-content:center;gap:.7rem;flex-shrink:0;min-height:44px;padding:.65rem .85rem;border:1px solid #335164;border-radius:.7rem;background:#112333;color:#b9f5fc;font-size:.75rem;font-weight:750}.refresh-statistics:hover{background:#1a3446}.refresh-statistics:disabled{opacity:.65;cursor:wait}.refresh-statistics:focus-visible{outline:2px solid #67e8f9;outline-offset:3px}.analytics-error{margin-top:.5rem;color:#fda4af;font-size:.75rem}@media(max-width:767px){.analytics-status{align-items:stretch;flex-direction:column;gap:.8rem}.refresh-statistics{align-self:flex-start}.analytics-freshness{display:grid;gap:.3rem}}
 .mail-warning{margin-bottom:1rem;padding:1.1rem 1.25rem;border:1px solid #f59e0b55;border-radius:1rem;background:#f59e0b0d;color:#fde68a}.mail-warning strong{font-size:.9rem}.mail-warning p{margin:.5rem 0;color:#c4b99b;font-size:.8rem;line-height:1.65}.mail-warning a{display:inline-block;padding:.35rem 0;font-size:.8rem;font-weight:800;text-decoration:underline;text-underline-offset:3px}.analytics-note{margin:0 0 1rem;color:#8a9bb1;font-size:.75rem;line-height:1.6}
 .seo-note{margin-top:.85rem;color:#8293a9;font-size:.68rem;line-height:1.6}.seo-checks>div{align-items:flex-start}.seo-checks small{display:block;margin-top:.2rem;color:#8293a9;font-size:.61rem;line-height:1.55}.seo-checks>div.informational>i{color:#a4b4cb;background:rgba(148,163,184,.1);flex-shrink:0}
 .dashboard-head{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:2rem}.dashboard-head>div>span,.panel-head>div>span{color:#22d3ee;font-size:.65rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase}.dashboard-head h1{margin-top:.5rem;font-size:clamp(2.5rem,5vw,4.8rem);font-weight:850;letter-spacing:-.065em;line-height:.92}.dashboard-head p{margin-top:.65rem;color:#68778c;font-size:.82rem;text-transform:capitalize}.dashboard-head>a{display:flex;align-items:center;gap:1rem;min-height:3.2rem;padding:0 1.1rem;border-radius:.85rem;color:#061016;background:#22d3ee;font-size:.75rem;font-weight:850;box-shadow:0 15px 40px rgba(34,211,238,.14)}.dashboard-head>a i{font-style:normal}

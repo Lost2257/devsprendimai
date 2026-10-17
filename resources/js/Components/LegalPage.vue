@@ -42,7 +42,7 @@ const navItems = computed(() => [
                 <span>{{ document.eyebrow }}</span>
                 <h1>{{ document.title }}</h1>
                 <p>{{ document.intro }}</p>
-                <button v-if="type === 'cookies' && page.props.analytics?.measurementId" type="button" class="legal-consent-button" @click="openConsentSettings">{{ isEnglish ? 'Change cookie settings' : 'Keisti slapukų nustatymus' }}</button>
+                <button v-if="type === 'cookies' && (page.props.analytics?.measurementId || page.props.analytics?.pageViews)" type="button" class="legal-consent-button" @click="openConsentSettings">{{ isEnglish ? 'Change cookie settings' : 'Keisti slapukų nustatymus' }}</button>
                 <div class="legal-meta">
                     <span>{{ isEnglish ? 'Effective' : 'Galioja nuo' }} · {{ updated }}</span>
                     <i></i>

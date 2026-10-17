@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Visit extends Model
 {
     protected $fillable = [
+        'event_id',
         'ip',
         'session_hash',
         'url',

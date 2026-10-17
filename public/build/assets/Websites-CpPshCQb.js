@@ -1,0 +1,1 @@
+import{L as e,W as t,k as n,q as r,w as i}from"./app-Boy2Aopq.js";import{t as a}from"./PublicLayout-D7dLw0Ss.js";import{c as o,s}from"./services-BKZugqWn.js";var c={__name:`Websites`,setup(c){return(c,l)=>(e(),i(a,null,{default:t(()=>[n(o,{config:r(s)},null,8,[`config`])]),_:1}))}};export{c as default};

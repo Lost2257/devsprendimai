@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, watch, watchEffect } from 'vue'
 import { Head, usePage } from '@inertiajs/vue3'
 import { analytics } from '@/lib/analytics'
+import { pageViews } from '@/lib/pageViews'
 
 const props = defineProps({
     title: { type: String, required: true },
@@ -31,13 +32,21 @@ const jsonLd = computed(() => props.structuredData.length
 const structuredDataId = 'devsprendimai-structured-data'
 let mounted = false
 function recordPageView() {
-    if (mounted) analytics?.configure(page.props.analytics?.measurementId, props.title)
+    if (!mounted) return
+    try {
+        analytics?.configure(page.props.analytics?.measurementId, props.title)
+    } catch {
+        // A blocked or unavailable optional tag must not break the page.
+    } finally {
+        // Internal statistics stay independent of Google tag availability.
+        pageViews?.configure(page.props.analytics?.pageViews === true && !page.props.auth?.user, page.url)
+    }
 }
 onMounted(() => {
     mounted = true
     recordPageView()
 })
-watch(() => [page.url, props.title, page.props.analytics?.measurementId], recordPageView, { flush: 'post' })
+watch(() => [page.url, props.title, page.props.analytics?.measurementId, page.props.analytics?.pageViews, page.props.auth?.user], recordPageView, { flush: 'post' })
 
 watchEffect(() => {
     if (typeof document === 'undefined') return

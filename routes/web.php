@@ -16,6 +16,7 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\ProjectController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PageViewController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\Dashboard\InquiryController;
 
@@ -26,6 +27,10 @@ use App\Http\Controllers\Dashboard\InquiryController;
 */
 
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+
+// Only displayed, explicitly consented pages are counted. Prefetched GETs are not.
+Route::post('/analytics/page-view', PageViewController::class)
+    ->middleware('throttle:120,1')->name('analytics.page-view');
 
 $publicRoutes = function (): void {
     Route::get('/', [HomeController::class, 'index']);
@@ -152,6 +157,13 @@ Route::middleware([
         });
 
         return Inertia::render('Dashboard', [
+            'analyticsSummary' => [
+                'refreshedAt' => now()->toIso8601String(),
+                'lastVisitAt' => ($lastVisitAt = Visit::max('created_at'))
+                    ? Carbon::parse($lastVisitAt)->toIso8601String()
+                    : null,
+                'timeZone' => config('app.timezone'),
+            ],
             'mailNotificationsEnabled' => !in_array(config('mail.default'), ['log', 'array', null], true),
             'stats' => [
 

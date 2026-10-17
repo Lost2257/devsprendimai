@@ -1,5 +1,6 @@
-// Mock-only integration smoke: contact POSTs and every Google request are
-// intercepted. This must never send a real enquiry, email, or GA event.
+// Mock-only integration smoke: contact and internal-statistics POSTs plus every
+// Google request are intercepted. Other writes and third parties are blocked.
+// This must never send a real enquiry, email, internal visit, or GA event.
 // Requires Playwright. Run with LEAD_SMOKE_URL=https://devsprendimai.lt.
 const { chromium } = require('playwright')
 const assert = require('node:assert/strict')
@@ -10,6 +11,7 @@ const newMarker = { ...marker, id: 'f670416d-c8af-433c-837b-7d5c4a3c6cfe' }
 async function main() {
     assert(process.env.LEAD_SMOKE_URL, 'Explicit LEAD_SMOKE_URL required')
     const base = process.env.LEAD_SMOKE_URL.replace(/\/$/, '')
+    const origin = new URL(base).origin
     const browser = await chromium.launch({ headless: true, channel: 'msedge' })
     try {
         for (const scenario of [{ locale: 'lt', width: 1440, consent: true }, { locale: 'en', width: 390, consent: true }, { locale: 'lt', width: 320, consent: false }, { locale: 'en', width: 320, consent: false }]) {
@@ -26,6 +28,10 @@ async function main() {
                     googleMockCount++
                     return route.fulfill({ status: 200, contentType: 'application/javascript', body: '' })
                 }
+                if (url.origin !== origin) return route.abort('blockedbyclient')
+                if (url.pathname === '/analytics/page-view' && request.method() === 'POST') {
+                    return route.fulfill({ status: 204 })
+                }
                 if (/^\/(?:en\/)?contact$/.test(url.pathname)) {
                     assert.equal(request.method(), 'POST')
                     assert(initialPage, 'Read the actual Inertia page before mocking the response')
@@ -35,6 +41,7 @@ async function main() {
                         props: { ...initialPage.props, errors: responseErrors, flash: { success: Object.keys(responseErrors).length ? null : 'Mock enquiry saved', error: null, enquiryConversion: responseMarker } },
                     }) })
                 }
+                if (!['GET', 'HEAD'].includes(request.method())) return route.abort('blockedbyclient')
                 return route.continue()
             })
 

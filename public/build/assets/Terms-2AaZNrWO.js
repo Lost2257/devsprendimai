@@ -1,1 +1,0 @@
-import{C as e,I as t,O as n,U as r}from"./app-CES8b8MQ.js";import{t as i}from"./PublicLayout-B6ubxZP8.js";import{t as a}from"./LegalPage-CG5QUNR5.js";var o={__name:`Terms`,setup(o){return(o,s)=>(t(),e(i,null,{default:r(()=>[n(a,{type:`terms`})]),_:1}))}};export{o as default};

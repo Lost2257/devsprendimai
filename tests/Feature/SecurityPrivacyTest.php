@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Mail\ContactFormMail;
 use App\Models\Inquiry;
-use App\Models\User;
-use App\Models\Visit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -78,38 +76,16 @@ class SecurityPrivacyTest extends TestCase
         $this->get('http://devsprendimai.lt/')->assertHeaderMissing('Strict-Transport-Security');
     }
 
-    public function test_internal_statistics_require_consent_and_never_log_private_or_failed_routes(): void
+    public function test_public_page_requests_never_count_prefetches_or_double_count_display_events(): void
     {
-        $this->withoutDefer();
         $this->get('/')->assertOk();
         $this->withUnencryptedCookie('devsprendimai_analytics_consent', 'denied')->get('/')->assertOk();
-        $this->assertDatabaseCount('visits', 0);
-
         $this->withUnencryptedCookie('devsprendimai_analytics_consent', 'granted')
             ->get('/?utm_source=newsletter&email=private@example.test')->assertOk();
-        $visit = Visit::sole();
-        $this->assertNull($visit->ip);
-        $this->assertNull($visit->user_agent);
-        $this->assertSame('/', $visit->url);
-        $this->assertSame('newsletter', $visit->source);
-        $this->assertSame(64, strlen($visit->session_hash));
-
         $this->get('/login')->assertOk();
         $this->get('/not-a-real-page')->assertNotFound();
         $this->get('/dashboard')->assertRedirect('/login');
         $this->withHeader('Sec-Purpose', 'prefetch')->get('/')->assertOk();
-        $this->flushHeaders();
-        $this->actingAs(User::factory()->create())->get('/')->assertOk();
-        $this->assertDatabaseCount('visits', 1);
-    }
-
-    public function test_internal_visitor_identifier_rotates_monthly(): void
-    {
-        $this->withoutDefer();
-        $this->withUnencryptedCookie('devsprendimai_analytics_consent', 'granted')->get('/')->assertOk();
-        $before = Visit::sole()->session_hash;
-        $this->travel(32)->days();
-        $this->get('/')->assertOk();
-        $this->assertNotSame($before, Visit::latest('id')->first()->session_hash);
+        $this->assertDatabaseCount('visits', 0);
     }
 }

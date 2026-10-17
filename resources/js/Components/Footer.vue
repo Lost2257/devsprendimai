@@ -55,7 +55,7 @@ const contactHref = computed(() => `${localize('/')}#contact`)
                 <div class="footer-column">
                     <span>{{ isEnglish ? 'Legal' : 'Teisinė informacija' }}</span>
                     <Link v-for="item in legalLinks" :key="item[1]" :href="item[1]" :prefetch="['hover', 'click']" cache-for="30s" view-transition>{{ item[0] }}</Link>
-                    <button v-if="page.props.analytics?.measurementId" type="button" class="cookie-settings" @click="openConsentSettings">{{ isEnglish ? 'Cookie settings' : 'Slapukų nustatymai' }}</button>
+                    <button v-if="page.props.analytics?.measurementId || page.props.analytics?.pageViews" type="button" class="cookie-settings" @click="openConsentSettings">{{ isEnglish ? 'Cookie settings' : 'Slapukų nustatymai' }}</button>
                 </div>
             </div>
 

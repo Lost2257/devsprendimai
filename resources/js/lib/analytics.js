@@ -187,11 +187,15 @@ export function createAnalytics(win, doc) {
         syncConsentCookie()
         if (!choice.analytics) {
             pause()
-            if (loadedId) win.gtag('consent', 'update', denied)
+            try {
+                if (loadedId) win.gtag('consent', 'update', denied)
+            } catch { /* Consent withdrawal must work even if Google is blocked. */ }
             clearAnalyticsCookies()
         } else {
-            activate()
-            trackPage()
+            try {
+                activate()
+                trackPage()
+            } catch { /* Consent UI and first-party statistics are independent. */ }
         }
         win.dispatchEvent(new win.CustomEvent(CONSENT_EVENT))
         // Unload Google's history/engagement listeners when consent is withdrawn.
@@ -208,8 +212,10 @@ export function createAnalytics(win, doc) {
             clearAnalyticsCookies()
             if (loadedId) win.location.reload()
         } else {
-            activate()
-            trackPage()
+            try {
+                activate()
+                trackPage()
+            } catch { /* Still notify this tab about the changed preference. */ }
         }
         win.dispatchEvent(new win.CustomEvent(CONSENT_EVENT))
     })

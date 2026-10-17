@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { createAnalytics, CONSENT_KEY, CONSENT_COOKIE, isPublicPath } from '../../resources/js/lib/analytics.js'
+import { createAnalytics, CONSENT_KEY, CONSENT_COOKIE, CONSENT_EVENT, isPublicPath } from '../../resources/js/lib/analytics.js'
 
 const id = 'G-LYW20LSJG9'
 function browser(saved = null, blockedStorage = false) {
@@ -247,4 +247,35 @@ test('blocked or throwing Google code cannot throw from enquiry completion', () 
     b.win.gtag = () => { throw new Error('Blocked analytics') }
     assert.equal(complete(leadMarker(), publicPage), false)
     assert.equal(complete(leadMarker(), publicPage), false)
+})
+
+test('throwing Google code cannot prevent saved consent, preference events or withdrawal', () => {
+    const b = browser(stored(true))
+    b.analytics.configure(id)
+    let changes = 0
+    b.win.addEventListener(CONSENT_EVENT, () => changes++)
+    b.win.location.href = 'https://devsprendimai.lt/interneto-svetaines'
+    b.win.gtag = () => { throw new Error('Blocked Google tag') }
+    assert.doesNotThrow(() => b.analytics.setConsent(true))
+    assert.equal(b.analytics.getConsent(), true)
+    assert.equal(changes, 1)
+    assert(b.cookies.findLast((cookie) => cookie.startsWith(CONSENT_COOKIE)).startsWith(`${CONSENT_COOKIE}=granted;`))
+    assert.doesNotThrow(() => b.analytics.setConsent(false))
+    assert.equal(b.analytics.getConsent(), false)
+    assert.equal(changes, 2)
+    assert.equal(b.reloads(), 1)
+    assert(b.cookies.some((cookie) => cookie.startsWith('_ga=;')))
+})
+
+test('throwing Google code cannot prevent cross-tab consent notifications', () => {
+    const b = browser(stored(true))
+    b.analytics.configure(id)
+    let changes = 0
+    b.win.addEventListener(CONSENT_EVENT, () => changes++)
+    b.win.location.href = 'https://devsprendimai.lt/en'
+    b.win.gtag = () => { throw new Error('Blocked Google tag') }
+    b.storage.set(CONSENT_KEY, JSON.stringify(stored(true)))
+    assert.doesNotThrow(() => b.events.storage({ key: CONSENT_KEY }))
+    assert.equal(changes, 1)
+    assert.equal(b.analytics.getConsent(), true)
 })

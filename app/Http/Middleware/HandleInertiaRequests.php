@@ -34,9 +34,10 @@ class HandleInertiaRequests extends Middleware
         // localhost provide the secure context required by Web Crypto.
         \Inertia\Inertia::encryptHistory((bool) $request->user());
 
-        $analyticsId = config('app.env') === 'production'
+        $publicAnalytics = config('app.env') === 'production'
             && !$request->user()
-            && !preg_match('#^(?:en/)?(?:dashboard|login|register|forgot-password|reset-password|verify-email|confirm-password|profile)(?:/|$)#', $request->path())
+            && !preg_match('#^(?:en/)?(?:dashboard|login|register|forgot-password|reset-password|verify-email|confirm-password|profile)(?:/|$)#', $request->path());
+        $analyticsId = $publicAnalytics
                 ? config('services.google_analytics.measurement_id')
                 : null;
 
@@ -67,6 +68,7 @@ class HandleInertiaRequests extends Middleware
             // Never enable third-party analytics for signed-in users or private pages.
             'analytics' => [
                 'measurementId' => $analyticsId,
+                'pageViews' => $publicAnalytics,
             ],
 
             'newInquiries' => fn () => $request->user()?->hasAnyRole(['super-user', 'admin'])
